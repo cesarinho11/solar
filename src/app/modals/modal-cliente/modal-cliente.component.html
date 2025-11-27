@@ -1,0 +1,34 @@
+<h1 mat-dialog-title style="border-bottom: 2px solid #eee;"  class="dialog-title">{{title}} nuevo <span class="close-btn " mat-dialog-close><img width="30px" src="../../../assets/x.png" alt=""></span> </h1>
+<div mat-dialog-content>
+  <form action="" [formGroup]="proveedorForm" >
+
+    <div class="row">
+      <div class="col-md-4 inputForm">
+        <label for="nombre">Nombre</label>
+        <input type="text" class="form-control" id="nombre" formControlName="nombre" >
+      </div>
+  
+      <div class="col-md-4 inputForm" >
+        <label for="domicilio">Domicilio</label>
+        <input type="text" class="form-control" id="domicilio" formControlName="domicilio" >
+      </div>
+
+      <div class="col-md-4 inputForm" >
+        <label for="correo">correo</label>
+        <input type="text" class="form-control" id="correo" formControlName="correo" >
+      </div>
+
+      <div class="col-md-4 inputForm" >
+        <label for="stock">telefono</label>
+        <input type="telefono" class="form-control" id="telefono" formControlName="telefono" >
+      </div>
+
+    </div>
+
+  </form>
+</div>
+<div mat-dialog-actions align="end" style="margin-top: 10px;">
+  <!-- <button mat-button mat-dialog-close class="btn btnCancel ">Close</button> -->
+  <button class="btn btnPrimary ml-5" type="button" *ngIf="data.accion=='nuevo'" (click)="onSubmit()"  >Guardar producto</button>
+  <button class="btn btnPrimary ml-5" type="button" *ngIf="data.accion=='editar'" (click)="actualizarContrato()"  >Actulizar producto</button>
+</div>

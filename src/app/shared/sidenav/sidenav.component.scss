@@ -1,0 +1,54 @@
+.sidebar {
+  width: 250px;
+  transition: width 0.3s ease;
+  height: 100vh;
+  overflow: visible;
+  background-color: rgb(94 97 99) !important;
+}
+
+.sidebar:not(.expanded) {
+  width: 70px;
+}
+
+.toggle-btn {
+  border: none;
+  width: 100%;
+  text-align: left;
+}
+
+.nav-link {
+  white-space: nowrap;
+  padding: 8px 12px;
+  border-radius: 6px;
+  transition: background 0.2s;
+}
+
+.nav-link:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.submenu {
+  transition: all 0.3s ease;
+}
+
+.submenu .nav-link {
+  font-size: 0.9rem;
+  padding-left: 20px;
+}
+
+.submenu-float {
+  position: absolute;
+  left: 75px;
+  top: 0;
+  min-width: 180px;
+  z-index: 1000;
+  border-radius: 6px;
+}
+
+
+.wlogo{
+    width: 70% !important;
+}
+.wlogomini{
+    width: 30px !important;
+}

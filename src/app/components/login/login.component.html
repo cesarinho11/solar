@@ -1,0 +1,21 @@
+<div class="d-flex justify-content-center align-items-center vh-100 bg-light">
+    <div class="card shadow p-4" style="width: 22rem;">
+      <div align="center">
+       <a href="../"><img src="../../../assets/logo.jpg" alt="" width="60%"></a> <br>
+      </div>
+      <br>
+
+      <!-- <h2  align="center">Iniciar sesion</h2> -->
+      <form (submit)="login(); $event.preventDefault()">
+        <div class="mb-3">
+          <label for="email" class="form-label">Correo</label>
+          <input type="email" class="form-control"  [(ngModel)]="email" placeholder="Email" name="email">
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label">Contraseña</label>
+          <input type="password" class="form-control" [(ngModel)]="password" placeholder="Contraseña" name="password">
+        </div>
+        <button type="submit" class="btn w-100 btnPrimary">Ingresar</button>
+      </form>
+    </div>
+  </div>

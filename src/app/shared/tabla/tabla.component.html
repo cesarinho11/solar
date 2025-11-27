@@ -1,0 +1,27 @@
+<div class="table-responsive  table-scroll">
+    <table class="table table-bordered table-hover align-middle">
+      <thead class="table-primary text-center">
+        <tr>
+          <th *ngFor="let col of columns">{{ col.label }}</th>
+          <th *ngIf="actions.length > 0">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of data" >
+          <td *ngFor="let col of columns"  [ngClass]="{ 'row-verde': row.estatus == 3 }">{{ row[col.key] }}</td>
+          <td *ngIf="actions.length > 0" class="text-center"  [ngClass]="{ 'row-verde': row.estatus == 3 }">
+            <button
+              *ngFor="let action of actions"
+              class="btn btn-sm me-2"
+               [hidden]="action.type === 'confirm' || action.type === 'delete' && row.estatus == 3"
+              [ngClass]="action.class || 'btn-outline-primary'"
+              class="{{ action.class }}"
+              (click)="onAction(action.type, row)">
+              <i [class]="action.icon"></i>
+              <!-- <img [src]="'../../../assets/' + action.icon + '.png'" alt="" width="15px"> -->
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>

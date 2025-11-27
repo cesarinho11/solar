@@ -1,0 +1,18 @@
+<div class="app-container d-flex">
+  <!-- Sidebar -->
+  <app-sidenav (sidebarToggled)="onSidebarToggled($event)"></app-sidenav>
+
+  <!-- Contenido principal -->
+   
+  <div
+    class="main-content flex-grow-1 p-3 transition-all"
+    [style.margin-left.px]="sidebarExpanded ? 25 : 70"
+  >
+
+  <div class="row">
+    <div (click)="logout()" title="Salir" style="    float: right; cursor: pointer; margin-bottom: 70px;" class=""> <i style="font-size: 20px; cursor: pointer;" class="btn-sm btn-outline-danger float-end bi-box-arrow-left"></i></div> 
+  </div>
+    <!-- hola -->
+    <router-outlet></router-outlet>
+  </div>
+</div>

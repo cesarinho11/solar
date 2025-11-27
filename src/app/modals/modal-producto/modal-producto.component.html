@@ -1,0 +1,59 @@
+<h1 mat-dialog-title style="border-bottom: 2px solid #eee;"  class="dialog-title">{{title}} nuevo <span class="close-btn " mat-dialog-close><img width="30px" src="../../../assets/x.png" alt=""></span> </h1>
+<div mat-dialog-content>
+  <form action="" [formGroup]="productoForm" >
+
+    <div class="row">
+      <div class="col-md-4 inputForm">
+        <label for="nombre">Nombre</label>
+        <input type="text" class="form-control" id="nombre" formControlName="nombre" >
+      </div>
+  
+      <div class="col-md-4 inputForm">
+        <label for="descripcion">Descripcion</label>
+        <input type="text" class="form-control" id="descripcion" formControlName="descripcion" >
+      </div>
+
+      <div class="col-md-4 inputForm" >
+        <label for="categoria">Categoria</label>
+        <input type="text" class="form-control" id="categoria" formControlName="categoria" >
+      </div>
+
+      <div class="col-md-4 inputForm" >
+        <label for="tipo">Tipo</label>
+        <input type="text" class="form-control" id="tipo" formControlName="tipo" >
+      </div>
+
+      <div class="col-md-4 inputForm" >
+        <label for="stock">Stock actual</label>
+        <input type="number" class="form-control" id="stock" formControlName="stock" >
+      </div>
+
+      <div class="col-md-4 inputForm" >
+        <label for="stock_min">Stock minimo</label>
+        <input type="number" class="form-control" id="stock_min" formControlName="stock_min" >
+      </div>
+
+      <div class="col-md-4 inputForm" >
+        <label for="stock_max">Stock maximo</label>
+        <input type="number" class="form-control" id="stock_max" formControlName="stock_max" >
+      </div>
+
+      <div class="col-md-4 inputForm" >
+        <label for="costo">costo</label>
+        <input type="text" class="form-control" id="costo" formControlName="costo" >
+      </div>
+
+      <div class="col-md-4 inputForm" >
+        <label for="precio">precio</label>
+        <input type="text" class="form-control" id="precio" formControlName="precio" >
+      </div>
+
+    </div>
+
+  </form>
+</div>
+<div mat-dialog-actions align="end" style="margin-top: 10px;">
+  <!-- <button mat-button mat-dialog-close class="btn btnCancel ">Close</button> -->
+  <button class="btn btnPrimary ml-5" type="button" *ngIf="data.accion=='nuevo'" (click)="onSubmit()"  >Guardar producto</button>
+  <button class="btn btnPrimary ml-5" type="button" *ngIf="data.accion=='editar'" (click)="actualizarContrato()"  >Actulizar producto</button>
+</div>

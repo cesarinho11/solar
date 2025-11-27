@@ -1,0 +1,12 @@
+.app-container {
+  display: flex;
+  min-height: 100vh; /* ✅ usa min-height en lugar de height fija */
+  overflow: hidden; /* mantenemos oculto el scroll lateral del layout */
+}
+
+.main-content {
+  flex-grow: 1;
+  transition: margin-left 0.3s ease;
+  overflow-y: auto; /* ✅ permite desplazamiento vertical interno */
+  padding: 15px;
+}

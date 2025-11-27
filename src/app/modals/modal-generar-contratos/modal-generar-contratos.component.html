@@ -1,0 +1,266 @@
+<h1 mat-dialog-title style="border-bottom: 2px solid #eee;"  class="dialog-title">{{title}} contrato <span class="close-btn " mat-dialog-close><img width="30px" src="../../../assets/x.png" alt=""></span> </h1>
+<div mat-dialog-content>
+  <form action="" [formGroup]="contratoForm" >
+
+    <div class="row">
+      <div class="col-md-4 inputForm">
+        <label for="n_solicitud">n_solicitud</label>
+        <input type="text" class="form-control" id="n_solicitud" formControlName="n_solicitud" >
+      </div>
+  
+      <div class="col-md-4 inputForm" >
+        <label for="fecha">Fecha</label>
+        <input type="date" class="form-control" id="fecha" formControlName="fecha" >
+      </div>
+    </div>
+
+    <div class="row"  style="border: 1px solid #eee; border-radius: 10px; padding: 10px; margin-top: 20px;">
+      <label  *ngIf="data.accion == 'nuevo'">
+        <input type="checkbox" class="form-check-input" formControlName="clienteNuevo" />
+        Cliente nuevo
+      </label>
+    
+      <div *ngIf="contratoForm.get('clienteNuevo')?.value" class="col-md-6 inputForm">
+        <label for="fecha">Cliente</label>
+        <input type="text" class="form-control" formControlName="nombre" placeholder="Nombre" />
+      </div>
+
+      <div class="col-md-6 inputForm" *ngIf="!contratoForm.get('clienteNuevo')?.value">
+        <label for="fecha">Cliente</label>
+        <select class="form-select" aria-label="Default select example" id="cliente_id" formControlName="cliente_id" placeholder="cliente_id" (change)="onClienteSeleccionado()" >
+          <option *ngFor="let item of clienesItems" [value]="item.id_cliente">{{item.nombre}}</option>
+        </select>
+      </div>
+
+
+
+
+      <input type="hidden" class="form-control" id="id_contrato" formControlName="id_contrato" placeholder="id_contrato">
+     
+
+
+          <div class="col-md-6 inputForm">
+            <label for="cargo">cargo</label>
+            <input type="text" class="form-control" id="cargo"  formControlName="cargo" placeholder="fecha">
+          </div>
+          <div class="col-md-6 inputForm">
+            <label for="ine" >ine</label>
+            <input type="text" class="form-control" id="ine" formControlName="ine" placeholder="ine">
+          </div>
+          <div class="col-md-6 inputForm">
+            <label for="telefono">Telefono</label>
+            <input type="text" class="form-control" id="telefono"  formControlName="telefono" placeholder="telefono">
+          </div>
+          <div class="col-md-6 inputForm">
+            <label for="correo">correo</label>
+            <input type="text" class="form-control" id="correo"  formControlName="correo" placeholder="correo">
+          </div>
+          <div class="col-md-6 inputForm">
+            <label for="ciudad">ciudad</label>
+            <input type="text" class="form-control" id="ciudad"  formControlName="ciudad" placeholder="ciudad">
+          </div>
+          <div class="col-md-6 inputForm">
+            <label for="calle">calle</label>
+            <input type="text" class="form-control" id="calle"  formControlName="calle" placeholder="calle">
+          </div>
+          <div class="col-md-6 inputForm">
+            <label for="n_exterior">n_exterior</label>
+            <input type="text" class="form-control" id="n_exterior"  formControlName="n_exterior" placeholder="n_exterior">
+          </div>
+          <div class="col-md-6 inputForm">
+            <label for="n_interior">n_interior</label>
+            <input type="text" class="form-control" id="n_interior"  formControlName="n_interior" placeholder="n_interior">
+          </div>
+          <div class="col-md-6 inputForm">
+            <label for="x">longitud</label>
+            <input type="text" class="form-control" id="x"  formControlName="x" placeholder="x">
+          </div>
+          <div class="col-md-6 inputForm">
+            <label for="y">latitud</label>
+            <input type="text" class="form-control" id="y"  formControlName="y" placeholder="y">
+          </div>
+    </div>
+
+    <div class="row"  style="border: 1px solid #eee; border-radius: 10px; padding: 10px; margin-top: 20px;"  *ngIf="data != null && !data.tiene_oc" >
+      <div>
+         Datos de conexion <br> <br>
+      </div>
+      <div class="col-md-4 inputForm">
+        <label for="rpu" >rpu</label>
+        <input type="text" class="form-control" id="rpu" formControlName="rpu" placeholder="rpu">
+      </div>
+      <div class="col-md-4 inputForm">
+        <label for="rmu">rmu</label>
+        <input type="text" class="form-control" id="rmu"  formControlName="rmu" placeholder="rmu">
+      </div>
+      <div class="col-md-4 inputForm">
+        <label for="n_cuenta">N° cuenta</label>
+        <input type="text" class="form-control" id="n_cuenta"  formControlName="n_cuenta" placeholder="n_cuenta">
+      </div>
+
+      <div class="col-md-12 inputForm">
+        <label for="capacidad">tension</label>
+        <input type="text" class="form-control" id="tension"  formControlName="tension" placeholder="tension">
+      </div>
+
+      <div class="col-md-6 inputForm">
+        <label for="capacidad">capacidad</label>
+        <input type="text" class="form-control" id="capacidad"  formControlName="capacidad" placeholder="capacidad">
+      </div>
+      <div class="col-md-6 inputForm">
+        <label for="capacidad_incrementar">capacidad_incrementar</label>
+        <input type="text" class="form-control" id="capacidad_incrementar"  formControlName="capacidad_incrementar" placeholder="capacidad_incrementar">
+      </div>
+      <div class="col-md-6 inputForm">
+        <label for="tension_interconexion">tension_interconexion</label>
+        <input type="text" class="form-control" id="tension_interconexion"  formControlName="tension_interconexion" placeholder="tension_interconexion">
+      </div>
+      <div class="col-md-6 inputForm">
+        <label for="tecnologia">tecnologia</label>
+        <input type="text" class="form-control" id="tecnologia"  formControlName="tecnologia" placeholder="tecnologia">
+      </div>
+      <div class="col-md-6 inputForm">
+        <label for="tecnologia_secundaria">tecnologia_secundaria</label>
+        <input type="text" class="form-control" id="tecnologia_secundaria"  formControlName="tecnologia_secundaria" placeholder="tecnologia_secundaria">
+      </div>
+      <div class="col-md-6 inputForm">
+        <label for="regimen_contraprestacion">regimen_contraprestacion</label>
+        <input type="text" class="form-control" id="regimen_contraprestacion"  formControlName="regimen_contraprestacion" placeholder="regimen_contraprestacion">
+      </div>
+      <div class="col-md-6 inputForm">
+        <label for="tarifa">tarifa</label>
+        <input type="text" class="form-control" id="tarifa"  formControlName="tarifa" placeholder="tarifa">
+      </div>
+      <div class="col-md-6 inputForm">
+        <label for="voltaje">voltaje</label>
+        <input type="text" class="form-control" id="voltaje"  formControlName="voltaje" placeholder="voltaje">
+      </div>
+      <div class="col-md-6 inputForm">
+        <label for="n_fases">n_fases</label>
+        <input type="text" class="form-control" id="n_fases"  formControlName="n_fases" placeholder="n_fases">
+      </div>
+      <div class="col-md-6 inputForm">
+        <label for="n_hilos">n_hilos</label>
+        <input type="text" class="form-control" id="n_hilos"  formControlName="n_hilos" placeholder="n_hilos">
+      </div>
+      <div class="col-md-6 inputForm">
+        <label for="n_medidor">n_medidor</label>
+        <input type="text" class="form-control" id="n_medidor"  formControlName="n_medidor" placeholder="n_medidor">
+      </div>
+      <div class="col-md-6 inputForm">
+        <label for="tipo_medidor">tipo_medidor</label>
+        <input type="text" class="form-control" id="tipo_medidor"  formControlName="tipo_medidor" placeholder="tipo_medidor">
+      </div>
+      <div class="col-md-6 inputForm">
+        <label for="carga">carga</label>
+        <input type="text" class="form-control" id="carga"  formControlName="carga" placeholder="carga">
+      </div>
+      <div class="col-md-6 inputForm">
+        <label for="potencia">potencia</label>
+        <input type="text" class="form-control" id="potencia"  formControlName="potencia" placeholder="potencia">
+      </div>
+      <div class="col-md-6 inputForm">
+        <label for="central_electrica">central_electrica</label>
+        <input type="text" class="form-control" id="central_electrica"  formControlName="central_electrica" placeholder="central_electrica">
+      </div>
+      <div class="col-md-6 inputForm">
+        <label for="carga">n_unidades</label>
+        <input type="text" class="form-control" id="n_unidades"  formControlName="n_unidades" placeholder="n_unidades">
+      </div>
+      <div class="col-md-6 inputForm">
+        <label for="fecha_operacion">fecha_operacion</label>
+        <input type="date" class="form-control" id="fecha_operacion"  formControlName="fecha_operacion" placeholder="fecha_operacion">
+      </div>
+      <div class="col-md-6 inputForm">
+        <label for="carga">carga</label>
+        <input type="text" class="form-control" id="carga"  formControlName="carga" placeholder="carga">
+      </div>
+    </div>
+
+
+    
+    <div class="row"  style="border: 1px solid #eee; border-radius: 10px; padding: 10px; margin-top: 20px;"  *ngIf="data != null && !data.tiene_oc" >
+      Datos de solicitud 
+
+      <div class="form-check form-check-inline">
+                <input  class="form-check-input" type="checkbox" formControlName="baja_tencion" >
+                <label class="form-check-label" for="">
+                  Baja tension
+                </label>
+      </div> 
+      <div class="form-check form-check-inline">
+                <input  class="form-check-input" type="checkbox" formControlName="media_tension" >
+                <label class="form-check-label" for="">
+                  media tension
+                </label>
+      </div> 
+
+      Utilizacion de energia <br>
+      <div class="form-check form-check-inline">
+                <input  class="form-check-input" type="checkbox" formControlName="consumo_centros" >
+                <label class="form-check-label" for="">
+                  Consumo de centros de carga
+                </label>
+      </div> 
+      <div class="form-check form-check-inline">
+                <input  class="form-check-input" type="checkbox" formControlName="consumo_centros_ventas" >
+                <label class="form-check-label" for="">
+                  Consumo de centros de carga y ventas
+                </label>
+      </div> 
+      <div class="form-check form-check-inline">
+                <input  class="form-check-input" type="checkbox" formControlName="venta_total" >
+                <label class="form-check-label" for="">
+                  Venta total
+                </label>
+      </div> 
+
+      manifestacion de cumplimineto de las especificaciones tecnicas <br>
+
+      <div class="form-check form-check-inline">
+                <input  class="form-check-input" type="checkbox" formControlName="solar" >
+                <label class="form-check-label" for="">
+                  solar
+                </label>
+      </div> 
+      <div class="form-check form-check-inline">
+                <input  class="form-check-input" type="checkbox" formControlName="biomasa" >
+                <label class="form-check-label" for="">
+                  biomasa
+                </label>
+      </div> 
+      <div class="form-check form-check-inline">
+                <input  class="form-check-input" type="checkbox" formControlName="eolico" >
+                <label class="form-check-label" for="">
+                  eolico
+                </label>
+      </div> 
+      <div class="form-check form-check-inline">
+                <input  class="form-check-input" type="checkbox" formControlName="cogeneracion" >
+                <label class="form-check-label" for="">
+                  cogeneracion
+                </label>
+      </div> 
+
+      <div class="form-check form-check-inline">
+                <input  class="form-check-input" type="checkbox" formControlName="otro" >
+                <label class="form-check-label" for="">
+                  otro
+                </label>
+      </div> 
+
+      <div class="col-md-4 inputForm">
+        <label for="especificar">Especificar</label>
+        <input type="text" class="form-control" id="especificar"  formControlName="especificar" placeholder="especificar">
+      </div>
+
+
+    </div>
+
+  </form>
+</div>
+<div mat-dialog-actions align="end" style="margin-top: 10px;">
+  <!-- <button mat-button mat-dialog-close class="btn btnCancel ">Close</button> -->
+  <button class="btn btnPrimary ml-5" type="button" *ngIf="data.accion=='nuevo'" (click)="onSubmit()"  >Generar contratos</button>
+  <button class="btn btnPrimary ml-5" type="button" *ngIf="data.accion=='editar'" (click)="actualizarContrato()"  >Actulizar Contrato</button>
+</div>

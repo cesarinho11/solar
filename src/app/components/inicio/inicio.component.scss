@@ -1,0 +1,21 @@
+.btnInicio{
+    background-color: #ff4c4c;
+    color: white;
+    width: 100%;
+    padding: 25px;
+}
+
+.btnInicio:hover{
+    background-color: #f86666;
+}
+
+.contenido {
+  position: relative;
+  min-height: 85vh; /* o el alto que necesites */
+  background-image: url('./../../../assets/logo.jpg'); /* ruta de tu imagen */
+  background-repeat: no-repeat;
+  background-position: right bottom; /* esquina inferior derecha */
+  background-size: 38% auto; /* ajusta el tamaño */
+  background-color: #fff; /* opcional, fondo base */
+  padding: 2rem; /* opcional para separación del borde */
+}
