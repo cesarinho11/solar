@@ -30,4 +30,7 @@ export class ProductosService {
     return this.http.post(`${this.API_URL}/deleteProducto`, data);
   }
   
+  categoriasProducto(){
+     return this.http.get(`${this.API_URL}/categoriasProducto`);
+  }
 }

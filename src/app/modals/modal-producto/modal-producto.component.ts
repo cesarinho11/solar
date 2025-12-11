@@ -16,9 +16,11 @@ export class ModalProductoComponent implements OnInit {
       public dialogRef: MatDialogRef<ModalProductoComponent>, private alert: AlertService, private productosService: ProductosService) { }
 
       title = 'producto';
+      categoriaItems:any;
 
     productoForm = new FormGroup({
       id_producto: new FormControl(''),
+      codigo: new FormControl(''),
       nombre: new FormControl(''),
       descripcion: new FormControl(''),
       categoria: new FormControl(''),
@@ -31,6 +33,7 @@ export class ModalProductoComponent implements OnInit {
     });
 
   ngOnInit(): void {
+    this.categorias_producto()
      if(this.data.accion == 'editar'){
       console.log('editar contrato tiene id')
       const { ...rest } = this.data;
@@ -65,6 +68,19 @@ export class ModalProductoComponent implements OnInit {
         console.log(res);
         this.dialogRef.close({ event: 'Agregar' });
         this.alert.success('El registro fue actualizado correctamente');
+      },
+      error: (err: any) => {
+        console.log('error', err);
+      }
+    });
+  }
+
+  categorias_producto(){
+    this.productosService.categoriasProducto().subscribe({
+      next: (res: any) => {
+        console.log(res);
+        this.categoriaItems = res;
+        console.log(this.categoriaItems)
       },
       error: (err: any) => {
         console.log('error', err);

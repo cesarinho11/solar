@@ -29,9 +29,8 @@ export class CotizacionesComponent implements OnInit {
   ];
 
   tableActions = [
-
+    { label: 'Descargar', icon: 'bi-file-pdf-fill', type: 'download', class: 'btn btn-default' },
     { label: 'Confirmar', icon: 'bi-bag-check', type: 'confirm', class: 'btn btn-primary' },
-    { label: 'Descargar', icon: 'bi-file-pdf-fill', type: 'download', class: 'btn btn-warning' },
     { label: 'Editar', icon: 'bi-pencil-square', type: 'edit', class: 'btn btn-success' },
     { label: 'Eliminar', icon: 'bi-trash', type: 'delete', class: 'btn btn-danger' }
   ];
@@ -154,6 +153,7 @@ export class CotizacionesComponent implements OnInit {
   }
 
   async generatePDF() {
+    console.log('dataaaaaaaaaaaaaa',this.data_Cotizacion)
 
     let imgLogo = logo.img;
     let headerImage = img_encabezado.img;
@@ -165,12 +165,16 @@ export class CotizacionesComponent implements OnInit {
     ];
 
     this.productosArray.forEach((p: any) => {
-      tableBody.push([
-        p.cantidad.toString(),
-        p.nombre ?? '',
-        p.descripcion ?? '',
-        `$ ${p.precio_venta}`
-      ]);
+      if (p.categoria === 1) {
+        console.log(p.categoria)
+        tableBody.push([
+          p.cantidad.toString(),
+          p.nombre ?? '',
+          p.descripcion ?? '',
+          `$ ${p.precio_venta}`
+        ]);
+      }
+
     });
 
 
@@ -190,9 +194,81 @@ export class CotizacionesComponent implements OnInit {
       },
 
       content: [
+        // {
+        //   text: 'Ejemplo de PDF con imagen en encabezado y pie de página.',
+        //   style: 'header'
+        // },
         {
-          text: 'Ejemplo de PDF con imagen en encabezado y pie de página.',
-          style: 'header'
+          table: {
+             widths: ['auto', '*', 'auto', '*','auto','auto'],
+            body: [
+
+              // Fila amarilla
+              [
+                { text: 'DATOS CLIENTE', colSpan: 2, fillColor: '#F3CA00', bold: true, fontSize: 8, color: 'black', alignment: 'center', margin: [5, 3], border: [false, false, false, false] },
+                {}, // ← celda vacía por colSpan 2
+                 { text: 'DATOS PROYECTO', colSpan:4, fillColor: '#F3CA00', bold: true, fontSize: 8, color: 'black', alignment: 'center', margin: [5, 3], border: [false, false, false, false] },
+                    {},
+                    {},
+                    {}
+              ],
+
+              // Sub encabezado rojo
+              [
+
+                { text: 'NOMBRE', bold: true, alignment: 'left', fontSize: 8 ,border: [true, true, true, true]},
+                { text: this.data_Cotizacion.nombre, bold: false, alignment: 'left', fontSize: 8,border: [true, true, true, true] },
+                { text: 'INT. ELECTRICA', bold: true, alignment: 'left', fontSize: 8 ,border: [true, true, true, true]},
+                { text: this.data_Cotizacion.inst_electrica, bold: false,  alignment: 'left', fontSize: 8, border: [true, true, true, true] },
+                { text: 'MAT. MONAJE ', bold: true, alignment: 'left', fontSize: 8 ,border: [true, true, true, true]},
+                { text: this.data_Cotizacion.mat_montaje, bold: false, alignment: 'left', fontSize: 8,border: [true, true, true, true] }
+              ],
+              [
+
+                { text: 'NO. SERVICIO', bold: true, alignment: 'left', fontSize: 8 },
+                { text: this.data_Cotizacion.id_cotizacion, bold: false, alignment: 'left', fontSize: 8 },
+                { text: 'DEMANDA KW/BIM', bold: true, alignment: 'left', fontSize: 8 },
+                { text: this.data_Cotizacion.demanda_kw, bold: false, alignment: 'left', fontSize: 8 },
+                { text: 'MODULO FV', bold: true, alignment: 'left', fontSize: 8 },
+                { text: this.data_Cotizacion.modulo_fv, bold: false, alignment: 'left', fontSize: 8 }
+              ],
+              [
+
+                { text: 'DOMICILIO', bold: true, alignment: 'left', fontSize: 8 },
+                { text: this.data_Cotizacion.domicilio, bold: false,  alignment: 'left', fontSize: 8 },
+                { text: 'TENSIÓN DESFASADA', bold: true,  alignment: 'left', fontSize: 8 },
+                { text: this.data_Cotizacion.tension, bold: false, alignment: 'left', fontSize: 8 },
+                { text: 'N. DE MOD', bold: true, alignment: 'left', fontSize: 8 },
+                { text: this.data_Cotizacion.n_mod, bold: false,  alignment: 'left', fontSize: 8 }
+              ],
+              [
+
+                { text: 'TEL /CEL', bold: true,  alignment: 'left', fontSize: 8 },
+                { text: this.data_Cotizacion.telefono, bold: false,  alignment: 'left', fontSize: 8 },
+                { text: 'SISTEMA FOTOVOLTAICO', bold: true,  alignment: 'left', fontSize: 8 },
+                { text: this.data_Cotizacion.s_fotovoltaico, bold: false, alignment: 'left', fontSize: 8 },
+                { text: 'INVERSOR', bold: true,  alignment: 'left', fontSize: 8 },
+                { text: this.data_Cotizacion.inversor, bold: false,  alignment: 'left', fontSize: 8 }
+              ],
+
+            ]
+          },
+
+          layout: {
+   hLineWidth: function (i:any, node:any) {
+    if (i <= 1) return 0;
+    return 0.8;
+  },
+
+  // <-- aquí devolvemos 0.8 también para i === 0
+  vLineWidth: function (i:any, node:any) {
+    return 0.8;
+  },
+            paddingLeft: function () { return 4; },
+            paddingRight: function () { return 4; },
+            paddingTop: function () { return 3; },
+            paddingBottom: function () { return 3; }
+          }
         },
         {
 
@@ -252,37 +328,50 @@ export class CotizacionesComponent implements OnInit {
         },
         {
           table: {
-            widths: ['auto', '*', '*', 'auto'],
+             widths: ['auto', 'auto', '*', 'auto','auto'],
             body: [
 
               // Fila amarilla
               [
-                { text: '1. EQUIPO Y COMPONENTES', colSpan: 4, fillColor: '#F3CA00', bold: true,fontSize: 8,  color: 'black', alignment: 'left', margin: [5, 3], border: [false, false, false, false] },
-                {}, {}, {}
+                { text: '1. EQUIPO Y COMPONENTES', colSpan: 5, fillColor: '#F3CA00', bold: true, fontSize: 8, color: 'black', alignment: 'left', margin: [5, 3], border: [false, false, false, false] },
+                {}, {}, {},{}
               ],
 
               // Sub encabezado rojo
               [
 
-                { text: 'CANT', bold: true, color: '#B40000', alignment: 'center',fontSize: 8  },
-                { text: 'DESCRIPCIÓN', bold: true, color: '#B40000', alignment: 'center',fontSize: 8 },
-                { text: 'P. UNITARIO', bold: true, color: '#B40000', alignment: 'center',fontSize: 8 },
-                { text: 'SUBTOTAL', bold: true, color: '#B40000', alignment: 'center',fontSize: 8 }
+                { text: 'CODIGO', bold: true, color: '#B40000', alignment: 'center', fontSize: 8 },
+                { text: 'CANT', bold: true, color: '#B40000', alignment: 'center', fontSize: 8 },
+                { text: 'DESCRIPCION', bold: true, color: '#B40000', alignment: 'center', fontSize: 8 },
+                { text: 'P. UNITARIO', bold: true, color: '#B40000', alignment: 'center', fontSize: 8 },
+                { text: 'SUBTOTAL', bold: true, color: '#B40000', alignment: 'center', fontSize: 8 }
               ],
-
+             
               // Filas de productos (expandido correctamente)
-              ...this.productosArray.map((p: any) => ([
-                { text: p.cantidad?.toString() ?? '', alignment: 'center', fontSize: 9 },
-                { text: p.nombre ?? '', alignment: 'center', fontSize: 8 },
-                { text: p.descripcion ?? '', alignment: 'center', fontSize: 8 },
-                { text: `$${p.precio_venta}`, alignment: 'right', bold: true }
+              ...this.productosArray.filter((p: any) => Number(p?.categoria) === 1).map((p: any) => ([
+                { text: p.codigo?.toString() ?? '', alignment: 'left', fontSize: 9 },
+                { text: p.cantidad ?? '', alignment: 'left', fontSize: 8 },
+                {
+                  text: [
+                    { text: p.nombre + ' ', bold: true },   // nombre en negritas
+                    { text: p.descripcion ?? '' }           // descripción normal
+                  ],
+                  alignment: 'left',
+                  fontSize: 8
+                },
+                { text: `$${p.precio_venta}`, alignment: 'right', bold: true },
+                { text: `$${p.total_partida_venta}`, alignment: 'right', bold: true }
               ])),
 
               // TOTAL
               [
-                { text: '', colSpan: 2, border: [false, true, false, false] }, {},
-                { text: 'TOTAL', bold: true, alignment: 'right', border: [false, true, false, false] },
-                { text: `$${this.totalGeneral}`, bold: true, alignment: 'right', border: [false, true, false, false] }
+                { text: '', colSpan: 2, border: [false, false, false, false] }, {},{}, 
+                { text: 'TOTAL', bold: true, alignment: 'right', border: [false, false, false, false] },
+                {
+                  text: `$${this.productosArray
+                    .filter((p: any) => Number(p?.categoria) === 1)
+                    .reduce((acc: number, p: any) => acc + (p.cantidad * p.precio_venta), 0)}`, bold: true, alignment: 'right', border: [false, false, false, false]
+                }
               ]
             ]
           },
@@ -304,43 +393,49 @@ export class CotizacionesComponent implements OnInit {
         },
         {
           table: {
-            widths: ['auto', 'auto', '*', 'auto'],
+            widths: ['auto', 'auto', '*', 'auto','auto'],
             body: [
 
               // Fila amarilla
               [
-                { text: '2.INSTALACION', colSpan: 4, fillColor: '#F3CA00', bold: true,fontSize: 8,  color: 'black', alignment: 'left', margin: [5, 3], border: [false, false, false, false] },
-                {}, {}, {}
+                { text: '2.INSTALACION', colSpan: 5, fillColor: '#F3CA00', bold: true, fontSize: 8, color: 'black', alignment: 'left', margin: [5, 3], border: [false, false, false, false] },
+                {}, {}, {},{}
               ],
 
               // Sub encabezado rojo
               [
 
-                { text: 'CODIGO', bold: true, color: '#B40000', alignment: 'center',fontSize: 8 },
-                { text: 'CANT', bold: true, color: '#B40000', alignment: 'center' ,fontSize: 8},
-                { text: 'P. UNITARIO', bold: true, color: '#B40000', alignment: 'center',fontSize: 8 },
-                { text: 'SUBTOTAL', bold: true, color: '#B40000', alignment: 'center',fontSize: 8 }
+                { text: 'CODIGO', bold: true, color: '#B40000', alignment: 'center', fontSize: 8 },
+                { text: 'CANT', bold: true, color: '#B40000', alignment: 'center', fontSize: 8 },
+                { text: 'DESCRIPCION', bold: true, color: '#B40000', alignment: 'center', fontSize: 8 },
+                { text: 'P. UNITARIO', bold: true, color: '#B40000', alignment: 'center', fontSize: 8 },
+                { text: 'SUBTOTAL', bold: true, color: '#B40000', alignment: 'center', fontSize: 8 }
               ],
 
               // Filas de productos (expandido correctamente)
-              [
-                { text: '0019 ', alignment: 'center', fontSize: 9 },
-                { text: 1, alignment: 'center', fontSize: 9 },
+              ...this.productosArray.filter((p: any) => Number(p?.categoria) === 2).map((p: any) => ([
+                { text: p.codigo?.toString() ?? '', alignment: 'center', fontSize: 9 },
+                { text: p.cantidad ?? '', alignment: 'center', fontSize: 8 },
                 {
-                  text: `INSTALACIÓN. MONTAJE DE LA ESTRUCTURA, MONTAJE DE
-                  MÓDULOS EN ESTRUCTURA, INSTALACIÓN ELÉCTRICA, MANO DE
-                  OBRA EN SU TOTALIDAD HASTA EL PUNTO DE ENCENDIDO DEL
-                  INVERSOR.`, alignment: 'center', fontSize: 8
+                  text: [
+                    { text: p.nombre + ' ', bold: true },   // nombre en negritas
+                    { text: p.descripcion ?? '' }           // descripción normal
+                  ],
+                  alignment: 'center',
+                  fontSize: 8
                 },
-                { text: `$${precio_unitario_instalacion}`, alignment: 'center', fontSize: 8 }
-              ]
-              ,
+                { text: `$${p.precio_venta}`, alignment: 'right', bold: true },
+                { text: `$${p.total_partida_venta}`, alignment: 'right', bold: true }
+              ])),
+
 
               // TOTAL
               [
-                { text: '', colSpan: 2, border: [false, true, false, false] }, {},
+                { text: '', colSpan: 3, border: [false, true, false, false] }, {}, {}, 
                 { text: 'TOTAL', bold: true, alignment: 'right', border: [false, true, false, false] },
-                { text: `$${precio_unitario_instalacion}`, bold: true, alignment: 'right', border: [false, true, false, false] }
+                { text: `$${this.productosArray
+                    .filter((p: any) => Number(p?.categoria) === 2)
+                    .reduce((acc: number, p: any) => acc + (p.cantidad * p.precio_venta), 0)}`, bold: true, alignment: 'right', border: [false, true, false, false] }
               ]
             ]
           },
@@ -362,56 +457,49 @@ export class CotizacionesComponent implements OnInit {
         },
         {
           table: {
-            widths: ['auto', 'auto', '*', 'auto'],
+            widths: ['auto', 'auto', '*', 'auto','auto'],
             body: [
 
               // Fila amarilla
               [
-                { text: '3.OTROS', colSpan: 4, fillColor: '#F3CA00', bold: true,fontSize: 8,  color: 'black', alignment: 'left', margin: [5, 3], border: [false, false, false, false] },
-                {}, {}, {}
+                { text: '3.OTROS', colSpan: 5, fillColor: '#F3CA00', bold: true, fontSize: 8, color: 'black', alignment: 'left', margin: [5, 3], border: [false, false, false, false] },
+                {}, {}, {},{}
               ],
 
               // Sub encabezado rojo
               [
 
-                { text: 'CODIGO', bold: true, color: '#B40000', alignment: 'center',fontSize: 8 },
-                { text: 'CANT', bold: true, color: '#B40000', alignment: 'center',fontSize: 8 },
-                { text: 'P. UNITARIO', bold: true, color: '#B40000', alignment: 'center',fontSize: 8 },
-                { text: 'SUBTOTAL', bold: true, color: '#B40000', alignment: 'center' ,fontSize: 8}
+                { text: 'CODIGO', bold: true, color: '#B40000', alignment: 'center', fontSize: 8 },
+                { text: 'CANT', bold: true, color: '#B40000', alignment: 'center', fontSize: 8 },
+                { text: 'DESCRIPCION', bold: true, color: '#B40000', alignment: 'center', fontSize: 8 },
+                { text: 'P. UNITARIO', bold: true, color: '#B40000', alignment: 'center', fontSize: 8 },
+                { text: 'SUBTOTAL', bold: true, color: '#B40000', alignment: 'center', fontSize: 8 }
               ],
-
+             
               // Filas de productos (expandido correctamente)
-              [
-                { text: '0004 ', alignment: 'center', fontSize: 9 },
-                { text: 1, alignment: 'center', fontSize: 9 },
+              ...this.productosArray.filter((p: any) => Number(p?.categoria) === 3).map((p: any) => ([
+                { text: p.codigo?.toString() ?? '', alignment: 'center', fontSize: 9 },
+                { text: p.cantidad ?? '', alignment: 'center', fontSize: 8 },
                 {
-                  text: `RECONOCIMIENTO FISICO. ELABORACIÓN DE UN
-                  LEVANTAMIENTO DE LA ZONA EN LA CUAL SE LLEVARÁ A CABO LA
-                  INSTALCIÓN, PARA LOGRAR LA MAYOR EFICIENCIA DEL SISTEMA
-                  FV.`, alignment: 'center', fontSize: 8
+                  text: [
+                    { text: p.nombre + ' ', bold: true },   // nombre en negritas
+                    { text: p.descripcion ?? '' }           // descripción normal
+                  ],
+                  alignment: 'center',
+                  fontSize: 8
                 },
-                { text: `$${precio_unitario_otros}`, alignment: 'center', fontSize: 8 }
-              ],
+                { text: `$${p.precio_venta}`, alignment: 'right', bold: true },
+                { text: `$${p.total_partida_venta}`, alignment: 'right', bold: true }
+              ])),
 
-              [
-                { text: '0010', alignment: 'center', fontSize: 9 },
-                { text: 1, alignment: 'center', fontSize: 9 },
-                {
-                  text: `TRAMITOLOGIA Y DOCUMENTACIÓN. INCLUYE EL TRAMITE ANTE
-                  LA COMISIÓN FEDERAL DE ELECTRICIDAD SOLICITANDO EL
-                  CAMBIO DE MEDIDOR BIDIRECCIONAL, DIAGRAMA UNIFILAR,
-                  ENTRE OTROS DOCUMENTOS.`, alignment: 'center', fontSize: 8
-                },
-                { text: `$${precio_unitario_otros}`, alignment: 'center', fontSize: 8 }
-              ]
-
-              ,
 
               // TOTAL
               [
-                { text: '', colSpan: 2, border: [false, true, false, false] }, {},
+                { text: '', colSpan: 3, border: [false, true, false, false] }, {}, {}, 
                 { text: 'TOTAL', bold: true, alignment: 'right', border: [false, true, false, false] },
-                { text: `$${precio_unitario_otros}`, bold: true, alignment: 'right', border: [false, true, false, false] }
+                { text: `$${this.productosArray
+                    .filter((p: any) => Number(p?.categoria) === 2)
+                    .reduce((acc: number, p: any) => acc + (p.cantidad * p.precio_venta), 0)}`, bold: true, alignment: 'right', border: [false, true, false, false] }
               ]
             ]
           },
@@ -433,40 +521,52 @@ export class CotizacionesComponent implements OnInit {
         },
         {
           table: {
-            widths: ['auto', '*'],
+            widths: [50,'auto', '*'],
             body: [
 
               // Fila amarilla
               [
-                { text: '4.- PRECIO TOTAL DE LA COTIZACIÓN REALIZADA', colSpan: 2,fontSize: 8, fillColor: '#F3CA00', bold: true, color: 'black', alignment: 'left', margin: [5, 3], border: [false, false, false, false] },
+
+                { text: '4.- PRECIO TOTAL DE LA COTIZACIÓN REALIZADA', colSpan: 3, fontSize: 8, fillColor: '#F3CA00', bold: true, color: 'black', alignment: 'left', margin: [5, 3], border: [false, false, false, false] },
+                {},
                 {},
               ],
 
               // Sub encabezado rojo
               [
 
-                { text: 'DESCRIPCION', bold: true, color: '#B40000', alignment: 'center',fontSize: 8 },
-                { text: 'SUBTOTAL', bold: true, color: '#B40000', alignment: 'right',fontSize: 8 }
+                { text: '' },
+                { text: 'DESCRIPCION', bold: true, color: '#B40000', alignment: 'left', fontSize: 8 },
+                { text: 'SUBTOTAL', bold: true, color: '#B40000', alignment: 'right', fontSize: 8 }
               ],
 
               // Filas de productos (expandido correctamente)
               [
+                {},
                 {
-                  text: `EQUIPOS Y COMPONENTES`, alignment: 'center', fontSize: 8
+                  text: `EQUIPOS Y COMPONENTES`, alignment: 'left', fontSize: 8
                 },
-                { text: `$${precio_unitario_otros}`, alignment: 'right', fontSize: 8 }
-              ],
-               [
-                {
-                  text: `INSTALACIÓN`, alignment: 'center', fontSize: 8
-                },
-                { text: `$${precio_unitario_otros}`, alignment: 'right', fontSize: 8 }
+                { text: `$${this.productosArray
+                    .filter((p: any) => Number(p?.categoria) === 1)
+                    .reduce((acc: number, p: any) => acc + (p.cantidad * p.precio_venta), 0)}`, alignment: 'right', fontSize: 8 }
               ],
               [
+                 {},
                 {
-                  text: `OTROS`, alignment: 'center', fontSize: 8
+                  text: `INSTALACIÓN`, alignment: 'left', fontSize: 8
                 },
-                { text: `$${precio_unitario_otros}`, alignment: 'right', fontSize: 8 }
+                { text: `$${this.productosArray
+                    .filter((p: any) => Number(p?.categoria) === 2)
+                    .reduce((acc: number, p: any) => acc + (p.cantidad * p.precio_venta), 0)}`, alignment: 'right', fontSize: 8 }
+              ],
+              [
+                 {},
+                {
+                  text: `OTROS`, alignment: 'left', fontSize: 8
+                },
+                { text: `$${this.productosArray
+                    .filter((p: any) => Number(p?.categoria) === 3)
+                    .reduce((acc: number, p: any) => acc + (p.cantidad * p.precio_venta), 0)}`, alignment: 'right', fontSize: 8 }
               ]
 
 
@@ -474,8 +574,12 @@ export class CotizacionesComponent implements OnInit {
 
               // TOTAL
               [
-                { text: 'TOTAL', bold: true, alignment: 'right', border: [false, true, false, false] },
-                { text: `$${precio_unitario_otros + this.totalGeneral + precio_unitario_instalacion}`, bold: true, alignment: 'right', border: [false, true, false, false] }
+
+                { text: 'TOTAL', colSpan: 2, bold: true, alignment: 'right', border: [false, true, false, false] },
+                                {},
+                { text: `$${this.productosArray
+                    .filter((p: any) => Number(p?.categoria))
+                    .reduce((acc: number, p: any) => acc + (p.cantidad * p.precio_venta), 0)}`, bold: true, alignment: 'right', border: [false, true, false, false] }
               ]
             ]
           },
@@ -494,6 +598,58 @@ export class CotizacionesComponent implements OnInit {
             paddingTop: function () { return 3; },
             paddingBottom: function () { return 3; }
           }
+        },
+
+        {
+          text: `\nNOTA `,
+bold: true ,color: '#B40000', alignment: 'center', fontSize: 8
+         
+        },
+        {
+    text: `\n\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            *PRECIOS EN MONEDA NACIONAL
+*COTIZACIÓN CON VIGENCIA DE 15 DÍAS A PARTIR DE SU EMISIÓN \n
+*PRECIO TOTAL NEGOCIABLE (APLICA SOLAMENTE EN COMPRA DE CONTADO)\n`,
+bold: true, fontSize: 8
+        },
+        {
+    text: `\n\nEn seguida le explicaremos la modalidad de pago para su `, fontSize: 8
+        },
+        {
+    text: `PROYECTO \n`,
+bold: true, fontSize: 8
+        },
+        {
+
+        },
+         {text: [
+          {    text: `COMPRA DE CONTADO:\n`,bold: true, fontSize: 8},
+          {    text: `La compra de contado está dividida en tres pagos que se realizan al inicio, durante y finalizando la instalación poniendo en marcha	el inversor para que el sistema comience a trabajar.\n\n`,fontSize: 8},
+{    text: `Contrato:\n`,bold: true, fontSize: 8},
+{    text: `de por medio, este pago consta del 70% del precio total.\n \n`,fontSize: 8},
+{    text: `2do PAGO:`,bold: true, fontSize: 8},
+{    text: `Pago que se realiza en el transcurso de la instalación, poniendo en claro que a estas alturas usted ya debe de tener los								
+módulos e inversor en su establecimiento, este pago consta del 20% del precio total.			\n\n`, fontSize: 8},
+{    text: `3er PAGO:`,bold: true, fontSize: 8},
+{    text: `Pago que se realiza al finalizar el proyecto que consiste en el encendido de los inversores y una vez corroborando que el								
+sistema esté funcionando, este pago consta del 10% del precio total llegando al 100% y finiquitando su compra.		\n\n`, fontSize: 8},
+        ]},
+        {
+          text: `				
+Sin más que decir quedamos a su total disposición para cualquier duda o aclaración, saludos nuevamente de \n VAZCO Solar “cuidemos nuestro medio ambiente y prosperemos juntos”.				
+`,
+bold: true,fontSize: 8, alignment: 'center'
+         
+        },
+        {
+          text: `		\n\n		
+ATENTAMENTE\n\n
+ING. SAUL OROZCO MALDONADO\n\n
+GERENTE DE VAZCO SOLAR \n
+312 256 0275
+.				
+`,
+bold: true,fontSize: 8, alignment: 'center'
+         
         }
       ],
 
@@ -511,11 +667,14 @@ export class CotizacionesComponent implements OnInit {
   totalGeneral: any;
   productosArray: any
   cliente: any;
+  data_Cotizacion:any;
 
   productosCotizacion(datos: any) {
     let data = {
       id: datos.id_cotizacion
     }
+
+    this.data_Cotizacion = datos;
     console.log(datos)
     this.cliente = datos.nombre;
     this.cotizacionService.productosCotizacion(data).subscribe({

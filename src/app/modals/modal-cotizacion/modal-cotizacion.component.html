@@ -44,6 +44,55 @@
           <option value="3">Tarjeta credito</option>
         </select>
       </div>
+<!-- datos de instalacion -->
+      <div class="col-md-4 inputForm" >
+        <label for="stock">INST. ELECTRICA</label>
+        <select name="" id="inst_electrica" class="form-select" formControlName="inst_electrica">
+          <option value="BAJA TENSIÓN">BAJA TENSIÓN</option>
+          <option value="MEDIA TENSIÓN">MEDIA TENSIÓN</option>
+          <option value="ALTA TENSIÓN">ALTA TENSIÓN</option>
+        </select>
+      </div>
+      <div class="col-md-4 inputForm" >
+        <label for="stock">DEMANDA KW/BIM</label>
+        <input type="demanda_kw" class="form-control" id="demanda_kw" formControlName="demanda_kw" >
+      </div>
+      <div class="col-md-4 inputForm" >
+        <label for="stock">TENSIÓN DESFASADA</label>
+        <select name="" id="tension" class="form-select" formControlName="tension">
+          <option value="BIFASICA">BIFASICA</option>
+          <option value="TRIFASICA">TRIFASICA</option>
+          <option value="MONOFASICA">MONOFASICA</option>
+        </select>
+      </div>
+      <div class="col-md-4 inputForm" >
+        <label for="stock">SISTEMA FOTOVOLTAICO</label>
+        <select name="" id="s_fotovoltaico" class="form-select" formControlName="s_fotovoltaico">
+          <option value="INTERCONECTADO">INTERCONECTADO</option>
+          <option value="HIBRIDO">HIBRIDO</option>
+          <option value="AISLADO">AISLADO</option>
+        </select>
+      </div>
+      <div class="col-md-4 inputForm" >
+        <label for="stock">MAT. MONAJE</label>
+        <select name="" id="mat_montaje" class="form-select" formControlName="mat_montaje">
+          <option value="ALUMINIO">ALUMINIO</option>
+          <option value="PTR">PTR</option>
+          <option value="MIXTO">MIXTO</option>
+        </select>
+      </div>
+      <div class="col-md-4 inputForm" >
+        <label for="stock">MODULO FV</label>
+        <input type="modulo_fv" class="form-control" id="modulo_fv" formControlName="modulo_fv" >
+      </div>
+      <div class="col-md-4 inputForm" >
+        <label for="stock">N. DE MOD</label>
+        <input type="n_mod" class="form-control" id="n_mod" formControlName="n_mod" >
+      </div>
+      <div class="col-md-4 inputForm" >
+        <label for="stock">INVERSOR</label>
+        <input type="inversor" class="form-control" id="inversor" formControlName="inversor" >
+      </div>
 
       <div class="col-md-4 inputForm" >
         <label for="stock">total_venta</label>

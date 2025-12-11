@@ -24,8 +24,8 @@ export class VentasComponent implements OnInit {
 
   tableActions = [
 
-    { label: 'Ver', icon: 'bi-eye', type: 'ver', class: 'btn btn-info' },
-    { label: 'Confirmar', icon: 'bi-check-square', type: 'confirm', class: 'btn btn-primary' },
+    { label: 'Ver', icon: 'bi-eye', type: 'ver', class: 'btn btn-primary' },
+    { label: 'Confirmar', icon: 'bi-check-square', type: 'confirm', class: 'btn btn-success' },
     { label: 'Eliminar', icon: 'bi-trash', type: 'delete', class: 'btn btn-danger' }
   ];
   tableData: any

@@ -128,7 +128,8 @@ fields.forEach(field => {
     // 4. Llenar campos (los nombres deben coincidir con los del PDF)
     form.getTextField('undefined').setText(userData.nombre);
     form.getTextField('undefined_2').setText(userData.ine);
-    form.getTextField('se adquiere el suministro de energía eléctrica para su consumo en').setText(userData.opcionsino);
+    form.getTextField('se adquiere el suministro de energía eléctrica para su consumo en').setText('SI');
+    //form.getTextField('se adquiere el suministro de energía eléctrica para su consumo en').setText(userData.opcionsino);
     form.getTextField('una tensión').setText(userData.capacidad);
     form.getTextField('con una tecnología de generación').setText(userData.tension_interconexion);
     form.getTextField('undefined_3').setText(userData.tecnologia);
@@ -194,10 +195,17 @@ fields.forEach(field => {
 
     // 3. Obtener formulario
     const form = pdfDoc.getForm();
-  
+      const excepciones = ["Texto1", "Texto2", "Texto26","Texto27","Texto28","Texto29", "Texto30","Texto31"]; 
   // 4. Centrar todos los campos del PDF (justificación)
 const fields = form.getFields();
 fields.forEach(field => {
+   const nombre = field.getName();
+   
+   // 👉 Si el campo está en la lista de excepciones, no lo centramos
+  if (excepciones.includes(nombre)) {
+    return;
+  }
+
   try {
     const acroField: any = (field as any).acroField;
     if (acroField && acroField.dict) {
@@ -261,10 +269,10 @@ fields.forEach(field => {
     
 
     if (userData.solar) form.getCheckBox('Casilla de verificación6').check();
-    if (userData.biomasa) form.getCheckBox('Casilla de verificación7').check();
-    if (userData.otro) form.getCheckBox('Casilla de verificación8').check();
-    if (userData.eolico) form.getCheckBox('Casilla de verificación9').check();
-    if (userData.cogeneracion) form.getCheckBox('Casilla de verificación10').check();
+    if (userData.eolico) form.getCheckBox('Casilla de verificación7').check();
+    if (userData.biomasa) form.getCheckBox('Casilla de verificación8').check();
+    if (userData.cogeneracion) form.getCheckBox('Casilla de verificación9').check();
+    if (userData.otro) form.getCheckBox('Casilla de verificación10').check();
 
     form.getTextField('Texto33').setText(userData.n_unidades);
 
@@ -342,8 +350,8 @@ fields.forEach(field => {
 
   async listFields() {
   //const existingPdfBytes = await fetch('/assets/documentos/ContratoDeInterconexion.pdf').then(res => res.arrayBuffer());
-  //const existingPdfBytes = await fetch('/assets/documentos/ContratoDeInterconexion.pdf').then(res => res.arrayBuffer());
-  const existingPdfBytes = await fetch('/assets/documentos/ContratoDeContraprestacion.pdf').then(res => res.arrayBuffer());
+  const existingPdfBytes = await fetch('/assets/documentos/ContratoDeInterconexion.pdf').then(res => res.arrayBuffer());
+  //const existingPdfBytes = await fetch('/assets/documentos/ContratoDeContraprestacion.pdf').then(res => res.arrayBuffer());
 
   const pdfDoc = await PDFDocument.load(existingPdfBytes);
   const form = pdfDoc.getForm();

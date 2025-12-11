@@ -26,7 +26,7 @@ export class LoginComponent implements OnInit {
     this.auth.login(this.email, this.password).subscribe({
       next: (res) => {
         this.auth.saveToken(res.token);
-        this.alert.success('Inicio de sesion correcto');
+        this.alert.success('Inicio de sesión correcto');
         this.router.navigate(['/dashboard']);
       },
       error: () =>

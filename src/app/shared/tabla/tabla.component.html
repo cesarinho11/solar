@@ -13,9 +13,10 @@
             <button
               *ngFor="let action of actions"
               class="btn btn-sm me-2"
-               [hidden]="action.type === 'confirm' || action.type === 'delete' && row.estatus == 3"
+               [hidden]="(action.type === 'confirm' || action.type === 'delete') && row.estatus == 3"
               [ngClass]="action.class || 'btn-outline-primary'"
               class="{{ action.class }}"
+              [title]="action.label"
               (click)="onAction(action.type, row)">
               <i [class]="action.icon"></i>
               <!-- <img [src]="'../../../assets/' + action.icon + '.png'" alt="" width="15px"> -->

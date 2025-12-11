@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AlertService } from 'src/app/services/alert/alert.service';
 import { ClientesServiceService } from 'src/app/services/clientes/clientes-service.service';
@@ -18,12 +18,12 @@ export class ModalGenerarContratosComponent implements OnInit {
     private fb: FormBuilder,
     public dialogRef: MatDialogRef<ModalGenerarContratosComponent>, private alert: AlertService, private pdfService: PdfService, private clientesService:ClientesServiceService) { }
 
-
+opcion = new FormControl('');
   contratoForm = new FormGroup({
     id_contrato: new FormControl(''),
     n_solicitud: new FormControl(''),
-    fecha: new FormControl(''),
-    fecha_operacion: new FormControl(''),
+    fecha: new FormControl('',  Validators.required),
+    fecha_operacion: new FormControl('',  Validators.required),
     dias: new FormControl(''), //obtener de fecha
     mes: new FormControl(''),
     year: new FormControl(''),
@@ -33,16 +33,16 @@ export class ModalGenerarContratosComponent implements OnInit {
     cargo: new FormControl(''),
     ine: new FormControl(''),
 
-    telefono: new FormControl(''),
-    correo: new FormControl(''),
-    ciudad: new FormControl(''),
-    calle: new FormControl(''),
-    n_exterior: new FormControl(''),
+    telefono: new FormControl('',Validators.required),
+    correo: new FormControl('',Validators.required),
+    ciudad: new FormControl('', Validators.required),
+    calle: new FormControl('', Validators.required),
+    n_exterior: new FormControl('', Validators.required),
     n_interior: new FormControl(''),
-    estado: new FormControl(''),
-    municipio: new FormControl(''),
-    cp: new FormControl(''),
-    colonia: new FormControl(''),
+    estado: new FormControl('', Validators.required),
+    municipio: new FormControl('', Validators.required),
+    cp: new FormControl('', Validators.required),
+    colonia: new FormControl('', Validators.required),
     domicilio: new FormControl(this), // compuesto de calle municipio estado numero 
 
     x: new FormControl(''),
@@ -53,7 +53,7 @@ export class ModalGenerarContratosComponent implements OnInit {
     n_cuenta: new FormControl(''),
 
     tension: new FormControl('BAJA'), //baja
-    capacidad: new FormControl('2.5'),
+    capacidad: new FormControl('', Validators.required),
     capacidad_incrementar: new FormControl(''),
     tension_interconexion: new FormControl('220'),
     tecnologia: new FormControl('SOLAR'),
@@ -66,7 +66,8 @@ export class ModalGenerarContratosComponent implements OnInit {
     n_medidor: new FormControl(''),
     tipo_medidor: new FormControl('Digital'),
     carga: new FormControl(''),
-    potencia: new FormControl(''),
+    potencia: new FormControl('', Validators.required),
+    carga_total: new FormControl(''),
     central_electrica: new FormControl('BT'), // MT
     n_unidades: new FormControl(''),
 
@@ -165,13 +166,33 @@ export class ModalGenerarContratosComponent implements OnInit {
   mostrarFormulario: boolean = false;
   clienesItems: any;
   usuariosItems: any;
-  title = 'Nuevo';
+  title = 'NUEVO';
 
   ngOnInit(): void {
+
+    this.contratoForm.get('capacidad')?.valueChanges.subscribe(cap => {
+    if (cap) {
+      const resultado = Number(cap) * 5 * 30.4;
+      this.contratoForm.get('capacidad_incrementar')?.setValue(resultado, { emitEvent: false });
+    } else {
+      this.contratoForm.get('capacidad_incrementar')?.setValue('', { emitEvent: false });
+    }
+  });
+
+    this.contratoForm.get('potencia')?.valueChanges.subscribe(cap => {
+    if (cap) {
+      const resultado = Number(cap) / 0.9;
+      this.contratoForm.get('carga_total')?.setValue(resultado.toFixed(2), { emitEvent: false });
+    } else {
+      this.contratoForm.get('carga_total')?.setValue('', { emitEvent: false });
+    }
+  });
+
 
     this.clientes();
 
     if(this.data.accion == 'editar'){
+      this.title = 'EDITAR';
       console.log('editar contrato tiene id')
       const { ...rest } = this.data;
       this.contratoForm.patchValue(rest);
@@ -194,42 +215,107 @@ export class ModalGenerarContratosComponent implements OnInit {
       this.contratoForm.get('domicilio')?.setValue(domicilioCompleto, { emitEvent: false });
     });
 
+    // this.contratoForm.get('fecha')?.valueChanges.subscribe(valor => {
+    //   if (valor) {
+    //     const fecha = new Date(valor);
+    //     if (!isNaN(fecha.getTime())) {
+    //       const dia = fecha.getDate();
+    //       const mes = fecha.getMonth(); // 0 = enero, 1 = febrero...
+    //       const year = fecha.getFullYear();
+
+    //       const nombresMeses = [
+    //         'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
+    //         'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'
+    //       ];
+
+    //       this.contratoForm.patchValue(
+    //         {
+    //           dias: dia.toString(),
+    //           mes: nombresMeses[mes],
+    //           year: year.toString()
+    //         },
+    //         { emitEvent: false }
+    //       );
+    //     }
+    //   } else {
+    //     // Si se borra la fecha, limpia los campos relacionados
+    //     this.contratoForm.patchValue(
+    //       { dias: '', mes: '', year: '' },
+    //       { emitEvent: false }
+    //     );
+    //   }
+    // });
+
     this.contratoForm.get('fecha')?.valueChanges.subscribe(valor => {
-      if (valor) {
-        const fecha = new Date(valor);
-        if (!isNaN(fecha.getTime())) {
-          const dia = fecha.getDate();
-          const mes = fecha.getMonth(); // 0 = enero, 1 = febrero...
-          const year = fecha.getFullYear();
+  if (valor) {
 
-          const nombresMeses = [
-            'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
-            'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'
-          ];
+    // Evitar desfase por zona horaria
+    const [anio, mesStr, diaStr] = valor.split('-');
+    const fecha = new Date(Number(anio), Number(mesStr) - 1, Number(diaStr));
 
-          this.contratoForm.patchValue(
-            {
-              dias: dia.toString(),
-              mes: nombresMeses[mes],
-              year: year.toString()
-            },
-            { emitEvent: false }
-          );
-        }
-      } else {
-        // Si se borra la fecha, limpia los campos relacionados
-        this.contratoForm.patchValue(
-          { dias: '', mes: '', year: '' },
-          { emitEvent: false }
-        );
-      }
-    });
+    if (!isNaN(fecha.getTime())) {
+      const dia = fecha.getDate();
+      const mes = fecha.getMonth(); 
+      const year = fecha.getFullYear();
+
+      const nombresMeses = [
+        'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
+        'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'
+      ];
+
+      this.contratoForm.patchValue(
+        {
+          dias: dia.toString(),
+          mes: nombresMeses[mes],
+          year: year.toString()
+        },
+        { emitEvent: false }
+      );
+    }
+
+  } else {
+    this.contratoForm.patchValue(
+      { dias: '', mes: '', year: '' },
+      { emitEvent: false }
+    );
+  }
+});
 
 
   }
 
+getInvalidControls() {
+  const invalid = [];
+  const controls = this.contratoForm.controls;
+
+  for (const name in controls) {
+    if (controls[name].invalid) {
+      invalid.push(name);
+    }
+  }
+
+  return invalid;
+}
 
   onSubmit() {
+
+     const form: any = document.querySelector('form');
+
+       if (this.contratoForm.invalid) {
+        console.log('entro')
+         console.log('Campos inválidos:', this.getInvalidControls());
+  this.contratoForm.markAllAsTouched();
+  return;
+}
+
+
+  if (!form.checkValidity()) {
+    form.reportValidity(); // Muestra la alerta del navegador
+    return; // No avanza
+  }
+
+
+
     // TODO: Use EventEmitter with form value
     console.log('entro', this.contratoForm.value);
     //this.pdfService.llenarContraprestacion(this.contratoForm.value)

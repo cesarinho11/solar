@@ -40,6 +40,16 @@ export class ModalCotizacionComponent implements OnInit {
     id_cliente: new FormControl(true),
     tipo_pago: new FormControl(true),
     id_cotizacion: new FormControl(true),
+
+    inversor: new FormControl(''),
+    n_mod: new FormControl(''),
+    modulo_fv: new FormControl(''),
+    mat_montaje: new FormControl(''),
+    s_fotovoltaico: new FormControl(''),
+    tension: new FormControl(''),
+    demanda_kw: new FormControl(''),
+    inst_electrica: new FormControl(''),
+    
     productos_cotizacion: this.fb.array([]),
   });
 
