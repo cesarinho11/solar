@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { ModalClienteComponent } from 'src/app/modals/modal-cliente/modal-cliente.component';
 import { ClientesServiceService } from 'src/app/services/clientes/clientes-service.service';
 import Swal from 'sweetalert2';
 
@@ -9,7 +11,7 @@ import Swal from 'sweetalert2';
 })
 export class ClientesComponent implements OnInit {
 
-  constructor(private clientesService: ClientesServiceService) { }
+  constructor(private clientesService: ClientesServiceService, private dialog: MatDialog) { }
 
   tableColumns = [
     { key: 'id_cliente', label: 'iD Cliente ' },
@@ -58,13 +60,17 @@ export class ClientesComponent implements OnInit {
   }
 
   addCliente() {
-
+let data = { accion: 'nuevo' }
+    this.openDialog(data)
   }
 
   onTableAction(event: { action: string; row: any }) {
     if (event.action === 'edit') {
       event.row.accion = event.action;
       console.log('Editar →', event.row);
+      let data = event.row;
+      data.accion = 'editar'
+      this.openDialog(data)
 
     } else if (event.action === 'contrato') {
       event.row.accion = event.action;
@@ -107,5 +113,24 @@ export class ClientesComponent implements OnInit {
         }
       });
     }
+
+
+              openDialog(data: any): void {
+                var dialogRef = this.dialog.open(ModalClienteComponent, {
+                  width: '70%',
+                  data
+                });
+            
+                dialogRef.afterClosed().subscribe(result => {
+            
+                  if (result.event == 'Agregar') {
+                        this.loadClientes()
+                  } else if (result.event == 'Cancel') {
+                        this.loadClientes()
+                  }
+            
+                });
+            
+              }
 
 }

@@ -1,27 +1,60 @@
-<h1 mat-dialog-title style="border-bottom: 2px solid #eee;"  class="dialog-title">{{title}} CONTRATO 
+<h1 mat-dialog-title style="border-bottom: 2px solid #eee;" class="dialog-title">{{title}} CONTRATO
   <span class="close-btn" mat-dialog-close>
     <img width="30px" src="../../../assets/x.png" alt="">
-  </span> 
+  </span>
 </h1>
 
 <div mat-dialog-content>
   <form action="" [formGroup]="contratoForm">
 
     <div class="row">
-      <div class="col-md-4 inputForm">
+      <div class="col-md-12 inputForm">
         <label for="n_solicitud">N_SOLICITUD</label>
-        <input type="text" class="form-control" id="n_solicitud" formControlName="n_solicitud">
+        <input type="text" class="form-control" id="n_solicitud" formControlName="n_solicitud" style="width: 40%;">
       </div>
 
       <div class="col-md-4 inputForm">
-        <label for="fecha">FECHA</label>
+        <label for="fecha">FECHA ANEXO</label>
         <input type="date" class="form-control" id="fecha" formControlName="fecha" required>
-        <small class="text-danger"
-         *ngIf="contratoForm.get('fecha')?.invalid &&
+        <small class="text-danger" *ngIf="contratoForm.get('fecha')?.invalid &&
                 contratoForm.get('fecha')?.touched">
-    La fecha es obligatoria.
-  </small>
+          La fecha es obligatoria.
+        </small>
       </div>
+
+      <div class="col-md-4 inputForm">
+        <label for="fecha_operacion">FECHA OPERACION</label>
+        <input type="date" class="form-control" id="fecha_operacion" formControlName="fecha_operacion" placeholder=""
+          required>
+        <small class="text-danger" *ngIf="contratoForm.get('fecha_operacion')?.invalid &&
+                contratoForm.get('fecha_operacion')?.touched">
+          La fecha es obligatoria.
+        </small>
+      </div>
+
+      <div class="col-md-4 inputForm">
+
+      </div>
+
+      <div class="col-md-4 inputForm">
+        <label for="fecha_inter">FECHA INTERCONEXIÓN</label>
+        <input type="date" class="form-control" id="fecha_inter" formControlName="fecha_inter" required>
+        <small class="text-danger" *ngIf="contratoForm.get('fecha_inter')?.invalid &&
+                contratoForm.get('fecha_inter')?.touched">
+          La fecha es obligatoria.
+        </small>
+      </div>
+
+      <div class="col-md-4 inputForm">
+        <label for="fecha_contra">FECHA CONTRAPRESTACIÓN</label>
+        <input type="date" class="form-control" id="fecha_contra" formControlName="fecha_contra" required>
+        <small class="text-danger" *ngIf="contratoForm.get('fecha_contra')?.invalid &&
+                contratoForm.get('fecha_contra')?.touched">
+          La fecha es obligatoria.
+        </small>
+      </div>
+
+
     </div>
 
     <div class="row" style="border: 1px solid #eee; border-radius: 10px; padding: 10px; margin-top: 20px;">
@@ -37,147 +70,171 @@
 
       <div class="col-md-6 inputForm" *ngIf="!contratoForm.get('clienteNuevo')?.value">
         <label for="fecha">CLIENTE</label>
-        <select class="form-select" aria-label="Default select example" id="cliente_id" formControlName="cliente_id" placeholder="cliente_id" (change)="onClienteSeleccionado()">
+        <select class="form-select" aria-label="Default select example" id="cliente_id" formControlName="cliente_id"
+          placeholder="cliente_id" (change)="onClienteSeleccionado()">
           <option *ngFor="let item of clienesItems" [value]="item.id_cliente">{{item.nombre}}</option>
         </select>
       </div>
 
-      <input type="hidden" class="form-control" id="id_contrato" formControlName="id_contrato" placeholder="id_contrato">
+      <input type="hidden" class="form-control" id="id_contrato" formControlName="id_contrato"
+        placeholder="id_contrato">
 
       <div class="col-md-6 inputForm">
         <label for="cargo">CARGO</label>
-        <input type="text" class="form-control" id="cargo" formControlName="cargo" placeholder="">
+        <select name="" id="cargo" class="form-select" formControlName="cargo">
+          <option value="PROPIETARIO">PROPIETARIO</option>
+          <option value="REPRESENTANTE LEGAL">REPRESENTANTE LEGAL</option>
+        </select>
+        <small class="text-danger" *ngIf="contratoForm.get('cargo')?.invalid &&
+                contratoForm.get('cargo')?.touched">
+          El cargo es obligatorio.
+        </small>
       </div>
 
       <div class="col-md-6 inputForm">
-        <label for="ine">INE</label>
+        <label for="tipo_doc">TIPO DOCUMENTO</label>
+       <select name="" id="tipo_doc" class="form-select" formControlName="tipo_doc">
+          <option value="INE">INE</option>
+          <option value="PASAPORTE">PASAPORTE</option>
+        </select>
+        <small class="text-danger" *ngIf="contratoForm.get('tipo_doc')?.invalid &&
+                contratoForm.get('tipo_doc')?.touched">
+          El tipo de documento es obligatorio.
+        </small>
+      </div>
+
+      <div class="col-md-6 inputForm">
+        <label for="ine">N° INE/PASAPORTE</label>
         <input type="text" class="form-control" id="ine" formControlName="ine" placeholder="" required>
-        <small class="text-danger"
-         *ngIf="contratoForm.get('ine')?.invalid &&
+        <small class="text-danger" *ngIf="contratoForm.get('ine')?.invalid &&
                 contratoForm.get('ine')?.touched">
-    El ine es obligatorio.
-  </small>
+          El ine es obligatorio.
+        </small>
       </div>
 
       <div class="col-md-6 inputForm">
         <label for="telefono">TELEFONO</label>
         <input type="text" class="form-control" id="telefono" formControlName="telefono" placeholder="" required>
-        <small class="text-danger"
-         *ngIf="contratoForm.get('telefono')?.invalid &&
+        <small class="text-danger" *ngIf="contratoForm.get('telefono')?.invalid &&
                 contratoForm.get('telefono')?.touched">
-    El telefono es obligatorio.
-  </small>
+          El telefono es obligatorio.
+        </small>
       </div>
 
       <div class="col-md-6 inputForm">
         <label for="correo">CORREO</label>
         <input type="text" class="form-control" id="correo" formControlName="correo" placeholder="" required>
-        <small class="text-danger"
-         *ngIf="contratoForm.get('correo')?.invalid &&
+        <small class="text-danger" *ngIf="contratoForm.get('correo')?.invalid &&
                 contratoForm.get('correo')?.touched">
-    El correo es obligatorio.
-  </small>
+          El correo es obligatorio.
+        </small>
       </div>
 
-      
+
 
       <div class="col-md-12 inputForm mt-3">
         <label for="calle">CALLE</label>
         <input type="text" class="form-control" id="calle" formControlName="calle" placeholder="" required>
-        <small class="text-danger"
-         *ngIf="contratoForm.get('calle')?.invalid &&
+        <small class="text-danger" *ngIf="contratoForm.get('calle')?.invalid &&
                 contratoForm.get('calle')?.touched">
-    La calle es obligatoria.
-  </small>
+          La calle es obligatoria.
+        </small>
       </div>
 
-            <div class="col-md-6 inputForm">
+      <div class="col-md-6 inputForm">
         <label for="ciudad">COLONIA</label>
         <input type="text" class="form-control" id="colonia" formControlName="colonia" placeholder="" required>
-         <small class="text-danger"
-         *ngIf="contratoForm.get('colonia')?.invalid &&
+        <small class="text-danger" *ngIf="contratoForm.get('colonia')?.invalid &&
                 contratoForm.get('colonia')?.touched">
-    La colonia es obligatoria.
-  </small>
+          La colonia es obligatoria.
+        </small>
       </div>
 
 
       <div class="col-md-6 inputForm">
         <label for="ciudad">CODIGO POSTAL</label>
         <input type="text" class="form-control" id="cp" formControlName="cp" placeholder="" required>
-        <small class="text-danger"
-         *ngIf="contratoForm.get('cp')?.invalid &&
+        <small class="text-danger" *ngIf="contratoForm.get('cp')?.invalid &&
                 contratoForm.get('cp')?.touched">
-    La codigo postal es obligatorio.
-  </small>
+          La codigo postal es obligatorio.
+        </small>
       </div>
 
-      
+
       <div class="col-md-6 inputForm">
         <label for="n_exterior">N_EXTERIOR</label>
         <input type="text" class="form-control" id="n_exterior" formControlName="n_exterior" placeholder="" required>
-        <small class="text-danger"
-         *ngIf="contratoForm.get('n_exterior')?.invalid &&
+        <small class="text-danger" *ngIf="contratoForm.get('n_exterior')?.invalid &&
                 contratoForm.get('n_exterior')?.touched">
-    La numero es obligatorio.
-  </small>
+          La numero es obligatorio.
+        </small>
       </div>
 
       <div class="col-md-6 inputForm">
         <label for="n_interior">N_INTERIOR</label>
         <input type="text" class="form-control" id="n_interior" formControlName="n_interior" placeholder="">
-         </div>
+      </div>
 
       <div class="col-md-6 inputForm">
-        <label for="ciudad">CIUDAD</label>
+        <label for="ciudad">SUCURSAL CFE</label>
         <input type="text" class="form-control" id="ciudad" formControlName="ciudad" placeholder="" required>
-        <small class="text-danger"
-         *ngIf="contratoForm.get('ciudad')?.invalid &&
+        <small class="text-danger" *ngIf="contratoForm.get('ciudad')?.invalid &&
                 contratoForm.get('ciudad')?.touched">
-    La ciudad es obligatoria.
-  </small>
+          La ciudad es obligatoria.
+        </small>
       </div>
 
-          <div class="col-md-6 inputForm">
+      <div class="col-md-6 inputForm">
         <label for="ciudad">ESTADO</label>
         <input type="text" class="form-control" id="estado" formControlName="estado" placeholder="" required>
-        <small class="text-danger"
-         *ngIf="contratoForm.get('estado')?.invalid &&
+        <small class="text-danger" *ngIf="contratoForm.get('estado')?.invalid &&
                 contratoForm.get('estado')?.touched">
-    La estado es obligatorio.
-  </small>
+          La estado es obligatorio.
+        </small>
       </div>
 
-       <div class="col-md-6 inputForm">
+      <div class="col-md-6 inputForm">
         <label for="ciudad">MUNICIPIO</label>
         <input type="text" class="form-control" id="municipio" formControlName="municipio" placeholder="" required>
-        <small class="text-danger"
-         *ngIf="contratoForm.get('municipio')?.invalid &&
+        <small class="text-danger" *ngIf="contratoForm.get('municipio')?.invalid &&
                 contratoForm.get('municipio')?.touched">
-    La municipio es obligatorio.
-  </small>
+          La municipio es obligatorio.
+        </small>
       </div>
 
 
-     
+
 
       <div class="col-md-6 inputForm">
         <label for="x">LONGITUD</label>
         <input type="text" class="form-control" id="x" formControlName="x" placeholder="">
+         <small class="text-danger" *ngIf="contratoForm.get('x')?.invalid &&
+                contratoForm.get('x')?.touched">
+          La longitud es obligatoria y no acepta letras.
+        </small>
       </div>
 
       <div class="col-md-6 inputForm">
         <label for="y">LATITUD</label>
         <input type="text" class="form-control" id="y" formControlName="y" placeholder="">
+         <small class="text-danger" *ngIf="contratoForm.get('y')?.invalid &&
+                contratoForm.get('y')?.touched">
+          La latitud es obligatoria y no acepta letras.
+        </small>
       </div>
     </div>
 
-    <div class="row" style="border: 1px solid #eee; border-radius: 10px; padding: 10px; margin-top: 20px;" *ngIf="data != null && !data.tiene_oc">
+    <div class="row" style="border: 1px solid #eee; border-radius: 10px; padding: 10px; margin-top: 20px;"
+      *ngIf="data != null && !data.tiene_oc">
       <div>DATOS DE CONEXION <br><br></div>
 
       <div class="col-md-4 inputForm">
         <label for="rpu">RPU</label>
         <input type="text" class="form-control" id="rpu" formControlName="rpu" placeholder="">
+        <small class="text-danger" *ngIf="contratoForm.get('rpu')?.invalid &&
+                contratoForm.get('rpu')?.touched">
+          La rpu es obligatoria y no acepta letras.
+        </small>
       </div>
 
       <div class="col-md-4 inputForm">
@@ -192,22 +249,31 @@
 
       <div class="col-md-12 inputForm">
         <label for="capacidad">TENSION</label>
-        <input type="text" class="form-control" id="tension" formControlName="tension" placeholder="">
+        <select name="" id="tension" class="form-select" formControlName="tension">
+          <option value="BAJA">BAJA</option>
+          <option value="MEDIA">MEDIA</option>
+          <option value="ALTA">ALTA</option>
+        </select>
       </div>
 
-      <div class="col-md-6 inputForm">
-        <label for="capacidad">CAPACIDAD</label>
+      <div class="col-md-4 inputForm">
+        <label for="capacidad">CAPACIDAD BRUTA(KW)</label>
         <input type="text" class="form-control" id="capacidad" formControlName="capacidad" placeholder="" required>
-        <small class="text-danger"
-         *ngIf="contratoForm.get('capacidad')?.invalid &&
+        <small class="text-danger" *ngIf="contratoForm.get('capacidad')?.invalid &&
                 contratoForm.get('capacidad')?.touched">
-    La capacidad es obligatoria.
-  </small>
+          La capacidad es obligatoria.
+        </small>
       </div>
 
-      <div class="col-md-6 inputForm">
-        <label for="capacidad_incrementar">CAPACIDAD_INCREMENTAR</label>
-        <input type="text" class="form-control" id="capacidad_incrementar" formControlName="capacidad_incrementar" placeholder="">
+      <div class="col-md-4 inputForm">
+        <label for="capacidad_incrementar_opcional">CAPACIDAD A INCREMENTAR(OPCIONAL)</label>
+        <input type="text" class="form-control" id="capacidad_incrementar_opcional" formControlName="capacidad_incrementar_opcional" placeholder="">
+      </div>
+
+      <div class="col-md-4 inputForm">
+        <label for="capacidad_incrementar">GENERACION MENSUAL(KWh/mes)</label>
+        <input type="text" class="form-control" id="capacidad_incrementar" formControlName="capacidad_incrementar"
+          placeholder="" readonly>
       </div>
 
       <!-- <div class="col-md-6 inputForm">
@@ -216,18 +282,24 @@
       </div> -->
 
       <div class="col-md-6 inputForm">
-        <label for="tecnologia">TECNOLOGIA</label>
+        <label for="tecnologia">COMBUSTIBLE</label>
         <input type="text" class="form-control" id="tecnologia" formControlName="tecnologia" placeholder="">
       </div>
 
       <div class="col-md-6 inputForm">
-        <label for="tecnologia_secundaria">TECNOLOGIA_SECUNDARIA</label>
-        <input type="text" class="form-control" id="tecnologia_secundaria" formControlName="tecnologia_secundaria" placeholder="">
+        <label for="tecnologia_secundaria">COMBUSTIBLE SECUNDARIO</label>
+        <input type="text" class="form-control" id="tecnologia_secundaria" formControlName="tecnologia_secundaria"
+          placeholder="">
       </div>
 
       <div class="col-md-6 inputForm">
         <label for="regimen_contraprestacion">REGIMEN_CONTRAPRESTACION</label>
-        <input type="text" class="form-control" id="regimen_contraprestacion" formControlName="regimen_contraprestacion" placeholder="">
+        <select name="" id="regimen_contraprestacion" class="form-select" formControlName="regimen_contraprestacion">
+          <option value="NET METERING">NET METERING</option>
+          <option value="NET BILLING">NET BILLING</option>
+          <option value="VENTA TOTAL DE ENERGIA">VENTA TOTAL DE ENERGIA</option>
+          <option value="SUMINISTRADOR DE SERVICIOS CALIFICADOS">SUMINISTRADOR DE SERVICIOS CALIFICADOS</option>
+        </select>
       </div>
 
       <div class="col-md-6 inputForm">
@@ -261,7 +333,7 @@
       </div>
 
       <div class="col-md-6 inputForm">
-        <label for="tipo_medidor">TIPO_MEDIDOR</label>
+        <label for="tipo_medidor">TIPO MEDIDOR</label>
         <select name="" id="tipo_medidor" class="form-select" formControlName="tipo_medidor">
           <option value="DIGITAL">DIGITAL</option>
           <option value="ELECTROMECANICO">ELECTROMECANICO</option>
@@ -276,16 +348,16 @@
       <div class="col-md-6 inputForm">
         <label for="potencia">POTENCIA</label>
         <input type="text" class="form-control" id="potencia" formControlName="potencia" placeholder="" required>
-        <small class="text-danger"
-         *ngIf="contratoForm.get('potencia')?.invalid &&
+        <small class="text-danger" *ngIf="contratoForm.get('potencia')?.invalid &&
                 contratoForm.get('potencia')?.touched">
-    La potencia es obligatoria.
-  </small>
+          La potencia es obligatoria.
+        </small>
       </div>
 
       <div class="col-md-6 inputForm">
-        <label for="central_electrica">CENTRAL_ELECTRICA</label>
-        <input type="text" class="form-control" id="central_electrica" formControlName="central_electrica" placeholder="">
+        <label for="central_electrica">CENTRAL ELECTRICA</label>
+        <input type="text" class="form-control" id="central_electrica" formControlName="central_electrica"
+          placeholder="">
       </div>
 
       <div class="col-md-6 inputForm">
@@ -293,15 +365,7 @@
         <input type="text" class="form-control" id="n_unidades" formControlName="n_unidades" placeholder="">
       </div>
 
-      <div class="col-md-6 inputForm">
-        <label for="fecha_operacion">FECHA_OPERACION</label>
-        <input type="date" class="form-control" id="fecha_operacion" formControlName="fecha_operacion" placeholder="" required>
-          <small class="text-danger"
-         *ngIf="contratoForm.get('fecha_operacion')?.invalid &&
-                contratoForm.get('fecha_operacion')?.touched">
-    La fecha es obligatoria.
-  </small>
-      </div>
+
 
       <div class="col-md-6 inputForm">
         <label for="carga_total">CARGA TOTAL</label>
@@ -309,42 +373,43 @@
       </div>
     </div>
 
-    <div class="row" style="border: 1px solid #eee; border-radius: 10px; padding: 10px; margin-top: 20px;" *ngIf="data != null && !data.tiene_oc">
-    •  DATOS DE SOLICITUD
- <div class="d-flex align-items-center flex-wrap gap-3  mt-1">
-      <div class="form-check form-check-inline form-switch">
-        <input class="form-check-input" type="checkbox" formControlName="baja_tencion">
-        <label class="form-check-label">BAJA TENSION</label>
+    <div class="row" style="border: 1px solid #eee; border-radius: 10px; padding: 10px; margin-top: 20px;"
+      *ngIf="data != null && !data.tiene_oc">
+      • DATOS DE SOLICITUD
+      <div class="d-flex align-items-center flex-wrap gap-3  mt-1">
+        <div class="form-check form-check-inline form-switch">
+          <input class="form-check-input" type="checkbox" formControlName="baja_tencion">
+          <label class="form-check-label">BAJA TENSION</label>
+        </div>
+
+        <div class="form-check form-check-inline form-switch">
+          <input class="form-check-input" type="checkbox" formControlName="media_tension">
+          <label class="form-check-label">MEDIA TENSION</label>
+        </div>
       </div>
 
-      <div class="form-check form-check-inline form-switch">
-        <input class="form-check-input" type="checkbox" formControlName="media_tension">
-        <label class="form-check-label">MEDIA TENSION</label>
-      </div>
- </div>
-
-  <br>
-     • UTILIZACION DE ENERGIA <br>
+      <br>
+      • UTILIZACION DE ENERGIA <br>
       <div class="d-flex align-items-center flex-wrap gap-3 mt-1">
-  <div class="form-check form-check-inline form-switch">
-        <input class="form-check-input" type="checkbox" formControlName="consumo_centros">
-        <label class="form-check-label">CONSUMO DE CENTROS DE CARGA</label>
-      </div>
+        <div class="form-check form-check-inline form-switch">
+          <input class="form-check-input" type="checkbox" formControlName="consumo_centros">
+          <label class="form-check-label">CONSUMO DE CENTROS DE CARGA</label>
+        </div>
 
-      <div class="form-check form-check-inline form-switch">
-        <input class="form-check-input" type="checkbox" formControlName="consumo_centros_ventas">
-        <label class="form-check-label">CONSUMO DE CENTROS DE CARGA Y VENTAS</label>
-      </div>
+        <div class="form-check form-check-inline form-switch">
+          <input class="form-check-input" type="checkbox" formControlName="consumo_centros_ventas">
+          <label class="form-check-label">CONSUMO DE CENTROS DE CARGA Y VENTAS</label>
+        </div>
 
-      <div class="form-check form-check-inline form-switch">
-        <input class="form-check-input" type="checkbox" formControlName="venta_total">
-        <label class="form-check-label">VENTA TOTAL</label>
-      </div>
+        <div class="form-check form-check-inline form-switch">
+          <input class="form-check-input" type="checkbox" formControlName="venta_total">
+          <label class="form-check-label">VENTA TOTAL</label>
+        </div>
       </div>
 
       <br>
 
-     • MANIFESTACION DE CUMPLIMIENTO DE LAS ESPECIFICACIONES TECNICAS <br>
+      • MANIFESTACION DE CUMPLIMIENTO DE LAS ESPECIFICACIONES TECNICAS <br>
 
       <!-- <div class="dropdown">
   <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
@@ -391,47 +456,49 @@
   </ul>
 </div> -->
 
-    <div class="d-flex align-items-center flex-wrap gap-3  mt-1">
- <div class="form-check form-check-inline form-switch">
-        <input class="form-check-input" type="checkbox" formControlName="solar">
-        <label class="form-check-label">SOLAR</label>
+      <div class="d-flex align-items-center flex-wrap gap-3  mt-1">
+        <div class="form-check form-check-inline form-switch">
+          <input class="form-check-input" type="checkbox" formControlName="solar">
+          <label class="form-check-label">SOLAR</label>
+        </div>
+
+        <div class="form-check form-check-inline form-switch">
+          <input class="form-check-input" type="checkbox" formControlName="biomasa">
+          <label class="form-check-label">BIOMASA</label>
+        </div>
+
+        <div class="form-check form-check-inline form-switch">
+          <input class="form-check-input" type="checkbox" formControlName="eolico">
+          <label class="form-check-label">EOLICO</label>
+        </div>
+
+        <div class="form-check form-check-inline form-switch">
+          <input class="form-check-input" type="checkbox" formControlName="cogeneracion">
+          <label class="form-check-label">COGENERACION</label>
+        </div>
+
+        <div class="form-check form-check-inline form-switch">
+          <input class="form-check-input" type="checkbox" formControlName="otro">
+          <label class="form-check-label">OTRO</label>
+        </div>
+
+        <div class="col-md-4 inputForm">
+          <label for="especificar">ESPECIFICAR</label>
+          <input type="text" class="form-control" id="especificar" formControlName="especificar" placeholder="">
+        </div>
       </div>
 
-      <div class="form-check form-check-inline form-switch">
-        <input class="form-check-input" type="checkbox" formControlName="biomasa">
-        <label class="form-check-label">BIOMASA</label>
-      </div>
 
-      <div class="form-check form-check-inline form-switch">
-        <input class="form-check-input" type="checkbox" formControlName="eolico">
-        <label class="form-check-label">EOLICO</label>
-      </div>
 
-      <div class="form-check form-check-inline form-switch">
-        <input class="form-check-input" type="checkbox" formControlName="cogeneracion">
-        <label class="form-check-label">COGENERACION</label>
-      </div>
 
-      <div class="form-check form-check-inline form-switch">
-        <input class="form-check-input" type="checkbox" formControlName="otro">
-        <label class="form-check-label">OTRO</label>
-      </div>
-
-      <div class="col-md-4 inputForm">
-        <label for="especificar">ESPECIFICAR</label>
-        <input type="text" class="form-control" id="especificar" formControlName="especificar" placeholder="">
-      </div>
     </div>
-
-     
-
-
-    </div> 
 
   </form>
 </div>
 
 <div mat-dialog-actions align="end" style="margin-top: 10px;">
-  <button class="btn btnPrimary ml-5" type="button" *ngIf="data.accion=='nuevo'" (click)="onSubmit()">GENERAR CONTRATOS</button>
-  <button class="btn btnPrimary ml-5" type="button" *ngIf="data.accion=='editar'" (click)="actualizarContrato()">ACTUALIZAR CONTRATO</button>
+  <button class="btn btnPrimary ml-5" type="button" *ngIf="data.accion=='nuevo'" (click)="onSubmit()">GENERAR
+    CONTRATOS</button>
+  <button class="btn btnPrimary ml-5" type="button" *ngIf="data.accion=='editar'"
+    (click)="actualizarContrato()">ACTUALIZAR CONTRATO</button>
 </div>

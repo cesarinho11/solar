@@ -106,7 +106,8 @@ export class CotizacionesComponent implements OnInit {
   openDialog(data: any): void {
     var dialogRef = this.dialog.open(ModalCotizacionComponent, {
       width: '100%',
-      data
+      data,
+      disableClose: true
     });
 
     dialogRef.afterClosed().subscribe(result => {

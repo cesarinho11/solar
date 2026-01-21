@@ -15,7 +15,7 @@ export class ModalProveedorComponent implements OnInit {
        private fb: FormBuilder,
        public dialogRef: MatDialogRef<ModalProveedorComponent>, private alert: AlertService, private proveedorService: ProveedorService) { }
  
-       title = 'producto';
+       title = 'Proveedor';
  
      proveedorForm = new FormGroup({
        id_proveedor: new FormControl(''),

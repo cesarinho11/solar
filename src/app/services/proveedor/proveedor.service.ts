@@ -14,6 +14,9 @@ export class ProveedorService {
   getProveedores(page: number, search: string): Observable<any> {
     return this.http.get(`${this.API_URL}/getProvedores?page=${page}&search=${search}`);
   }
+  obtenerProveedores(): Observable<any> {
+    return this.http.get(`${this.API_URL}/obtenerProveedores`);
+  }
 
   addProveedor(data: any): Observable<any> {
     return this.http.post(`${this.API_URL}/addProveedor`, data);

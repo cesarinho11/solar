@@ -66,7 +66,8 @@ export class ContratosComponent implements OnInit {
   openDialog(data: any): void {
     var dialogRef = this.dialog.open(ModalGenerarContratosComponent, {
       width: '70%',
-      data
+      data,
+      disableClose: true
     });
 
     dialogRef.afterClosed().subscribe(result => {

@@ -30,15 +30,15 @@ export class ImprimirContratosComponent implements OnInit {
      const datosContacto ={
       nombre: 'Saul Orozco Maldonado',
       puesto: 'Gerente',
-      domicilio: 'Gregorio Tores Quintero',
+      domicilio: 'Gregorio Torres Quintero',
       n_exterior: '254',
       n_interior: '',
       cp: '28974',
-      colonia: 'san isidro',
+      colonia: 'San Isidro',
       municipio: 'Villa de Alvarez',
       correo: 'vazcosolar@gmail.com',
-      estado: 'colima',
-      telefono: '3121144563',
+      estado: 'Colima',
+      telefono: '3123032690',
     }
 
     this.pdfservice.llenarAnexo(this.data, datosContacto);

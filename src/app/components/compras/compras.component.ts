@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { ModalComprasComponent } from 'src/app/modals/modal-compras/modal-compras.component';
 import { ComprasService } from 'src/app/services/compras/compras.service';
 
 @Component({
@@ -8,7 +10,7 @@ import { ComprasService } from 'src/app/services/compras/compras.service';
 })
 export class ComprasComponent implements OnInit {
 
-   constructor(private comprasService: ComprasService) { }
+   constructor(private comprasService: ComprasService, private dialog: MatDialog) { }
   
     tableColumns = [
       { key: 'id_cliente', label: 'iD Cliente ' },
@@ -57,9 +59,30 @@ export class ComprasComponent implements OnInit {
       this.loadCompras();
     }
   
-    addCliente() {
-  
-    }
+  addCompra() {
+    let data = { accion: 'nuevo' }
+    this.openDialog(data)
+  }
+
+
+  openDialog(data: any): void {
+    var dialogRef = this.dialog.open(ModalComprasComponent, {
+      width: '70%',
+      data,
+      disableClose: true
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+
+      if (result.event == 'Agregar') {
+         this.loadCompras();
+      } else if (result.event == 'Cancel') {
+         this.loadCompras();
+      }
+
+    });
+
+  }
   
     onTableAction(event: { action: string; row: any }) {
       if (event.action === 'edit') {

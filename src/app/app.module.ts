@@ -29,6 +29,8 @@ import { SpinnerInterceptor } from './interceptor/spinner.interceptor';
 import { SpinnerComponent } from './shared/spinner/spinner/spinner.component';
 import { ModalClienteComponent } from './modals/modal-cliente/modal-cliente.component';
 import { VentasComponent } from './components/ventas/ventas.component';
+import { ModalComprasComponent } from './modals/modal-compras/modal-compras.component';
+import { ModalCuentaComponent } from './modals/modal-cuenta/modal-cuenta.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +54,9 @@ import { VentasComponent } from './components/ventas/ventas.component';
     ModalCotizacionComponent,
     SpinnerComponent,
     ModalClienteComponent,
-    VentasComponent
+    VentasComponent,
+    ModalComprasComponent,
+    ModalCuentaComponent
   ],
   imports: [
     BrowserModule,

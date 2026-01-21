@@ -17,7 +17,7 @@ export class ModalClienteComponent implements OnInit {
    
          title = 'Cliente';
    
-       proveedorForm = new FormGroup({
+       clienteForm = new FormGroup({
          id_cliente: new FormControl(''),
          nombre: new FormControl(''),
          domicilio: new FormControl(''),
@@ -29,16 +29,16 @@ export class ModalClienteComponent implements OnInit {
         if(this.data.accion == 'editar'){
          console.log('editar contrato tiene id')
          const { ...rest } = this.data;
-         this.proveedorForm.patchValue(rest);
+         this.clienteForm.patchValue(rest);
        }
      }
    
    
       onSubmit() {
        // TODO: Use EventEmitter with form value
-       console.log('entro', this.proveedorForm.value);
+       console.log('entro', this.clienteForm.value);
        //this.pdfService.llenarContraprestacion(this.contratoForm.value)
-       this.clientesService.addCliente(this.proveedorForm.value).subscribe({
+       this.clientesService.addCliente(this.clienteForm.value).subscribe({
          next: (res: any) => {
            console.log(res);
            this.dialogRef.close({ event: 'Agregar' });
@@ -50,12 +50,12 @@ export class ModalClienteComponent implements OnInit {
        });
      }
    
-     actualizarContrato(){
+     actualizarCliente(){
        
        // TODO: Use EventEmitter with form value
-       console.log('entro', this.proveedorForm.value);
+       console.log('entro', this.clienteForm.value);
        //this.pdfService.llenarContraprestacion(this.contratoForm.value)
-       this.clientesService.editCliente(this.proveedorForm.value).subscribe({
+       this.clientesService.editCliente(this.clienteForm.value).subscribe({
          next: (res: any) => {
            console.log(res);
            this.dialogRef.close({ event: 'Agregar' });

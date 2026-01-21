@@ -23,7 +23,7 @@ export class ClientesServiceService {
   }
 
   editCliente(data:any): Observable<any> {
-    return this.http.post(`${this.API_URL}/editUpdate`, data);
+    return this.http.post(`${this.API_URL}/updateCliente`, data);
   }
 
   deleteCliente(data:any): Observable<any> {

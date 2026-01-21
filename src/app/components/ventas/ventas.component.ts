@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ModalCotizacionComponent } from 'src/app/modals/modal-cotizacion/modal-cotizacion.component';
+import { ModalCuentaComponent } from 'src/app/modals/modal-cuenta/modal-cuenta.component';
 import { CotizacionService } from 'src/app/services/cotizacion/cotizacion.service';
 import Swal from 'sweetalert2';
 
@@ -26,6 +27,7 @@ export class VentasComponent implements OnInit {
 
     { label: 'Ver', icon: 'bi-eye', type: 'ver', class: 'btn btn-primary' },
     { label: 'Confirmar', icon: 'bi-check-square', type: 'confirm', class: 'btn btn-success' },
+    { label: 'Cuenta', icon: 'bi-cash-coin', type: 'count', class: 'btn btn-info' },
     { label: 'Eliminar', icon: 'bi-trash', type: 'delete', class: 'btn btn-danger' }
   ];
   tableData: any
@@ -86,6 +88,13 @@ export class VentasComponent implements OnInit {
       event.row.accion = event.action;
       console.log('Eliminar →', event.row);
       this.cancelar(event.row.id_cotizacion)
+    }else if (event.action === 'count') {
+      event.row.accion = event.action;
+      console.log('Cuenta →', event.row);
+      let data = event.row;
+      data.accion = 'ver'
+     this.openDialogCuenta(data) 
+      
     }
   }
 
@@ -176,6 +185,25 @@ export class VentasComponent implements OnInit {
   
       }
     });
+  }
+
+  
+  openDialogCuenta(data: any): void {
+    var dialogRef = this.dialog.open(ModalCuentaComponent, {
+      width: '100%',
+      data
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+
+      if (result.event == 'Agregar') {
+        this.loadProductos();
+      } else if (result.event == 'Cancel') {
+        this.loadProductos();
+      }
+
+    });
+
   }
 
 }
