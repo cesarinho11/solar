@@ -13,7 +13,7 @@
             <button
               *ngFor="let action of actions"
               class="btn btn-sm me-2"
-               [hidden]="(action.type === 'confirm' || action.type === 'delete') && row.estatus == 3"
+               [hidden]="(action.type === 'confirm' || action.type === 'delete' || action.type === 'editar') && row.estatus == 3"
               [ngClass]="action.class || 'btn-outline-primary'"
               class="{{ action.class }}"
               [title]="action.label"

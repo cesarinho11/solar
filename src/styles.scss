@@ -69,3 +69,10 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   .row-verde {
   background-color: #c8f7c5 !important; /* verde claro */
 }
+
+.no-select {
+  user-select: none;        /* Evita seleccionar texto */
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  pointer-events: none;     /* Evita foco y clic */
+}

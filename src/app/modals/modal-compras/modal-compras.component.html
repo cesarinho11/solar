@@ -1,4 +1,4 @@
-<h1 mat-dialog-title style="border-bottom: 2px solid #eee;"  class="dialog-title">Compras <span class="close-btn " mat-dialog-close><img width="30px" src="../../../assets/x.png" alt=""></span> </h1>
+<h1 mat-dialog-title style="border-bottom: 2px solid #eee;"  class="dialog-title">{{data.accion | titlecase}} Compra <span class="close-btn " mat-dialog-close><img width="30px" src="../../../assets/x.png" alt=""></span> </h1>
 <div mat-dialog-content>
   <form action="" [formGroup]="contratoForm" >
     
@@ -15,9 +15,9 @@
       </div>
 
             <div class="col-md-6 inputForm" *ngIf="!contratoForm.get('clienteNuevo')?.value">
-        <label for="fecha">Cliente</label>
-        <select class="form-select" aria-label="Default select example" id="id_cliente" formControlName="id_cliente" placeholder="id_cliente"  (change)="onClienteSeleccionado()">
-          <option *ngFor="let item of clienesItems" [value]="item.id_cliente">{{item.nombre}}</option>
+        <label for="fecha">Proveedor</label>
+        <select class="form-select" aria-label="Default select example" id="id_proveedor" formControlName="id_proveedor" placeholder="id_proveedor"  (change)="onClienteSeleccionado()">
+          <option *ngFor="let item of clienesItems" [value]="item.id_proveedor">{{item.nombre}}</option>
         </select>
       </div>
 
@@ -27,13 +27,13 @@
       </div>
   
       <div class="col-md-4 inputForm" >
-        <label for="domicilio">sucursal</label>
-        <input type="text" class="form-control" id="domicilio" formControlName="domicilio" >
+        <label for="sucursal">sucursal</label>
+        <input type="text" class="form-control" id="sucursal" formControlName="sucursal" >
       </div>
 
       <div class="col-md-4 inputForm" >
-        <label for="stock">total_venta</label>
-        <input type="total_venta" class="form-control" id="total_venta" formControlName="total_venta" >
+        <label for="stock">total_compra</label>
+        <input type="total_compra" class="form-control" id="total_compra" formControlName="total_compra" >
       </div>
 
 
@@ -41,14 +41,14 @@
 
     <div class="mt-5">
 
-        <input  class="form-control" type="text" placeholder="Producto" [(ngModel)]="nombre_producto_search"  formControlName="busqueda" (ngModelChange)="verificarTexto()">
+        <input  class="form-control" *ngIf="data.accion!='ver'" type="text" placeholder="Producto" [(ngModel)]="nombre_producto_search"  formControlName="busqueda" (ngModelChange)="verificarTexto()">
 
           <!-- Lista filtrada -->
   <ul class="list-group position-absolute w-100" *ngIf="productosItems.length > 0 && nombre_producto_search.length > 0">
     <li class="list-group-item list-group-item-action listProds" style="width: 70%;"
         *ngFor="let p of productosItems"
         (click)="agregarProducto(p)">
-      {{ p.nombre }} - ${{ p.precio }}
+      {{ p.nombre }} - ${{ p.costo |currency}}
     </li>
   </ul>
 
@@ -56,15 +56,16 @@
 
     <div class="table-responsive  table-scroll mt-3 ">
         <!-- TABLA DE PRODUCTOS -->
-  <table class="table table-bordered mt-3"formArrayName="productos_cotizacion"
+  <table class="table table-bordered mt-3"formArrayName="productos_compra"
          *ngIf="productosArray.controls.length > 0">
  <thead class="table-dark">
     <tr>
       <th>Producto</th>
-      <th width="50">Cantidad</th>
-      <th width="50">Lote</th>
+      
+      <th width="200">Lote</th>
+      <th width="100">Cantidad</th>
       <th width="150">Costo</th>
-      <th width="150">Precio venta.</th>
+      <!-- <th width="150">costo venta.</th> -->
       <th>Total</th>
       <th width="60">X</th>
     </tr>
@@ -76,25 +77,25 @@
         <td>{{ item.get('nombre')?.value }}</td>
 
         <td>
-          <input type="number" class="form-control"  formControlName="lote">
+          <input type="text" class="form-control"  formControlName="lote">
         </td>
         <td>
           <input type="number" class="form-control"  formControlName="cantidad" (input)="calcularTotal(i)">
         </td>
-        <td>{{ item.get('precio')?.value }}</td>
+        <!-- <td>{{ item.get('costo')?.value }}</td> -->
         <td>
-          <input type="number" class="form-control"  formControlName="precio_venta" (input)="calcularTotal(i)">
+          <input type="number" class="form-control"  formControlName="costo_compra" (input)="calcularTotal(i)">
         </td>
 
-        <td>{{ item.get('total_venta')?.value }}</td>
+        <td>{{ item.get('total_compra')?.value |currency}}</td>
 
         <td><button class="btn btn-sm btn-danger" (click)="eliminarProducto(i)">X</button></td>
 
       </tr>
 
       <tr>
-        <th colspan="4" align="right" style="text-align: end;">Total Venta</th>
-        <td colspan="2">{{totalGeneral}}</td>
+        <th colspan="4" align="right" style="text-align: end;">Total Compra</th>
+        <td colspan="2">{{totalGeneral | currency}}</td>
       </tr>
     </tbody>
 
@@ -110,11 +111,11 @@
             <input type="text" class="form-control" id="nombre" formControlName="nombre" >
         </div>
         <div class="col-md-1">
-             <label for="nombre">Precio</label>
+             <label for="nombre">costo</label>
             <input type="text" class="form-control" id="nombre" formControlName="nombre" readonly>
         </div>
         <div class="col-md-1">
-            <label for="nombre">Precio venta</label>
+            <label for="nombre">costo venta</label>
             <input type="text" class="form-control" id="nombre" formControlName="nombre" >
         </div>
         <div class="col-md-1">
@@ -131,6 +132,6 @@
 </div>
 <div mat-dialog-actions align="end" style="margin-top: 10px;">
   <!-- <button mat-button mat-dialog-close class="btn btnCancel ">Close</button> -->
-  <!-- <button class="btn btnPrimary ml-5" type="button" *ngIf="data.accion=='nuevo'" (click)="onSubmit()"  >Guardar compra</button>
-  <button class="btn btnPrimary ml-5" type="button" *ngIf="data.accion=='editar'" (click)="actualizarCompra()"  >Actulizar compra</button> -->
+  <button class="btn btnPrimary ml-5" type="button" *ngIf="data.accion=='nuevo'" (click)="onSubmit()"  >Guardar compra</button>
+  <button class="btn btnPrimary ml-5" type="button" *ngIf="data.accion=='editar'" (click)="actualizarCompra()"  >Actualizar compra</button>
 </div>

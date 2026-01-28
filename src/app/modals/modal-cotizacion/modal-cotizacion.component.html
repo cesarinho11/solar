@@ -104,7 +104,7 @@
 
     <div class="mt-5">
 
-        <input  class="form-control" type="text" placeholder="Producto" [(ngModel)]="nombre_producto_search"  formControlName="busqueda" (ngModelChange)="verificarTexto()">
+        <input  *ngIf="data.accion!='ver'" class="form-control" type="text" placeholder="Producto" [(ngModel)]="nombre_producto_search"  formControlName="busqueda" (ngModelChange)="verificarTexto()">
 
           <!-- Lista filtrada -->
   <ul class="list-group position-absolute w-100" *ngIf="productosItems.length > 0 && nombre_producto_search.length > 0">

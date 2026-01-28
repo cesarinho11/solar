@@ -1,10 +1,12 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { AlertService } from 'src/app/services/alert/alert.service';
 import { ClientesServiceService } from 'src/app/services/clientes/clientes-service.service';
 import { CotizacionService } from 'src/app/services/cotizacion/cotizacion.service';
 import { ProductosService } from 'src/app/services/productos/productos.service';
+import { ModalAddPagoComponent } from '../modal-add-pago/modal-add-pago.component';
+import { PagosServiceService } from 'src/app/services/pagos/pagos-service.service';
 
 @Component({
   selector: 'app-modal-cuenta',
@@ -19,7 +21,11 @@ export class ModalCuentaComponent implements OnInit {
       private alert: AlertService,
       private cotizacionService: CotizacionService,
       private clientesService: ClientesServiceService,
-      private productosService: ProductosService) { }
+      private productosService: ProductosService, private dialog: MatDialog,private pagosService:PagosServiceService) { }
+
+
+        pagos:any;
+        total_pagos:number = 0;
 
         total_venta = 0;
         total = 0;
@@ -66,6 +72,9 @@ export class ModalCuentaComponent implements OnInit {
       this.productosCotizacion(rest.id_cotizacion)
     }
     this.clientes()
+
+    this.getPagosByCotizacion()
+    this.contratoForm.get('tipo_pago')?.disable();
   }
 
   get productosArray(): FormArray {
@@ -246,6 +255,45 @@ export class ModalCuentaComponent implements OnInit {
          }
        });
     }
+
+      addPago(): void {
+        var dialogRef = this.dialog.open(ModalAddPagoComponent, {
+          width: '50%',
+          data: this.data
+        });
+    
+        dialogRef.afterClosed().subscribe(result => {
+    
+          if (result.event == 'Agregar') {
+            this.getPagosByCotizacion();
+          } else if (result.event == 'Cancel') {
+            this.getPagosByCotizacion();
+          }
+    
+        });
+    
+      }
+
+      getPagosByCotizacion(){
+        const data = {id: this.data.id_cotizacion}
+         this.pagosService.getPagosByCotizacion(data).subscribe({
+       next: (res: any) => {
+         console.log(res);
+         this.pagos = res.pagos;
+         this.total_pagos = res.total.total_pagos;
+
+         console.log(this.pagos)
+         console.log(this.total_pagos)
+       },
+       error: (err: any) => {
+         console.log('error', err);
+       }
+     });
+      }
+
+      get saldoActual(): number {
+  return (this.totalGeneral || 0) - (this.total_pagos || 0);
+}
   
 
 }

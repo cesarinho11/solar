@@ -32,8 +32,8 @@ export class PdfService {
     });
 
     //form.getTextField('undefined_18').setText('PRUEBA 18'); //bajo el numero 
-    form.getTextField('nvnvbnb').setText('PRUEBAAAAAAAAAA ');
-    form.getTextField('ewewew').setText('PRUEBAAAAAAAAAA ewewew');
+    // form.getTextField('nvnvbnb').setText('PRUEBAAAAAAAAAA ');
+   
 
     //form.getTextField('undefined_7').setText('PRUEBAAAAAAAAA'); //Tiene celebrado con un Contrato de Interconexión con Comisión Federal de Electricidad,bajo el número 
 
@@ -59,6 +59,7 @@ export class PdfService {
     form.getTextField('que se presta en el domicilio').setText(userData.n_cuenta);
     form.getTextField('undefined_12').setText(userData.domicilio); //domicilio
     form.getTextField('undefined_13').setText(userData.capacidad); //domicilio
+     form.getTextField('con una tecnología de generación Fotovoltaica_2').setText(userData.tension_interconexion);
     // form.getTextField('undefined_18').setText(userData.tension_interconexion);
     // form.getTextField('undefined_19').setText(userData.tecnologia);
     form.getTextField('undefined_15').setText(userData.domicilio);
@@ -141,7 +142,7 @@ export class PdfService {
     //form.getTextField('NomDos').setText('PRUEBAAAAAAAAAAAAA');
 
 
-    form.getTextField('instalaciones correspondientes la Contrato Mercantil de Suministro de Energía Eléctrica en').setText(userData.tecnologia);
+    form.getTextField('instalaciones correspondientes la Contrato Mercantil de Suministro de Energía Eléctrica en').setText(userData.tension);
     form.getTextField('con una').setText(userData.tension_interconexion);
     form.getTextField('Nomuno').setText(userData.nombre);
     form.getTextField('RMU número').setText(userData.rpu);
@@ -334,8 +335,8 @@ export class PdfService {
     //const existingPdfBytes = await fetch('/assets/documentos/ContratoDeContraprestacion.pdf').then(res => res.arrayBuffer());
 
     //const existingPdfBytes = await fetch('/assets/documentos/Interconexion2.pdf').then(res => res.arrayBuffer());
-    //const existingPdfBytes = await fetch('/assets/documentos/Contraprestacion2.pdf').then(res => res.arrayBuffer());
-    const existingPdfBytes = await fetch('/assets/documentos/Anexo2.pdf').then(res => res.arrayBuffer());
+    const existingPdfBytes = await fetch('/assets/documentos/Contraprestacion2.pdf').then(res => res.arrayBuffer());
+    //const existingPdfBytes = await fetch('/assets/documentos/Anexo2.pdf').then(res => res.arrayBuffer());
 
     const pdfDoc = await PDFDocument.load(existingPdfBytes);
     const form = pdfDoc.getForm();

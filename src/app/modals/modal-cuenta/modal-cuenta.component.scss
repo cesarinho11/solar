@@ -1,0 +1,18 @@
+.tablePagos {
+    border-radius: 8px;
+    overflow: hidden;
+  
+    thead {
+      background: linear-gradient(to right, #ff4c4c, #2575fc) !important;
+      color: #fff;
+    }
+    thead tr th{
+      background-color: #ff4c4c !important;
+      color: #FFFFFF !important;
+    }
+  }
+
+  .thRed{
+     background-color: #ff4c4c !important;
+      color: #FFFFFF !important;
+  }

@@ -153,6 +153,14 @@ export class CotizacionesComponent implements OnInit {
     });
   }
 
+  formatCurrency(value: number | string) {
+  return new Intl.NumberFormat('es-MX', {
+    style: 'currency',
+    currency: 'MXN',
+    minimumFractionDigits: 2
+  }).format(Number(value || 0));
+}
+
   async generatePDF() {
     console.log('dataaaaaaaaaaaaaa',this.data_Cotizacion)
 
@@ -329,7 +337,7 @@ export class CotizacionesComponent implements OnInit {
         },
         {
           table: {
-             widths: ['auto', 'auto', '*', 'auto','auto'],
+             widths: ['auto', 'auto', 315, '*','*'],
             body: [
 
               // Fila amarilla
@@ -360,8 +368,8 @@ export class CotizacionesComponent implements OnInit {
                   alignment: 'left',
                   fontSize: 8
                 },
-                { text: `$${p.precio_venta}`, alignment: 'right', bold: true },
-                { text: `$${p.total_partida_venta}`, alignment: 'right', bold: true }
+                { text: `${this.formatCurrency(p.precio_venta)}`, alignment: 'right', bold: true },
+                { text: `${this.formatCurrency(p.total_partida_venta)}`, alignment: 'right', bold: true }
               ])),
 
               // TOTAL
@@ -369,9 +377,9 @@ export class CotizacionesComponent implements OnInit {
                 { text: '', colSpan: 2, border: [false, false, false, false] }, {},{}, 
                 { text: 'TOTAL', bold: true, alignment: 'right', border: [false, false, false, false] },
                 {
-                  text: `$${this.productosArray
+                  text: `${this.formatCurrency(this.productosArray
                     .filter((p: any) => Number(p?.categoria) === 1)
-                    .reduce((acc: number, p: any) => acc + (p.cantidad * p.precio_venta), 0)}`, bold: true, alignment: 'right', border: [false, false, false, false]
+                    .reduce((acc: number, p: any) => acc + (p.cantidad * p.precio_venta), 0))}`, bold: true, alignment: 'right', border: [false, false, false, false]
                 }
               ]
             ]
@@ -394,7 +402,7 @@ export class CotizacionesComponent implements OnInit {
         },
         {
           table: {
-            widths: ['auto', 'auto', '*', 'auto','auto'],
+            widths: ['auto', 'auto', 315, '*','*'],
             body: [
 
               // Fila amarilla
@@ -425,8 +433,8 @@ export class CotizacionesComponent implements OnInit {
                   alignment: 'center',
                   fontSize: 8
                 },
-                { text: `$${p.precio_venta}`, alignment: 'right', bold: true },
-                { text: `$${p.total_partida_venta}`, alignment: 'right', bold: true }
+                { text: `${this.formatCurrency(p.precio_venta)}`, alignment: 'right', bold: true },
+                { text: `${this.formatCurrency(p.total_partida_venta)}`, alignment: 'right', bold: true }
               ])),
 
 
@@ -434,9 +442,9 @@ export class CotizacionesComponent implements OnInit {
               [
                 { text: '', colSpan: 3, border: [false, true, false, false] }, {}, {}, 
                 { text: 'TOTAL', bold: true, alignment: 'right', border: [false, true, false, false] },
-                { text: `$${this.productosArray
+                { text: `${this.formatCurrency(this.productosArray
                     .filter((p: any) => Number(p?.categoria) === 2)
-                    .reduce((acc: number, p: any) => acc + (p.cantidad * p.precio_venta), 0)}`, bold: true, alignment: 'right', border: [false, true, false, false] }
+                    .reduce((acc: number, p: any) => acc + (p.cantidad * p.precio_venta), 0))}`, bold: true, alignment: 'right', border: [false, true, false, false] }
               ]
             ]
           },
@@ -458,7 +466,7 @@ export class CotizacionesComponent implements OnInit {
         },
         {
           table: {
-            widths: ['auto', 'auto', '*', 'auto','auto'],
+            widths: ['auto', 'auto', 315, '*','*'],
             body: [
 
               // Fila amarilla
@@ -489,8 +497,8 @@ export class CotizacionesComponent implements OnInit {
                   alignment: 'center',
                   fontSize: 8
                 },
-                { text: `$${p.precio_venta}`, alignment: 'right', bold: true },
-                { text: `$${p.total_partida_venta}`, alignment: 'right', bold: true }
+                { text: `${this.formatCurrency(p.precio_venta)}`, alignment: 'right', bold: true },
+                { text: `${this.formatCurrency(p.total_partida_venta)}`, alignment: 'right', bold: true }
               ])),
 
 
@@ -498,9 +506,9 @@ export class CotizacionesComponent implements OnInit {
               [
                 { text: '', colSpan: 3, border: [false, true, false, false] }, {}, {}, 
                 { text: 'TOTAL', bold: true, alignment: 'right', border: [false, true, false, false] },
-                { text: `$${this.productosArray
+                { text: `${this.formatCurrency(this.productosArray
                     .filter((p: any) => Number(p?.categoria) === 2)
-                    .reduce((acc: number, p: any) => acc + (p.cantidad * p.precio_venta), 0)}`, bold: true, alignment: 'right', border: [false, true, false, false] }
+                    .reduce((acc: number, p: any) => acc + (p.cantidad * p.precio_venta), 0))}`, bold: true, alignment: 'right', border: [false, true, false, false] }
               ]
             ]
           },
@@ -547,27 +555,27 @@ export class CotizacionesComponent implements OnInit {
                 {
                   text: `EQUIPOS Y COMPONENTES`, alignment: 'left', fontSize: 8
                 },
-                { text: `$${this.productosArray
+                { text: `${this.formatCurrency(this.productosArray
                     .filter((p: any) => Number(p?.categoria) === 1)
-                    .reduce((acc: number, p: any) => acc + (p.cantidad * p.precio_venta), 0)}`, alignment: 'right', fontSize: 8 }
+                    .reduce((acc: number, p: any) => acc + (p.cantidad * p.precio_venta), 0))}`, alignment: 'right', fontSize: 8 }
               ],
               [
                  {},
                 {
                   text: `INSTALACIÓN`, alignment: 'left', fontSize: 8
                 },
-                { text: `$${this.productosArray
+                { text: `${this.formatCurrency(this.productosArray
                     .filter((p: any) => Number(p?.categoria) === 2)
-                    .reduce((acc: number, p: any) => acc + (p.cantidad * p.precio_venta), 0)}`, alignment: 'right', fontSize: 8 }
+                    .reduce((acc: number, p: any) => acc + (p.cantidad * p.precio_venta), 0))}`, alignment: 'right', fontSize: 8 }
               ],
               [
                  {},
                 {
                   text: `OTROS`, alignment: 'left', fontSize: 8
                 },
-                { text: `$${this.productosArray
+                { text: `${this.formatCurrency(this.productosArray
                     .filter((p: any) => Number(p?.categoria) === 3)
-                    .reduce((acc: number, p: any) => acc + (p.cantidad * p.precio_venta), 0)}`, alignment: 'right', fontSize: 8 }
+                    .reduce((acc: number, p: any) => acc + (p.cantidad * p.precio_venta), 0))}`, alignment: 'right', fontSize: 8 }
               ]
 
 
@@ -578,9 +586,9 @@ export class CotizacionesComponent implements OnInit {
 
                 { text: 'TOTAL', colSpan: 2, bold: true, alignment: 'right', border: [false, true, false, false] },
                                 {},
-                { text: `$${this.productosArray
+                { text: `${this.formatCurrency(this.productosArray
                     .filter((p: any) => Number(p?.categoria))
-                    .reduce((acc: number, p: any) => acc + (p.cantidad * p.precio_venta), 0)}`, bold: true, alignment: 'right', border: [false, true, false, false] }
+                    .reduce((acc: number, p: any) => acc + (p.cantidad * p.precio_venta), 0))}`, bold: true, alignment: 'right', border: [false, true, false, false] }
               ]
             ]
           },

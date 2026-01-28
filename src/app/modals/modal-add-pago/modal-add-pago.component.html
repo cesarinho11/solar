@@ -1,0 +1,51 @@
+<h1 mat-dialog-title style="border-bottom: 2px solid #eee;"  class="dialog-title"> {{title}}  <span class="close-btn " mat-dialog-close><img width="30px" src="../../../assets/x.png" alt=""></span> </h1>
+<div mat-dialog-content>
+  <form action="" [formGroup]="pagoForm" >
+
+    <div class="row">
+
+      
+
+      <input type="hidden" formControlName="id_cotizacion">
+      <input type="hidden" formControlName="id_pago">
+
+        <div class="col-md-6 inputForm" >
+        <label for="stock">CLIENTE</label>
+        <input type="text" class="form-control" id="nombre" formControlName="nombre" readonly style="border: 2px solid white;">
+      </div>
+
+
+      <div class="col-md-6 inputForm" >
+        <label for="stock">DOMICILIO</label>
+        <input type="text" class="form-control" id="domicilio" formControlName="domicilio" readonly  style="border: 2px solid white;">
+      </div>
+
+      <div class="col-md-4 inputForm">
+        <label for="nombre">FECHA PAGO</label>
+        <input type="date" class="form-control" id="nombre" formControlName="fecha_pago" >
+      </div>
+  
+      <div class="col-md-4 inputForm" >
+
+        <label for="forma_pago">FORMA DE PAGO</label>
+        <select name="" id="forma_pago" class="form-select" formControlName="forma_pago">
+          <option value="EFECTIVO">EFECTIVO</option>
+          <option value="TRANSFERENCIA">TRANSFERENCIA</option>
+        </select>
+
+
+      </div>
+
+      <div class="col-md-4 inputForm" >
+        <label for="correo">MONTO</label>
+        <input type="number" class="form-control" id="monto" formControlName="monto" >
+      </div>
+      
+
+    </div>
+
+  </form>
+</div>
+<div mat-dialog-actions align="end" style="margin-top: 10px;">
+  <!-- <button mat-button mat-dialog-close class="btn btnCancel ">Close</button> -->
+  <button class="btn btnPrimary ml-5" type="button" (click)="onSubmit()"  >Registrar pago</button>
