@@ -14,4 +14,15 @@ export class UsuariosService {
   getUsuarios(page: number, search: string): Observable<any> {
     return this.http.get(`${this.API_URL}/getUsuarios?page=${page}&search=${search}`);
   }
+
+  addUsuario(data: any): Observable<any> {
+    return this.http.post(`${this.API_URL}/addUsuario`, data);
+  }
+
+  editUsuario(data: any): Observable<any> {
+    return this.http.post(`${this.API_URL}/updateUsuario`, data);
+  }
+  deleteUsuario(data: any): Observable<any> {
+    return this.http.post(`${this.API_URL}/deleteUsuario`, data);
+  }
 }

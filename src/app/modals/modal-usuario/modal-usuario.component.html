@@ -1,0 +1,44 @@
+<h1 mat-dialog-title style="border-bottom: 2px solid #eee;" class="dialog-title"><span
+        *ngIf="data.accion=='edit'">Editar {{title}}</span><span *ngIf="data.accion=='nuevo'">Agregar {{title}}</span>
+    <span class="close-btn " mat-dialog-close><img width="30px" src="../../../assets/x.png" alt=""></span> </h1>
+<div mat-dialog-content>
+    <form action="" [formGroup]="proveedorForm">
+
+        <div class="row">
+            <div class="col-md-6 inputForm">
+                <label for="name">Nombre</label>
+                <input type="text" class="form-control" id="name" formControlName="name">
+            </div>
+
+            <input type="hidden" class="form-control" id="domicilio" formControlName="domicilio">
+
+
+            <div class="col-md-6 inputForm">
+                <label for="email">correo</label>
+                <input type="text" class="form-control" id="email" formControlName="email">
+            </div>
+
+            <div class="col-md-6 inputForm">
+                <label for="tipo">Tipo usuario</label>
+                <select name="" id="tipo" class="form-select" formControlName="tipo">
+                    <option value="1">Administrador</option>
+                    <option value="2">Vendedor</option>
+                </select>
+            </div>
+
+            <div class="col-md-6 inputForm">
+                <label for="contraseña">contraseña</label>
+                <input type="password" class="form-control" id="password" formControlName="password">
+            </div>
+
+        </div>
+
+    </form>
+</div>
+<div mat-dialog-actions align="end" style="margin-top: 10px;">
+    <!-- <button mat-button mat-dialog-close class="btn btnCancel ">Close</button> -->
+    <button class="btn btnPrimary ml-5" type="button" *ngIf="data.accion=='nuevo'" (click)="onSubmit()">Guardar
+        usuario</button>
+    <button class="btn btnPrimary ml-5" type="button" *ngIf="data.accion=='edit'"
+        (click)="actualizarContrato()">Actulizar usuario</button>
+</div>

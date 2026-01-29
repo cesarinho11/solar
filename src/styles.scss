@@ -76,3 +76,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   -moz-user-select: none;
   pointer-events: none;     /* Evita foco y clic */
 }
+
+.table-dark{
+    --bs-table-bg: #5e6163 !important ;
+}

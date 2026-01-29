@@ -12,38 +12,61 @@ export class SidenavComponent implements OnInit {
   constructor(private auth: AuthService, private router: Router) { }
 
   ngOnInit(): void {
-      this.checkScreenWidth(); 
+    this.checkScreenWidth();
+
+    const user = this.auth.getUser();
+    this.userTipo = user.tipo;
+
+    this.filtrarMenu();
+
+
   }
 
-    @Output() sidebarToggled = new EventEmitter<boolean>();
+  filtrarMenu() {
+    // 👉 SI ES TIPO 2 → SOLO COTIZACIONES
+    if (this.userTipo === 2) {
+      this.menuItems = this.menuItemsAll.filter(
+        item => item.label === 'Cotizaciones'
+      );
+    } else {
+      // 👉 OTROS USUARIOS → MENÚ COMPLETO
+      this.menuItems = this.menuItemsAll;
+    }
+  }
+  @Output() sidebarToggled = new EventEmitter<boolean>();
   // isExpanded = true;
   // activeMenu: string | null = null;
   // hoverMenu: string | null = null;
 
-   isExpanded = true; // Sidebar inicia expandido
+  isExpanded = true; // Sidebar inicia expandido
   activeMenu: string | null = null; // Submenú abierto en modo expandido
   openFloatingMenu: string | null = null; // Submenú flotante en modo colapsado
 
-  menuItems = [
-    { label: 'Inicio', icon: 'bi-house', route: '/dashboard' },
-    { label: 'Usuarios', icon: 'bi-person',  route: '/dashboard/usuarios' },
-    { label: 'Clientes', icon: 'bi-person-badge',  route: '/dashboard/clientes' },
-    { label: 'Proveedores', icon: 'bi-people-fill',  route: '/dashboard/proveedores' },
-    { label: 'Contratos', icon: 'bi-file-text', route: '/dashboard/contratos'},
-    { label: 'Cotizaciones', icon: 'bi-calculator', route: '/dashboard/cotizaciones'},
-    { label: 'Ventas', icon: 'bi-bag', route: '/dashboard/ventas'},
-    { label: 'Inventario', icon: 'bi-clipboard2-check-fill', subItems: [
-      { label: 'Productos', route: '/dashboard/inventario/productos', icon: 'bi-card-checklist', fn: '' },
-      { label: 'Compras', route: '/dashboard/inventario/compras', icon: 'bi-bag-plus-fill' }
-    ]}
-  ];
 
-    @HostListener('window:resize', [])
+  userTipo!: number;
+
+  menuItemsAll = [
+    { label: 'Inicio', icon: 'bi-house', route: '/dashboard' },
+    { label: 'Usuarios', icon: 'bi-person', route: '/dashboard/usuarios' },
+    { label: 'Clientes', icon: 'bi-person-badge', route: '/dashboard/clientes' },
+    { label: 'Proveedores', icon: 'bi-people-fill', route: '/dashboard/proveedores' },
+    { label: 'Contratos', icon: 'bi-file-text', route: '/dashboard/contratos' },
+    { label: 'Cotizaciones', icon: 'bi-calculator', route: '/dashboard/cotizaciones' },
+    { label: 'Ventas', icon: 'bi-bag', route: '/dashboard/ventas' },
+    {
+      label: 'Inventario', icon: 'bi-clipboard2-check-fill', subItems: [
+        { label: 'Productos', route: '/dashboard/inventario/productos', icon: 'bi-card-checklist', fn: '' },
+        { label: 'Compras', route: '/dashboard/inventario/compras', icon: 'bi-bag-plus-fill' }
+      ]
+    }
+  ];
+  menuItems: any[] = [];
+  @HostListener('window:resize', [])
   onResize() {
     this.checkScreenWidth();
   }
 
-    private checkScreenWidth() {
+  private checkScreenWidth() {
     if (window.innerWidth <= 768) {
       this.isExpanded = false;
     } else {
@@ -85,7 +108,7 @@ export class SidenavComponent implements OnInit {
     this.router.navigate(['/login']);
   }
 
-    onMenuClick() {
+  onMenuClick() {
     this.checkScreenWidth();
 
     // Si es pantalla pequeña, cerrar menú al navegar

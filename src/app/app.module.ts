@@ -32,6 +32,7 @@ import { VentasComponent } from './components/ventas/ventas.component';
 import { ModalComprasComponent } from './modals/modal-compras/modal-compras.component';
 import { ModalCuentaComponent } from './modals/modal-cuenta/modal-cuenta.component';
 import { ModalAddPagoComponent } from './modals/modal-add-pago/modal-add-pago.component';
+import { ModalUsuarioComponent } from './modals/modal-usuario/modal-usuario.component';
 
 @NgModule({
   declarations: [
@@ -58,7 +59,8 @@ import { ModalAddPagoComponent } from './modals/modal-add-pago/modal-add-pago.co
     VentasComponent,
     ModalComprasComponent,
     ModalCuentaComponent,
-    ModalAddPagoComponent
+    ModalAddPagoComponent,
+    ModalUsuarioComponent
   ],
   imports: [
     BrowserModule,

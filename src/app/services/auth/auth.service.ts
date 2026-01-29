@@ -9,7 +9,7 @@ export class AuthService {
 
   private API_URL = environment.apiUrl;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   login(email: string, password: string): Observable<any> {
     return this.http.post(`${this.API_URL}/login`, { email, password });
@@ -22,12 +22,21 @@ export class AuthService {
   saveToken(token: string) {
     localStorage.setItem('token', token);
   }
+  saveUser(user: any) {
+    localStorage.setItem('user', JSON.stringify(user));
+  }
 
   getToken(): string | null {
     return localStorage.getItem('token');
   }
 
+  getUser(): any {
+    const user = localStorage.getItem('user');
+    return user ? JSON.parse(user) : null;
+  }
+
   logout() {
     localStorage.removeItem('token');
+    localStorage.removeItem('user');
   }
 }

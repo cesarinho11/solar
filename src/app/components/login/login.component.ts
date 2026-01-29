@@ -10,11 +10,11 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 })
 export class LoginComponent implements OnInit {
 
-  constructor(private auth: AuthService, private router: Router, private alert: AlertService) {}
+  constructor(private auth: AuthService, private router: Router, private alert: AlertService) { }
 
   email = '';
   password = '';
-  
+
   ngOnInit(): void {
     if (this.auth.getToken()) {
       // Si ya existe sesión, redirige al dashboard
@@ -25,12 +25,18 @@ export class LoginComponent implements OnInit {
   login() {
     this.auth.login(this.email, this.password).subscribe({
       next: (res) => {
+        console.log('login', res)
+        const user = {
+          name: res.user.nombre,
+          tipo: res.user.tipo
+        }
+        this.auth.saveUser(user);
         this.auth.saveToken(res.token);
         this.alert.success('Inicio de sesión correcto');
         this.router.navigate(['/dashboard']);
       },
       error: () =>
-      this.alert.error('Credenciales inválidas')
+        this.alert.error('Credenciales inválidas')
     });
   }
 
