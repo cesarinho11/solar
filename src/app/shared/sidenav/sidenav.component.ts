@@ -1,5 +1,7 @@
 import { Component, EventEmitter, HostListener, OnInit, Output } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { ModalReportesComponent } from 'src/app/modals/modal-reportes/modal-reportes.component';
 import { AuthService } from 'src/app/services/auth/auth.service';
 
 @Component({
@@ -9,7 +11,7 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 })
 export class SidenavComponent implements OnInit {
 
-  constructor(private auth: AuthService, private router: Router) { }
+  constructor(private auth: AuthService, private router: Router,  private dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.checkScreenWidth();
@@ -44,6 +46,7 @@ export class SidenavComponent implements OnInit {
 
 
   userTipo!: number;
+  tipoReporte!: number; // 👈 ESTA LÍNEA FALTABA
 
   menuItemsAll = [
     { label: 'Inicio', icon: 'bi-house', route: '/dashboard' },
@@ -57,6 +60,14 @@ export class SidenavComponent implements OnInit {
       label: 'Inventario', icon: 'bi-clipboard2-check-fill', subItems: [
         { label: 'Productos', route: '/dashboard/inventario/productos', icon: 'bi-card-checklist', fn: '' },
         { label: 'Compras', route: '/dashboard/inventario/compras', icon: 'bi-bag-plus-fill' }
+      ]
+    },
+    {
+      label: 'Reportes',
+      icon: 'bi-bar-chart',
+      subItems: [
+        { label: 'Ventas', icon: 'bi-cash-stack', tipo: 1 },
+        { label: 'Productos Vendidos', icon: 'bi-box-seam', tipo: 2 }
       ]
     }
   ];
@@ -118,5 +129,44 @@ export class SidenavComponent implements OnInit {
       this.openFloatingMenu = null;
     }
   }
+
+  openSubItem(sub: any) {
+    // 👉 ABRE MODAL SI ES REPORTE
+    if (sub.tipo) {
+      console.log('tipo', sub.tipo)
+      let data = {
+        title: sub.label,
+        tipo:  sub.tipo
+      };
+        this.openReporteModal(data);
+      return;
+    }
+
+    // 👉 NAVEGA SI TIENE RUTA
+    if (sub.route) {
+      this.router.navigate([sub.route]);
+      this.onMenuClick();
+    }
+  }
+
+
+    openReporteModal(data: any): void {
+      var dialogRef = this.dialog.open(ModalReportesComponent, {
+        width: '50%',
+        data,
+        disableClose: true
+      });
+  
+      dialogRef.afterClosed().subscribe(result => {
+  
+        // if (result.event == 'Agregar') {
+        //    this.loadCompras();
+        // } else if (result.event == 'Cancel') {
+        //    this.loadCompras();
+        // }
+  
+      });
+  
+    }
 
 }

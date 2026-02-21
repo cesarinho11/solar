@@ -7,6 +7,7 @@ import { CotizacionService } from 'src/app/services/cotizacion/cotizacion.servic
 import { ProductosService } from 'src/app/services/productos/productos.service';
 import { ModalAddPagoComponent } from '../modal-add-pago/modal-add-pago.component';
 import { PagosServiceService } from 'src/app/services/pagos/pagos-service.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-modal-cuenta',
@@ -257,6 +258,7 @@ export class ModalCuentaComponent implements OnInit {
     }
 
       addPago(): void {
+        this.data.saldo = this.saldoActual;
         var dialogRef = this.dialog.open(ModalAddPagoComponent, {
           width: '50%',
           data: this.data
@@ -284,6 +286,25 @@ export class ModalCuentaComponent implements OnInit {
 
          console.log(this.pagos)
          console.log(this.total_pagos)
+        console.log('estatus venta', this.data.estatus)
+         if(this.total_pagos == this.totalGeneral && this.data.estatus != 3){
+          console.log('cuenta pagada')
+         
+                  this.cotizacionService.marcarPagada(data).subscribe({
+                    next: (res: any) => {
+                      Swal.fire('Confirmado', 'La venta fue saldada correctamente', 'success');
+                      console.log(res);
+                      this.dialogRef.close({ event: 'Agregar' });
+                    },
+                    error: (err: any) => {
+                      this.dialogRef.close({ event: 'Cancel' });
+                      Swal.fire('Error', 'No se pudo eliminar', 'error');
+                      console.log(err);
+                    }
+                  });
+         }else{
+ console.log('cuenta NOO pagada')
+         }
        },
        error: (err: any) => {
          console.log('error', err);

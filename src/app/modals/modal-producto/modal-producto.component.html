@@ -3,10 +3,7 @@
   <form action="" [formGroup]="productoForm" >
 
     <div class="row">
-      <div class="col-md-4 inputForm">
-        <label for="codigo">Codigo</label>
-        <input type="text" class="form-control" id="codigo" formControlName="codigo" >
-      </div>
+
       <div class="col-md-4 inputForm">
         <label for="nombre">Nombre</label>
         <input type="text" class="form-control" id="nombre" formControlName="nombre" >
@@ -15,6 +12,11 @@
       <div class="col-md-4 inputForm">
         <label for="descripcion">Descripcion</label>
         <input type="text" class="form-control" id="descripcion" formControlName="descripcion" >
+      </div>
+
+      <div class="col-md-4 inputForm">
+        <label for="desc_mini">Descripcion mini</label>
+        <input type="text" class="form-control" id="desc_mini" formControlName="desc_mini" >
       </div>
 
       <div class="col-md-4 inputForm" >
@@ -26,9 +28,22 @@
       </div>
 
       <div class="col-md-4 inputForm" >
-        <label for="tipo">Tipo</label>
-        <input type="text" class="form-control" id="tipo" formControlName="tipo" >
+        <label for="Potencia">Potencia</label>
+        <input type="text" class="form-control" id="potencia" formControlName="potencia" >
       </div>
+
+      <div class="col-md-4 inputForm" >
+        <label for="marca">Marca</label>
+        <input type="text" class="form-control" id="marca" formControlName="marca" >
+      </div>
+
+      <div class="col-md-4 inputForm" >
+        <label for="modelo">Modelo</label>
+        <input type="text" class="form-control" id="modelo" formControlName="modelo" >
+      </div>
+
+
+        <input type="hidden" class="form-control" id="tipo" formControlName="tipo" >
 
       <div class="col-md-4 inputForm" >
         <label for="stock">Stock actual</label>
@@ -40,11 +55,9 @@
         <input type="number" class="form-control" id="stock_min" formControlName="stock_min" >
       </div>
 
-      <div class="col-md-4 inputForm" >
-        <label for="stock_max">Stock maximo</label>
-        <input type="number" class="form-control" id="stock_max" formControlName="stock_max" >
-      </div>
-
+   
+        <input type="hidden" class="form-control" id="stock_max" formControlName="stock_max" >
+  
       <div class="col-md-4 inputForm" >
         <label for="costo">costo</label>
         <input type="text" class="form-control" id="costo" formControlName="costo" >
@@ -62,5 +75,5 @@
 <div mat-dialog-actions align="end" style="margin-top: 10px;">
   <!-- <button mat-button mat-dialog-close class="btn btnCancel ">Close</button> -->
   <button class="btn btnPrimary ml-5" type="button" *ngIf="data.accion=='nuevo'" (click)="onSubmit()"  >Guardar producto</button>
-  <button class="btn btnPrimary ml-5" type="button" *ngIf="data.accion=='editar'" (click)="actualizarContrato()"  >Actulizar producto</button>
+  <button class="btn btnPrimary ml-5" type="button" *ngIf="data.accion=='editar'" (click)="actualizarContrato()"  >Actualizar producto</button>
 </div>

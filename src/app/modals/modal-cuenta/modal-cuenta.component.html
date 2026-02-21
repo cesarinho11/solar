@@ -195,7 +195,9 @@
 
         <div class="table-responsive  table-scroll mt-3 ">
             <!-- TABLA DE PRODUCTOS -->
-            <h2>Historial de pagos</h2> <button class="btn btn-sm btnPrimary" (click)="addPago()">Agregar pago</button>
+            <h2>Historial de pagos</h2> <button class="btn btn-sm btnPrimary" (click)="addPago()" [disabled]="data.estatus == 3">Agregar pago</button> <span style="font-size: 13px;
+    margin-left: 10px;
+    font-weight: 100 !important;" *ngIf="data.estatus == 3" class="badge text-bg-success">Cuenta pagada</span>
             <table class="tablePagos table  table-bordered mt-3" formArrayName="productos_cotizacion"
                 *ngIf="productosArray.controls.length > 0 && pagos.length > 0 ">
                 <thead class="" >
@@ -245,5 +247,5 @@
     <button class="btn btnPrimary ml-5" type="button" *ngIf="data.accion=='nuevo'" (click)="onSubmit()">Guardar
         cotizacion</button>
     <button class="btn btnPrimary ml-5" type="button" *ngIf="data.accion=='editar'"
-        (click)="actualizarContrato()">Actulizar cotizacion</button>
+        (click)="actualizarContrato()">Actualizar cotizacion</button>
 </div>

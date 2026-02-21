@@ -25,4 +25,9 @@ export class UsuariosService {
   deleteUsuario(data: any): Observable<any> {
     return this.http.post(`${this.API_URL}/deleteUsuario`, data);
   }
+
+    obtenerVendedores(): Observable<any> {
+    return this.http.get(`${this.API_URL}/obtenerVendedores`);
+  }
+
 }

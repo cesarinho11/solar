@@ -18,8 +18,7 @@ export class ProveedoresComponent implements OnInit {
     { key: 'nombre', label: 'Nombre' },
     { key: 'domicilio', label: 'Domicilio' },
     { key: 'correo', label: 'Correo' },
-    { key: 'telefono', label: 'Telefono' },
-    { key: 'precio', label: 'Precio' },
+    { key: 'telefono', label: 'Telefono' }
   ];
 
   tableActions = [

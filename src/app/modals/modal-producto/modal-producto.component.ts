@@ -20,7 +20,7 @@ export class ModalProductoComponent implements OnInit {
 
     productoForm = new FormGroup({
       id_producto: new FormControl(''),
-      codigo: new FormControl(''),
+     
       nombre: new FormControl(''),
       descripcion: new FormControl(''),
       categoria: new FormControl(''),
@@ -29,7 +29,11 @@ export class ModalProductoComponent implements OnInit {
       stock_min: new FormControl(''),
       stock_max: new FormControl(''), //obtener de fecha
       costo: new FormControl(''),
-      precio: new FormControl('')
+      precio: new FormControl(''),
+      potencia: new FormControl(''),
+      marca: new FormControl(''),
+      modelo: new FormControl(''),
+      desc_mini: new FormControl(''),
     });
 
   ngOnInit(): void {

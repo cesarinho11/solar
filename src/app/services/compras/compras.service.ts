@@ -29,4 +29,7 @@ export class ComprasService {
     confirmarCompra(data: any){
       return this.http.post(`${this.API_URL}/confirmarCompra`, data);
     }
+    eliminarCompra(data: any){
+      return this.http.post(`${this.API_URL}/eliminarCompra`, data);
+    }
 }

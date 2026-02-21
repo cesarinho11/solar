@@ -21,14 +21,15 @@ export class VentasComponent implements OnInit {
     { key: 'telefono', label: 'telefono' },
     { key: 'total', label: 'total' },
     { key: 'total_venta', label: 'Total venta' },
+     { key: 'name', label: 'Vendedor' },
   ];
 
   tableActions = [
 
     { label: 'Ver', icon: 'bi-eye', type: 'ver', class: 'btn btn-primary' },
-    { label: 'Confirmar', icon: 'bi-check-square', type: 'confirm', class: 'btn btn-success' },
+    // { label: 'Confirmar', icon: 'bi-check-square', type: 'confirm', class: 'btn btn-success' },
     { label: 'Cuenta', icon: 'bi-cash-coin', type: 'count', class: 'btn btn-info' },
-    { label: 'Eliminar', icon: 'bi-trash', type: 'delete', class: 'btn btn-danger' }
+    { label: 'Regresar a cotizaciones', icon: 'bi-arrow-return-right', type: 'delete', class: 'btn btn-danger' }
   ];
   tableData: any
   currentPage = 1;
@@ -195,7 +196,7 @@ export class VentasComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-
+      console.log('result', result)
       if (result.event == 'Agregar') {
         this.loadProductos();
       } else if (result.event == 'Cancel') {

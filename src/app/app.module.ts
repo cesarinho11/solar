@@ -33,6 +33,7 @@ import { ModalComprasComponent } from './modals/modal-compras/modal-compras.comp
 import { ModalCuentaComponent } from './modals/modal-cuenta/modal-cuenta.component';
 import { ModalAddPagoComponent } from './modals/modal-add-pago/modal-add-pago.component';
 import { ModalUsuarioComponent } from './modals/modal-usuario/modal-usuario.component';
+import { ModalReportesComponent } from './modals/modal-reportes/modal-reportes.component';
 
 @NgModule({
   declarations: [
@@ -60,7 +61,8 @@ import { ModalUsuarioComponent } from './modals/modal-usuario/modal-usuario.comp
     ModalComprasComponent,
     ModalCuentaComponent,
     ModalAddPagoComponent,
-    ModalUsuarioComponent
+    ModalUsuarioComponent,
+    ModalReportesComponent
   ],
   imports: [
     BrowserModule,

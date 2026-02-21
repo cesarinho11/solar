@@ -9,9 +9,44 @@
     [style.margin-left.px]="sidebarExpanded ? 25 : 70"
   >
 
-  <div class="row">
-    <div (click)="logout()" title="Salir" style="    float: right; cursor: pointer; margin-bottom: 70px;" class=""> <i style="font-size: 20px; cursor: pointer;" class="btn-sm btn-outline-danger float-end bi-box-arrow-left"></i></div> 
+  <!-- <div class="row">
+    <div class="col-md-10"><div title="Salir" style="    float: right; cursor: pointer; margin-bottom: 70px;" class=""> <button type="button" class="btn btn-primary position-relative">
+  Inbox
+  <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+    99+
+    <span class="visually-hidden">unread messages</span>
+  </span>
+</button></div> </div>
+    <div class="col-md-2">
+<div (click)="logout()" title="Salir" style="    float: right; cursor: pointer; margin-bottom: 70px;" class=""> <i style="font-size: 20px; cursor: pointer;" class="btn-sm btn-outline-danger float-end bi-box-arrow-left"></i></div> 
+    </div>
+    
+  </div> -->
+
+  <div class="row mb-5">
+  <div class="col-12 d-flex justify-content-end align-items-start gap-3">
+
+    <!-- Botón Inbox -->
+    <button (click)="verProductosFaltantes()" type="button" class="btn btn-warning position-relative  btn-sm" *ngIf="productos_faltantes>0">
+      Stock faltante
+      <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+        {{productos_faltantes}}+
+        
+      </span>
+    </button>
+
+    <!-- Botón Salir -->
+    <button 
+    title="Cerrar Sesión"
+      (click)="logout()"
+      type="button"
+      class="btn btn-outline-danger btn-sm">
+      <i class="bi bi-box-arrow-left"></i>
+    </button>
+
   </div>
+</div>
+
     <!-- hola -->
     <router-outlet></router-outlet>
   </div>

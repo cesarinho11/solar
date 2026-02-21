@@ -7,6 +7,7 @@ import Swal from 'sweetalert2';
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 import { logo, img_encabezado, img_footer } from 'src/app/variables/imagenSolar';
+import { PdfCotizacionService } from 'src/app/services/pdfCotizacion/pdf-cotizacion.service';
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
@@ -17,7 +18,7 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 })
 export class CotizacionesComponent implements OnInit {
 
-  constructor(private cotizacionService: CotizacionService, private dialog: MatDialog) { }
+  constructor(private cotizacionService: CotizacionService, private dialog: MatDialog, private pdfCotizacion: PdfCotizacionService) { }
 
   tableColumns = [
     { key: 'id_cotizacion', label: 'ID Cotizacion' },
@@ -26,6 +27,7 @@ export class CotizacionesComponent implements OnInit {
     { key: 'telefono', label: 'telefono' },
     { key: 'total', label: 'total' },
     { key: 'total_venta', label: 'Total venta' },
+    { key: 'name', label: 'Vendedor' },
   ];
 
   tableActions = [
@@ -162,7 +164,7 @@ export class CotizacionesComponent implements OnInit {
 }
 
   async generatePDF() {
-    console.log('dataaaaaaaaaaaaaa',this.data_Cotizacion)
+    console.log('dataaaaaaaaaaaaaaF',this.data_Cotizacion)
 
     let imgLogo = logo.img;
     let headerImage = img_encabezado.img;
@@ -695,7 +697,12 @@ bold: true,fontSize: 8, alignment: 'center'
         console.log('productos cotizacion', this.productosArray)
         console.log('', this.cliente)
         console.log(' cotizacion', this.totalGeneral)
-        this.generatePDF();
+        res.cliente = this.cliente;
+        res.productosArray = this.productosArray;
+        res.subTotal = this.subTotal;
+
+        this.pdfCotizacion.generatePDF(res, this.data_Cotizacion);
+        //this.generatePDF();
       },
       error: (err: any) => {
         console.log('error', err);

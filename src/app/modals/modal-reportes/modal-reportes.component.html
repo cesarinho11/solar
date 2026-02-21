@@ -1,0 +1,53 @@
+
+<h1 mat-dialog-title style="border-bottom: 2px solid #eee;"  class="dialog-title">Reporte de {{data.title}}<span class="close-btn " mat-dialog-close><img width="30px" src="../../../assets/x.png" alt=""></span> </h1>
+<div mat-dialog-content>
+  <form action="" [formGroup]="reporteForm" >
+
+    <div class="row">
+      <div class="col-md-6 inputForm">
+        <label for="fecha_inicio">Fecha Inicio</label>
+        <input type="date" class="form-control" id="fecha_inicio" formControlName="fecha_inicio" >
+      </div>
+      <div class="col-md-6 inputForm">
+        <label for="fecha_fin">Fecha fin</label>
+        <input type="date" class="form-control" id="fecha_fin" formControlName="fecha_fin" >
+      </div>
+    </div>
+
+      <!-- Radios -->
+  <div class="row mt-3">
+    <div class="col-md-12">
+      <label class="fw-bold">Formato de reporte</label>
+
+      <div class="form-check">
+        <input
+          class="form-check-input"
+          type="radio"
+          value="pdf"
+          formControlName="formato"
+          id="radioPdf">
+        <label class="form-check-label" for="radioPdf">
+          PDF
+        </label>
+      </div>
+
+      <div class="form-check">
+        <input
+          class="form-check-input"
+          type="radio"
+          value="excel"
+          formControlName="formato"
+          id="radioExcel">
+        <label class="form-check-label" for="radioExcel">
+          Excel
+        </label>
+      </div>
+    </div>
+  </div>
+  
+  </form>
+</div>
+<div mat-dialog-actions align="end" style="margin-top: 10px;">
+  <!-- <button mat-button mat-dialog-close class="btn btnCancel ">Close</button> -->
+  <button class="btn btnPrimary ml-5" type="button"  (click)="generarReporte()"  >Generar reporte</button>
+</div>

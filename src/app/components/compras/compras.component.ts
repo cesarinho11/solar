@@ -103,6 +103,7 @@ export class ComprasComponent implements OnInit {
       else if (event.action === 'delete') {
         event.row.accion = event.action;
         console.log('Eliminar →', event.row);
+        this.eliminarCompra(event.row.id_compra)
       }else if(event.action === 'ver'){
         event.row.accion = event.action;
         console.log('vewr →', event.row);
@@ -111,7 +112,7 @@ export class ComprasComponent implements OnInit {
     }
 
 
-      confirmarCompra(id_cotizacion: number) {
+      confirmarCompra(id_compra: number) {
         Swal.fire({
           title: '¿Estás seguro de confirmar la compra?',
           text: "El inventario sera afectado despues de esta accion",
@@ -124,10 +125,41 @@ export class ComprasComponent implements OnInit {
           if (result.isConfirmed) {
     
             // 👉 AQUÍ LLAMAS TU SERVICIO SI CONFIRMA
-            let data = { id: id_cotizacion }
+            let data = { id: id_compra }
             this.comprasService.confirmarCompra(data).subscribe({
               next: (res: any) => {
                 Swal.fire('Confirmado', 'La cotización fue confirmada correctamente', 'success');
+                console.log(res);
+                this.loadCompras();
+              },
+              error: (err: any) => {
+                Swal.fire('Error', 'No se pudo eliminar', 'error');
+                console.log(err);
+              }
+            });
+    
+          }
+        });
+      }
+
+
+       eliminarCompra(id_compra: number) {
+        Swal.fire({
+          title: '¿Estás seguro de elimnar la compra?',
+          text: "Se eliminara completamente y el inventario no sera afectado despues de esta accion",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Sí, confirmar',
+          cancelButtonText: 'Cancelar'
+        }).then((result) => {
+    
+          if (result.isConfirmed) {
+    
+            // 👉 AQUÍ LLAMAS TU SERVICIO SI CONFIRMA
+            let data = { id: id_compra }
+            this.comprasService.eliminarCompra(data).subscribe({
+              next: (res: any) => {
+                Swal.fire('Confirmado', 'La compra fue eliminada correctamente', 'success');
                 console.log(res);
                 this.loadCompras();
               },

@@ -15,7 +15,6 @@ export class ProductosComponent implements OnInit {
     
       tableColumns = [
         { key: 'id_producto', label: 'ID Producto' },
-        { key: 'codigo', label: 'Codigo' },
         { key: 'nombre', label: 'Producto' },
         { key: 'descripcion', label: 'Descripcion' },
         { key: 'nombre_categoria', label: 'Categoria' },

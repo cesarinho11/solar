@@ -74,7 +74,7 @@ export class ModalComprasComponent implements OnInit {
   }
 
   verificarTexto() {
-    if (this.nombre_producto_search.length > 2) {
+    if (this.nombre_producto_search.length > 1) {
       this.productos();
     }
   }

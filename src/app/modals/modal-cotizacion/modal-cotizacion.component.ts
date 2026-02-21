@@ -1,10 +1,11 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AlertService } from 'src/app/services/alert/alert.service';
 import { ClientesServiceService } from 'src/app/services/clientes/clientes-service.service';
 import { CotizacionService } from 'src/app/services/cotizacion/cotizacion.service';
 import { ProductosService } from 'src/app/services/productos/productos.service';
+import { UsuariosService } from 'src/app/services/usuarios/usuarios.service';
 
 @Component({
   selector: 'app-modal-cotizacion',
@@ -20,25 +21,28 @@ export class ModalCotizacionComponent implements OnInit {
     private alert: AlertService,
     private cotizacionService: CotizacionService,
     private clientesService: ClientesServiceService,
-    private productosService: ProductosService) { }
+    private productosService: ProductosService,
+  private userService: UsuariosService) { }
 
   total_venta = 0;
   total = 0;
   clienesItems: any;
+  vendedoresItems: any;
   productosItems: any = [];
   nombre_producto_search = '';
 
-  contratoForm = new FormGroup({
-    nombre: new FormControl(''),
-    domicilio: new FormControl(''),
+  cotizacionesForm = new FormGroup({
+    vendedor: new FormControl('', Validators.required),
+    nombre: new FormControl('', Validators.required),
+    domicilio: new FormControl('', Validators.required),
     busqueda: new FormControl(''),
-    telefono: new FormControl(''),
+    telefono: new FormControl('', Validators.required),
     correo: new FormControl(''),
     total: new FormControl(this.total),
     total_venta: new FormControl(this.total_venta),
     clienteNuevo: new FormControl(true),
     id_cliente: new FormControl(true),
-    tipo_pago: new FormControl(true),
+    tipo_pago: new FormControl('', Validators.required),
     id_cotizacion: new FormControl(true),
 
     inversor: new FormControl(''),
@@ -61,17 +65,31 @@ export class ModalCotizacionComponent implements OnInit {
     if (this.data.accion == 'editar' || this.data.accion == 'ver') {
       console.log('editar contrato tiene id')
       const { ...rest } = this.data;
-      this.contratoForm.patchValue(rest);
-       this.contratoForm.value.total = this.subTotal;
-    this.contratoForm.value.total_venta = this.totalGeneral;
+      this.cotizacionesForm.patchValue(rest);
+       this.cotizacionesForm.value.total = this.subTotal;
+    this.cotizacionesForm.value.total_venta = this.totalGeneral;
       this.productosCotizacion(rest.id_cotizacion)
     }
-    this.clientes()
+    this.clientes();
+    this.vendedores();
+  }
+
+     getInvalidControls() {
+    const invalid = [];
+    const controls = this.cotizacionesForm.controls;
+
+    for (const name in controls) {
+      if (controls[name].invalid) {
+        invalid.push(name);
+      }
+    }
+
+    return invalid;
   }
 
 
   get productosArray(): FormArray {
-    return this.contratoForm.get('productos_cotizacion') as FormArray;
+    return this.cotizacionesForm.get('productos_cotizacion') as FormArray;
   }
 
   crearProductoFormGroup(producto: any): FormGroup {
@@ -138,6 +156,19 @@ export class ModalCotizacionComponent implements OnInit {
       }
     });
   }
+
+  vendedores() {
+    this.userService.obtenerVendedores().subscribe({
+      next: (res: any) => {
+        console.log(res);
+        this.vendedoresItems = res;
+      },
+      error: (err: any) => {
+        console.log('error', err);
+      }
+    });
+  }
+
   productosCotizacion(id_cotizacion: any) {
     let data = {
       id: id_cotizacion
@@ -174,14 +205,14 @@ this.totalGeneral;
   }
 
   onClienteSeleccionado() {
-    const id = this.contratoForm.get('id_cliente')?.value;
+    const id = this.cotizacionesForm.get('id_cliente')?.value;
 
     if (!id) return;
 
     const cliente = this.clienesItems.find((c: { id_cliente: any; }) => c.id_cliente == id);
 
     if (cliente) {
-      this.contratoForm.patchValue({
+      this.cotizacionesForm.patchValue({
         nombre: cliente.nombre,
         telefono: cliente.telefono,
         correo: cliente.correo,
@@ -192,7 +223,7 @@ this.totalGeneral;
   }
 
   verificarTexto() {
-    if (this.nombre_producto_search.length > 3) {
+    if (this.nombre_producto_search.length > 1) {
       this.productos();
     }
   }
@@ -212,12 +243,33 @@ this.totalGeneral;
 
 
   onSubmit() {
-    // TODO: Use EventEmitter with form value
-    this.contratoForm.value.total = this.subTotal;
-    this.contratoForm.value.total_venta = this.totalGeneral;
-    console.log('entro', this.contratoForm.value);
+   const form: any = document.querySelector('form');
+     if (this.cotizacionesForm.invalid) {
+      console.log('entro')
+      console.log('Campos inválidos:', this.getInvalidControls());
+      this.cotizacionesForm.markAllAsTouched();
+      this.alert.error('Revise los datos del formulario');
+      return;
+    }
 
-    this.cotizacionService.addCotizacion(this.contratoForm.value).subscribe({
+
+    if (!form.checkValidity()) {
+      form.reportValidity(); // Muestra la alerta del navegador
+      return; // No avanza
+    }
+
+    if(this.productosItems.length ==0){
+      
+      this.alert.warning('No hay productos seleccionados');
+       return; // No avanza
+    }
+
+    // TODO: Use EventEmitter with form value
+    this.cotizacionesForm.value.total = this.subTotal;
+    this.cotizacionesForm.value.total_venta = this.totalGeneral;
+    console.log('entro', this.cotizacionesForm.value);
+
+    this.cotizacionService.addCotizacion(this.cotizacionesForm.value).subscribe({
       next: (res: any) => {
         console.log(res);
         this.dialogRef.close({ event: 'Agregar' });
@@ -232,12 +284,12 @@ this.totalGeneral;
   actualizarContrato() {
 
      // TODO: Use EventEmitter with form value
-     this.contratoForm.value.total = this.subTotal;
-    this.contratoForm.value.total_venta = this.totalGeneral;
+     this.cotizacionesForm.value.total = this.subTotal;
+    this.cotizacionesForm.value.total_venta = this.totalGeneral;
 
-     console.log('entro', this.contratoForm.value);
-     //this.pdfService.llenarContraprestacion(this.contratoForm.value)
-     this.cotizacionService.updateCotizacion(this.contratoForm.value).subscribe({
+     console.log('entro', this.cotizacionesForm.value);
+     //this.pdfService.llenarContraprestacion(this.cotizacionesForm.value)
+     this.cotizacionService.updateCotizacion(this.cotizacionesForm.value).subscribe({
        next: (res: any) => {
          console.log(res);
          this.dialogRef.close({ event: 'Agregar' });

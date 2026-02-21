@@ -1,27 +1,36 @@
 <div class="sidebar text-white d-flex flex-column" [class.expanded]="isExpanded">
-  <!-- Botón toggle -->
 
-
-  <div >
-    <div class="img p-3" >
-        <img [src]=" isExpanded ? '../../../assets/logoSF.png' : '../../../assets/logomini.png'" [ngClass]="isExpanded ? 'wlogo' : 'wlogomini'"  alt="">
+  <!-- Logo + botón -->
+  <div>
+    <div class="img p-3">
+      <img
+        [src]="isExpanded ? '../../../assets/logoSF.png' : '../../../assets/logomini.png'"
+        [ngClass]="isExpanded ? 'wlogo' : 'wlogomini'"
+        alt="logo">
     </div>
-    
-    <button class="btn toggle-btn text-white" (click)="toggleSidebar()">
-        <i class="bi" [ngClass]="isExpanded ? 'bi-chevron-left' : 'bi-list'"></i>
-  </button>
-  </div>    
 
+    <button class="btn toggle-btn text-white" (click)="toggleSidebar()">
+      <i class="bi" [ngClass]="isExpanded ? 'bi-chevron-left' : 'bi-list'"></i>
+    </button>
+  </div>
+
+  <!-- Menú -->
   <ul class="nav flex-column mt-3">
+
     <li class="nav-item position-relative" *ngFor="let item of menuItems">
-      <a  class="nav-link text-white d-flex align-items-center justify-content-between"    [routerLink]="!item.subItems ? item.route : null"
+
+      <!-- ITEM PRINCIPAL -->
+      <a class="nav-link text-white d-flex align-items-center justify-content-between"
+         [routerLink]="!item.subItems ? item.route : null"
          (click)="item.subItems ? toggleSubmenu(item.label) : onMenuClick()">
-        <div class="d-flex align-items-center" >
+
+        <div class="d-flex align-items-center">
           <i class="bi me-2" [class]="item.icon"></i>
           <span *ngIf="isExpanded">{{ item.label }}</span>
         </div>
 
-        <i *ngIf="item.subItems && isExpanded" class="bi"
+        <i *ngIf="item.subItems && isExpanded"
+           class="bi"
            [ngClass]="{
              'bi-chevron-down': activeMenu === item.label,
              'bi-chevron-right': activeMenu !== item.label
@@ -29,27 +38,79 @@
         </i>
       </a>
 
-      <!-- Submenú expandido dentro del sidebar -->
+      <!-- SUBMENÚ EXPANDIDO -->
       <ul *ngIf="item.subItems && isExpanded && activeMenu === item.label"
           class="nav flex-column ms-4 submenu">
-        <li class="nav-item" *ngFor="let sub of item.subItems" [routerLink]="sub.route" (click)="onMenuClick()" >
-            <span  class="nav-link text-white-50" ><i class="bi me-2" [class]="sub.icon"></i> {{ sub.label }} </span>
+
+        <li class="nav-item" *ngFor="let sub of item.subItems" style="cursor: pointer;">
+          <a class="nav-link text-white-50"
+             (click)="openSubItem(sub)">
+            <i class="bi me-2" [class]="sub.icon"></i>
+            {{ sub.label }}
+          </a>
         </li>
+
       </ul>
 
-      <!-- Submenú flotante cuando el sidebar está colapsado -->
+      <!-- SUBMENÚ FLOTANTE (COLAPSADO) -->
       <div *ngIf="item.subItems && !isExpanded && openFloatingMenu === item.label"
            class="submenu-float bg-dark text-white shadow-sm p-2 rounded">
+
         <div class="fw-bold mb-1">{{ item.label }}</div>
+
         <ul class="list-unstyled m-0">
-          <li *ngFor="let sub of item.subItems"  [routerLink]="sub.route" (click)="onMenuClick()">
-            
-            <span  class="nav-link text-white-50"><i class="bi me-2" [class]="sub.icon"></i> {{ sub.label }}</span>
+          <li *ngFor="let sub of item.subItems" style="cursor: pointer;">
+            <a class="nav-link text-white-50"
+               (click)="openSubItem(sub)">
+              <i class="bi me-2" [class]="sub.icon"></i>
+              {{ sub.label }}
+            </a>
           </li>
         </ul>
       </div>
 
-
     </li>
   </ul>
+</div>
+
+<!-- ================= MODAL REPORTES ================= -->
+<div class="modal fade" id="modalReportes" tabindex="-1">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content bg-dark text-white">
+
+      <div class="modal-header">
+        <h5 class="modal-title">
+          {{ tipoReporte === 1 ? 'Reporte de Ventas' : 'Reporte de Stock' }}
+        </h5>
+        <button type="button" class="btn-close btn-close-white"></button>
+      </div>
+
+      <div class="modal-body">
+        <p *ngIf="tipoReporte === 1">
+          Aquí se generará el reporte de ventas
+        </p>
+
+        <p *ngIf="tipoReporte === 2">
+          Aquí se generará el reporte de stock
+        </p>
+
+        <!-- Ejemplo filtros -->
+        <div class="mb-3">
+          <label>Fecha inicio</label>
+          <input type="date" class="form-control">
+        </div>
+
+        <div class="mb-3">
+          <label>Fecha fin</label>
+          <input type="date" class="form-control">
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary">Cerrar</button>
+        <button class="btn btn-primary">Generar</button>
+      </div>
+
+    </div>
+  </div>
 </div>

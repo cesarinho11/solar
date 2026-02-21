@@ -33,4 +33,8 @@ export class ProductosService {
   categoriasProducto(){
      return this.http.get(`${this.API_URL}/categoriasProducto`);
   }
+
+  alertaStock(){
+     return this.http.get(`${this.API_URL}/alertaStock`);
+  }
 }
