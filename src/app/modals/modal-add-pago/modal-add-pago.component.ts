@@ -22,11 +22,13 @@ pagoForm = new FormGroup({
        domicilio: new FormControl(''),
        id_pago: new FormControl(''),
        fecha_pago:  new FormControl('', Validators.required),
+       fecha_proximo_pago:  new FormControl('', Validators.required),
        forma_pago: new FormControl('', Validators.required),
        monto: new FormControl('', Validators.required),
        saldo_anterior: new FormControl(''),
        saldo_actual: new FormControl(''),
        total_venta: new FormControl(this.data.total_venta),
+       saldo: new FormControl(this.data.saldo),
      });
 
 

@@ -2,12 +2,16 @@
         *ngIf="data.accion=='edit'">Editar {{title}}</span><span *ngIf="data.accion=='nuevo'">Agregar {{title}}</span>
     <span class="close-btn " mat-dialog-close><img width="30px" src="../../../assets/x.png" alt=""></span> </h1>
 <div mat-dialog-content>
-    <form action="" [formGroup]="proveedorForm">
+    <form action="" [formGroup]="usuarioForm">
 
         <div class="row">
             <div class="col-md-6 inputForm">
                 <label for="name">Nombre</label>
                 <input type="text" class="form-control" id="name" formControlName="name">
+                <small class="text-danger" *ngIf="usuarioForm.get('name')?.invalid &&
+                usuarioForm.get('name')?.touched">
+          La nombre es obligatorio.
+        </small>
             </div>
 
             <input type="hidden" class="form-control" id="domicilio" formControlName="domicilio">
@@ -16,6 +20,10 @@
             <div class="col-md-6 inputForm">
                 <label for="email">correo</label>
                 <input type="text" class="form-control" id="email" formControlName="email">
+                <small class="text-danger" *ngIf="usuarioForm.get('email')?.invalid &&
+                usuarioForm.get('email')?.touched">
+          El correo es obligatorio.
+        </small>
             </div>
 
             <div class="col-md-6 inputForm">
@@ -24,11 +32,19 @@
                     <option value="1">Administrador</option>
                     <option value="2">Vendedor</option>
                 </select>
+                <small class="text-danger" *ngIf="usuarioForm.get('tipo')?.invalid &&
+                usuarioForm.get('tipo')?.touched">
+          El tipo es obligatorio.
+        </small>
             </div>
 
             <div class="col-md-6 inputForm">
                 <label for="contraseña">contraseña</label>
                 <input type="password" class="form-control" id="password" formControlName="password">
+                <small class="text-danger" *ngIf="usuarioForm.get('password')?.invalid &&
+                usuarioForm.get('password')?.touched">
+          La cantraseña es obligatoria.
+        </small>
             </div>
 
         </div>

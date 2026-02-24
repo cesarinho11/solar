@@ -18,4 +18,7 @@ export class PagosServiceService {
   addPago(data: any): Observable<any> {
     return this.http.post(`${this.API_URL}/addPago`, data);
   }
+  alertaPagos(): Observable<any> {
+    return this.http.get(`${this.API_URL}/alertaPagos`);
+  }
 }

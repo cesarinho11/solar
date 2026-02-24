@@ -1,7 +1,7 @@
 <h1 mat-dialog-title style="border-bottom: 2px solid #eee;" class="dialog-title">{{data.accion | titlecase}} Compra
   <span class="close-btn " mat-dialog-close><img width="30px" src="../../../assets/x.png" alt=""></span> </h1>
 <div mat-dialog-content>
-  <form action="" [formGroup]="contratoForm">
+  <form action="" [formGroup]="comprasForm">
 
     <div class="row">
 
@@ -10,12 +10,12 @@
         Proveedor nuevo
       </label>
 
-      <div *ngIf="contratoForm.get('clienteNuevo')?.value" class="col-md-9 inputForm">
+      <div *ngIf="comprasForm.get('clienteNuevo')?.value" class="col-md-9 inputForm">
         <label for="fecha">Proveedor</label>
         <input type="text" class="form-control" formControlName="nombre" placeholder="Nombre" />
       </div>
 
-      <div class="col-md-9 inputForm" *ngIf="!contratoForm.get('clienteNuevo')?.value">
+      <div class="col-md-9 inputForm" *ngIf="!comprasForm.get('clienteNuevo')?.value">
         <label for="fecha">Proveedor</label>
         <select class="form-select" aria-label="Default select example" id="id_proveedor" formControlName="id_proveedor"
           placeholder="id_proveedor" (change)="onClienteSeleccionado()">
@@ -40,6 +40,10 @@
       <div class="col-md-4 inputForm">
         <label for="fecha">fecha compra</label>
         <input type="date" class="form-control" id="fecha" formControlName="fecha">
+        <small class="text-danger" *ngIf="comprasForm.get('fecha')?.invalid &&
+                comprasForm.get('fecha')?.touched">
+          La fecha es obligatoria.
+        </small>
       </div>
 
 

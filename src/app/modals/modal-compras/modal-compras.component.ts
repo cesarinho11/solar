@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AlertService } from 'src/app/services/alert/alert.service';
 import { ProductosService } from 'src/app/services/productos/productos.service';
@@ -24,14 +24,14 @@ export class ModalComprasComponent implements OnInit {
   productosItems: any = [];
   nombre_producto_search = '';
 
-  contratoForm = new FormGroup({
+  comprasForm = new FormGroup({
     nombre: new FormControl(''),
     domicilio: new FormControl(''),
     sucursal: new FormControl(''),
     busqueda: new FormControl(''),
     lote: new FormControl(''),
     telefono: new FormControl(''),
-    fecha: new FormControl(''),
+    fecha: new FormControl('', Validators.required),
     correo: new FormControl(''),
     total: new FormControl(this.total),
     total_compra: new FormControl(0),
@@ -51,9 +51,9 @@ export class ModalComprasComponent implements OnInit {
     if (this.data.accion == 'editar' || this.data.accion == 'ver') {
       console.log('editar contrato tiene id')
       const { ...rest } = this.data;
-      this.contratoForm.patchValue(rest);
-      this.contratoForm.value.total = this.subTotal;
-      this.contratoForm.value.total_compra = this.totalGeneral;
+      this.comprasForm.patchValue(rest);
+      this.comprasForm.value.total = this.subTotal;
+      this.comprasForm.value.total_compra = this.totalGeneral;
       this.productosCotizacion(rest.id_compra)
     }
     this.clientes()
@@ -68,7 +68,7 @@ export class ModalComprasComponent implements OnInit {
       return sum + (item.get('total_compra')?.value || 0);
     }, 0);
 
-    this.contratoForm.patchValue({
+    this.comprasForm.patchValue({
       total_compra: totalGeneral
     }, { emitEvent: false });
   }
@@ -80,14 +80,14 @@ export class ModalComprasComponent implements OnInit {
   }
 
   onClienteSeleccionado() {
-    const id = this.contratoForm.get('id_proveedor')?.value;
+    const id = this.comprasForm.get('id_proveedor')?.value;
 
     if (!id) return;
 
     const cliente = this.clienesItems.find((c: { id_proveedor: any; }) => c.id_proveedor == id);
 
     if (cliente) {
-      this.contratoForm.patchValue({
+      this.comprasForm.patchValue({
         nombre: cliente.nombre,
         telefono: cliente.telefono,
         correo: cliente.correo,
@@ -110,14 +110,50 @@ export class ModalComprasComponent implements OnInit {
   }
 
 
+    getInvalidControls() {
+    const invalid = [];
+    const controls = this.comprasForm.controls;
+
+    for (const name in controls) {
+      if (controls[name].invalid) {
+        invalid.push(name);
+      }
+    }
+
+    return invalid;
+  }
 
   onSubmit() {
-    // TODO: Use EventEmitter with form value
-    this.contratoForm.value.total = this.subTotal;
-    this.contratoForm.value.total_compra = this.totalGeneral;
-    console.log('entro', this.contratoForm.value);
 
-    this.comprasService.addCompra(this.contratoForm.value).subscribe({
+         const form: any = document.querySelector('form');
+
+    if (this.comprasForm.invalid) {
+      console.log('entro')
+      console.log('Campos inválidos:', this.getInvalidControls());
+      this.comprasForm.markAllAsTouched();
+      this.alert.error('Revise los datos del formulario');
+      return;
+    }
+
+
+    if (!form.checkValidity()) {
+      form.reportValidity(); // Muestra la alerta del navegador
+      return; // No avanza
+    }
+
+     if(this.productosItems.length ==0){
+      
+      this.alert.warning('No hay productos seleccionados');
+       return; // No avanza
+    }
+
+    
+    // TODO: Use EventEmitter with form value
+    this.comprasForm.value.total = this.subTotal;
+    this.comprasForm.value.total_compra = this.totalGeneral;
+    console.log('entro', this.comprasForm.value);
+
+    this.comprasService.addCompra(this.comprasForm.value).subscribe({
       next: (res: any) => {
         console.log(res);
         this.dialogRef.close({ event: 'Agregar' });
@@ -132,12 +168,12 @@ export class ModalComprasComponent implements OnInit {
   actualizarCompra() {
 
     // TODO: Use EventEmitter with form value
-    this.contratoForm.value.total = this.subTotal;
-    this.contratoForm.value.total_compra = this.totalGeneral;
+    this.comprasForm.value.total = this.subTotal;
+    this.comprasForm.value.total_compra = this.totalGeneral;
 
-    console.log('entro', this.contratoForm.value);
+    console.log('entro', this.comprasForm.value);
 
-    this.comprasService.updateCompra(this.contratoForm.value).subscribe({
+    this.comprasService.updateCompra(this.comprasForm.value).subscribe({
       next: (res: any) => {
         console.log(res);
         this.dialogRef.close({ event: 'Agregar' });
@@ -150,7 +186,7 @@ export class ModalComprasComponent implements OnInit {
   }
 
   get productosArray(): FormArray {
-    return this.contratoForm.get('productos_compra') as FormArray;
+    return this.comprasForm.get('productos_compra') as FormArray;
   }
 
   crearProductoFormGroup(producto: any): FormGroup {
@@ -184,7 +220,7 @@ export class ModalComprasComponent implements OnInit {
     item.get('total_compra')!.setValue(cantidad * costo);
     item.get('total')!.setValue(cantidad * costo1);
     console.log('entro')
-    this.contratoForm.value.total_compra = this.totalGeneral;
+    this.comprasForm.value.total_compra = this.totalGeneral;
   }
 
   // Eliminar fila de producto

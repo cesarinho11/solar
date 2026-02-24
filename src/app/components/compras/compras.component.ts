@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ModalComprasComponent } from 'src/app/modals/modal-compras/modal-compras.component';
 import { ComprasService } from 'src/app/services/compras/compras.service';
+import { ProductosService } from 'src/app/services/productos/productos.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -11,7 +12,7 @@ import Swal from 'sweetalert2';
 })
 export class ComprasComponent implements OnInit {
 
-   constructor(private comprasService: ComprasService, private dialog: MatDialog) { }
+   constructor(private comprasService: ComprasService, private dialog: MatDialog, private productosService:ProductosService) { }
   
     tableColumns = [
       { key: 'id_compra', label: 'iD Compra ' },
@@ -131,6 +132,7 @@ export class ComprasComponent implements OnInit {
                 Swal.fire('Confirmado', 'La cotización fue confirmada correctamente', 'success');
                 console.log(res);
                 this.loadCompras();
+                this.productosService.verificarStock();
               },
               error: (err: any) => {
                 Swal.fire('Error', 'No se pudo eliminar', 'error');

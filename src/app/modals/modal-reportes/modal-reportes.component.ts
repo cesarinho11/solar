@@ -137,12 +137,14 @@ reportExcelVentas(nameReport: string, data: any[], fechaInicio: string, fechaFin
     [`Periodo: ${fechaInicio} al ${fechaFin}`],
     [''],
     [''],
+    [''],
   ];
 
   const body = data.map(item => ({
     ID: item.id_cotizacion,
     Cliente: item.cliente,
-    FechaVenta: item.fecha_venta,
+    FechaVenta: item.fecha_venta.split(' ')[0],
+    Vendedor: item.vendedor,
     'Total cotizacion': Number(item.total_venta)
   }));
 
@@ -161,7 +163,8 @@ reportExcelVentas(nameReport: string, data: any[], fechaInicio: string, fechaFin
       {
         ID: '',
         Producto: '',
-        FechaVenta: 'TOTAL VENTAS',
+        FechaVenta: '',
+        Vendedor: 'TOTAL VENTAS',
         'Total Vendido': total
       }
     ],

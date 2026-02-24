@@ -8,6 +8,7 @@ import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 import { logo, img_encabezado, img_footer } from 'src/app/variables/imagenSolar';
 import { PdfCotizacionService } from 'src/app/services/pdfCotizacion/pdf-cotizacion.service';
+import { ProductosService } from 'src/app/services/productos/productos.service';
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
@@ -18,7 +19,7 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 })
 export class CotizacionesComponent implements OnInit {
 
-  constructor(private cotizacionService: CotizacionService, private dialog: MatDialog, private pdfCotizacion: PdfCotizacionService) { }
+  constructor(private cotizacionService: CotizacionService, private dialog: MatDialog, private pdfCotizacion: PdfCotizacionService, private productosService:ProductosService) { }
 
   tableColumns = [
     { key: 'id_cotizacion', label: 'ID Cotizacion' },
@@ -144,6 +145,7 @@ export class CotizacionesComponent implements OnInit {
             Swal.fire('Confirmado', 'La cotización fue confirmada correctamente', 'success');
             console.log(res);
             this.loadProductos();
+            this.productosService.verificarStock();
           },
           error: (err: any) => {
             Swal.fire('Error', 'No se pudo eliminar', 'error');

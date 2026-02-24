@@ -9,15 +9,19 @@
       <input type="hidden" formControlName="id_cotizacion">
       <input type="hidden" formControlName="id_pago">
 
-        <div class="col-md-6 inputForm" >
+        <div class="col-md-4 inputForm" >
         <label for="stock">CLIENTE</label>
         <input type="text" class="form-control" id="nombre" formControlName="nombre" readonly style="border: 2px solid white;">
       </div>
 
 
-      <div class="col-md-6 inputForm" >
+      <div class="col-md-5 inputForm" >
         <label for="stock">DOMICILIO</label>
         <input type="text" class="form-control" id="domicilio" formControlName="domicilio" readonly  style="border: 2px solid white;">
+      </div>
+      <div class="col-md-3 inputForm" >
+        <label for="saldo">SALDO</label>
+        <input type="text" class="form-control" id="saldo" formControlName="saldo" readonly  style="border: 2px solid white;">
       </div>
 
       <div class="col-md-4 inputForm">
@@ -51,6 +55,15 @@
         <small class="text-danger" *ngIf="pagoForm.get('monto')?.invalid &&
                 pagoForm.get('monto')?.touched">
          El monto es obligatorio.
+        </small>
+      </div>
+
+      <div class="col-md-4 inputForm mt-2">
+        <label for="fecha_proximo_pago">PROXIMO PAGO</label>
+        <input type="date" class="form-control" id="fecha_proximo_pago" formControlName="fecha_proximo_pago" required>
+        <small class="text-danger" *ngIf="pagoForm.get('fecha_proximo_pago')?.invalid &&
+                pagoForm.get('fecha_proximo_pago')?.touched">
+          La fecha es obligatoria.
         </small>
       </div>
       

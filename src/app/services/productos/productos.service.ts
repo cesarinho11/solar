@@ -2,6 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { BehaviorSubject } from 'rxjs';
+
 
 @Injectable({
   providedIn: 'root'
@@ -9,6 +11,9 @@ import { environment } from 'src/environments/environment';
 export class ProductosService {
 
   private API_URL = environment.apiUrl;
+  private productosFaltantesSubject = new BehaviorSubject<number>(0);
+  productosFaltantes$ = this.productosFaltantesSubject.asObservable();
+
     constructor(private http: HttpClient) { }
   
     getProductos(page: number, search: string): Observable<any> {
@@ -36,5 +41,11 @@ export class ProductosService {
 
   alertaStock(){
      return this.http.get(`${this.API_URL}/alertaStock`);
+  }
+
+  verificarStock() {
+    this.alertaStock().subscribe((res: any) => {
+      this.productosFaltantesSubject.next(res.length);
+    });
   }
 }

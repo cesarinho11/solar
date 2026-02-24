@@ -6,6 +6,10 @@
       <div class="col-md-4 inputForm">
         <label for="nombre">Nombre</label>
         <input type="text" class="form-control" id="nombre" formControlName="nombre" >
+        <small class="text-danger" *ngIf="clienteForm.get('nombre')?.invalid &&
+                clienteForm.get('nombre')?.touched">
+          El nombre es obligatorio.
+        </small>
       </div>
   
       <div class="col-md-4 inputForm" >
