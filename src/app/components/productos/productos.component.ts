@@ -18,6 +18,7 @@ export class ProductosComponent implements OnInit {
         { key: 'nombre', label: 'Producto' },
         { key: 'descripcion', label: 'Descripcion' },
         { key: 'nombre_categoria', label: 'Categoria' },
+        { key: 'categoria2', label: 'Sub categoria' },
         { key: 'stock', label: 'stock' },
         { key: 'costo', label: 'Costo' },
         { key: 'precio', label: 'Precio' },

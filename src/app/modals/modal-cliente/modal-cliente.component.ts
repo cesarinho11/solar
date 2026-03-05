@@ -75,6 +75,8 @@ export class ModalClienteComponent implements OnInit {
       },
       error: (err: any) => {
         console.log('error', err);
+        console.log('error', err.error.message);
+         this.alert.error(err.error.message);
       }
     });
   }

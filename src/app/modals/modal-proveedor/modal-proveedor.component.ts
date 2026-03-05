@@ -22,7 +22,9 @@ export class ModalProveedorComponent implements OnInit {
     nombre: new FormControl('', Validators.required),
     domicilio: new FormControl(''),
     telefono: new FormControl(''),
-    correo: new FormControl('')
+    correo: new FormControl(''),
+    empresa: new FormControl(''),
+    sucursal: new FormControl('')
   });
 
   ngOnInit(): void {
