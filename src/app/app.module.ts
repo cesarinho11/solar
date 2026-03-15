@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { FormsModule , ReactiveFormsModule } from '@angular/forms'; 
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -15,7 +15,7 @@ import { ModalGenerarContratosComponent } from './modals/modal-generar-contratos
 import { ContratosComponent } from './components/contratos/contratos.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import {MatDialogModule} from '@angular/material/dialog';
+import { MatDialogModule } from '@angular/material/dialog';
 import { ImprimirContratosComponent } from './modals/imprimir-contratos/imprimir-contratos.component';
 import { ProductosComponent } from './components/productos/productos.component';
 import { ComprasComponent } from './components/compras/compras.component';
@@ -34,6 +34,12 @@ import { ModalCuentaComponent } from './modals/modal-cuenta/modal-cuenta.compone
 import { ModalAddPagoComponent } from './modals/modal-add-pago/modal-add-pago.component';
 import { ModalUsuarioComponent } from './modals/modal-usuario/modal-usuario.component';
 import { ModalReportesComponent } from './modals/modal-reportes/modal-reportes.component';
+import { HerramientasComponent } from './components/herramientas/herramientas.component';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 @NgModule({
   declarations: [
@@ -62,15 +68,21 @@ import { ModalReportesComponent } from './modals/modal-reportes/modal-reportes.c
     ModalCuentaComponent,
     ModalAddPagoComponent,
     ModalUsuarioComponent,
-    ModalReportesComponent
+    ModalReportesComponent,
+    HerramientasComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule, 
+    FormsModule,
     ReactiveFormsModule, BrowserAnimationsModule,
-    MatDialogModule,
+    MatDialogModule, 
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatInputModule,
+    MatFormFieldModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: SpinnerInterceptor, multi: true }

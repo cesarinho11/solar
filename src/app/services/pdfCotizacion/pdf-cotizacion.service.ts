@@ -260,7 +260,7 @@ footer: {
                 { text: 'SUBTOTAL', bold: true, alignment: 'center', fontSize: 8 }
               ],
               ...data.productosArray
-                .filter((p: any) => Number(p?.categoria) === 1)
+                .filter((p: any) => Number(p?.categoria) === 1 || Number(p?.categoria) === 2 )
                 .map((p: any) => ([
                   { text: p.codigo ?? '', fontSize: 8 },
                   { text: p.cantidad ?? '', fontSize: 8 },
@@ -291,68 +291,71 @@ footer: {
             paddingBottom: () => 3
           }
         },
-        {
-          margin: [0, 0, 0, 10],
-          table: {
-            widths: ['auto', 'auto', 250, '*', '*'],
-            body: [
+        // {
+        //   margin: [0, 0, 0, 10],
+        //   table: {
+        //     widths: ['auto', 'auto', 250, '*', '*'],
+        //     body: [
 
-              // Fila amarilla
-              [
-                { text: 'INSTALACION Y OTROS',  colSpan: 5, fillColor: '#d60000', bold: true, color: 'white', fontSize: 8 },
-                {}, {}, {}, {}
-              ],
+        //       // Fila amarilla
+        //       [
+        //         { text: 'INSTALACION Y OTROS',  colSpan: 5, fillColor: '#d60000', bold: true, color: 'white', fontSize: 8 },
+        //         {}, {}, {}, {}
+        //       ],
 
-              // Sub encabezado rojo
-              [
-                { text: 'CODIGO', bold: true, color: '#B40000', alignment: 'center', fontSize: 8 },
-                { text: 'CANT', bold: true, color: '#B40000', alignment: 'center', fontSize: 8 },
-                { text: 'DESCRIPCION', bold: true, color: '#B40000', alignment: 'center', fontSize: 8 },
-                { text: 'P. UNITARIO', bold: true, color: '#B40000', alignment: 'center', fontSize: 8 },
-                { text: 'SUBTOTAL', bold: true, color: '#B40000', alignment: 'center', fontSize: 8 }
-              ],
+        //       // Sub encabezado rojo
+        //       [
+        //         { text: 'CODIGO', bold: true, color: '#B40000', alignment: 'center', fontSize: 8 },
+        //         { text: 'CANT', bold: true, color: '#B40000', alignment: 'center', fontSize: 8 },
+        //         { text: 'DESCRIPCION', bold: true, color: '#B40000', alignment: 'center', fontSize: 8 },
+        //         { text: 'P. UNITARIO', bold: true, color: '#B40000', alignment: 'center', fontSize: 8 },
+        //         { text: 'SUBTOTAL', bold: true, color: '#B40000', alignment: 'center', fontSize: 8 }
+        //       ],
 
-              // Filas de productos (expandido correctamente)
-              ...data.productosArray.filter((p: any) => Number(p?.categoria) === 2 || Number(p?.categoria) === 3 ).map((p: any) => ([
-                { text: p.codigo?.toString() ?? '', alignment: 'center', fontSize: 9 },
-                { text: p.cantidad ?? '', alignment: 'center', fontSize: 8 },
-                {
-                  text: [
-                    { text: p.nombre + ' ', bold: true },   // nombre en negritas
-                    { text: p.descripcion ?? '', fontSize: 6 }           // descripción normal
-                  ],
-                  alignment: 'center',
-                  fontSize: 8
-                },
-                { text: `${this.formatCurrency(p.precio_venta)}`, alignment: 'right', bold: true, fontSize: 8 },
-                { text: `${this.formatCurrency(p.total_partida_venta)}`, alignment: 'right', bold: true,  fontSize: 8 }
-              ])),
+        //       // Filas de productos (expandido correctamente)
+        //       ...data.productosArray.filter((p: any) => Number(p?.categoria) === 2 || Number(p?.categoria) === 3 ).map((p: any) => ([
+        //         { text: p.codigo?.toString() ?? '', alignment: 'center', fontSize: 9 },
+        //         { text: p.cantidad ?? '', alignment: 'center', fontSize: 8 },
+        //         {
+        //           text: [
+        //             { text: p.nombre + ' ', bold: true },   // nombre en negritas
+        //             { text: p.descripcion ?? '', fontSize: 6 }           // descripción normal
+        //           ],
+        //           alignment: 'center',
+        //           fontSize: 8
+        //         },
+        //         { text: `${this.formatCurrency(p.precio_venta)}`, alignment: 'right', bold: true, fontSize: 8 },
+        //         { text: `${this.formatCurrency(p.total_partida_venta)}`, alignment: 'right', bold: true,  fontSize: 8 }
+        //       ])),
 
 
-              // TOTAL
-              // [
-              //   { text: '', colSpan: 3, border: [false, true, false, false] }, {}, {},
-              //   { text: 'TOTAL', bold: true, alignment: 'right', border: [false, true, false, false] },
-              //   {
-              //     text: `${this.formatCurrency(data.productosArray
-              //       .filter((p: any) => Number(p?.categoria) === 2 || Number(p?.categoria) === 3)
-              //       .reduce((acc: number, p: any) => acc + (p.cantidad * p.precio_venta), 0))}`, bold: true, alignment: 'right', border: [false, true, false, false]
-              //   }
-              // ]
-            ]
-          },
+        //       // TOTAL
+        //       // [
+        //       //   { text: '', colSpan: 3, border: [false, true, false, false] }, {}, {},
+        //       //   { text: 'TOTAL', bold: true, alignment: 'right', border: [false, true, false, false] },
+        //       //   {
+        //       //     text: `${this.formatCurrency(data.productosArray
+        //       //       .filter((p: any) => Number(p?.categoria) === 2 || Number(p?.categoria) === 3)
+        //       //       .reduce((acc: number, p: any) => acc + (p.cantidad * p.precio_venta), 0))}`, bold: true, alignment: 'right', border: [false, true, false, false]
+        //       //   }
+        //       // ]
+        //     ]
+        //   },
 
-          layout: {
-            hLineWidth: () => 0.8,
-            vLineWidth: () => 0.8,
-            hLineColor: () => '#eee',
-            vLineColor: () => '#eee',
-            paddingLeft: () => 8,
-            paddingRight: () => 8,
-            paddingTop: () => 6,
-            paddingBottom: () => 6
-          }
-        },
+        //   layout: {
+        //     hLineWidth: () => 0.8,
+        //     vLineWidth: () => 0.8,
+        //     hLineColor: () => '#eee',
+        //     vLineColor: () => '#eee',
+        //     paddingLeft: () => 8,
+        //     paddingRight: () => 8,
+        //     paddingTop: () => 6,
+        //     paddingBottom: () => 6
+        //   }
+        // },
+
+
+
         // {
         //   table: {
         //     widths: ['auto', 'auto', 250, '*', '*'],

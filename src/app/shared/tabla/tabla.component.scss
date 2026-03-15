@@ -16,3 +16,9 @@
   .row-verde {
   background-color: #c8f7c5 !important; /* verde claro */
 }
+
+.table-scroll {
+    max-height: 400px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}

@@ -1,9 +1,9 @@
 <div class="row rowtitle" style="margin-bottom: 10px;">
     <div class="col-md-8">
-        <h2>Proveedores</h2>
+        <h2>Herramientas</h2>
     </div>
     <div class="col-md-4" align="end"><button class="btn btnOrange" (click)="addProducto()"
-            style="background: #5e6163 !important; color: white">+ Nuevo proveedor</button> <br> <br>
+            style="background: #5e6163 !important; color: white">+ Nuevo producto</button> <br> <br>
 
         <!-- <button (click)="generarContrato()">Contrato</button>
      <button (click)="verCampospdf()">Campos de contrato</button> -->
@@ -13,5 +13,4 @@
 </div>
 <app-tabla [columns]="tableColumns" [data]="tableData" [actions]="tableActions" [scroll]="true" (actionClick)="onTableAction($event)">
 </app-tabla>
-
  

@@ -12,6 +12,7 @@ import { InicioComponent } from './components/inicio/inicio.component';
 import { ProveedoresComponent } from './components/proveedores/proveedores.component';
 import { CotizacionesComponent } from './components/cotizaciones/cotizaciones.component';
 import { VentasComponent } from './components/ventas/ventas.component';
+import { HerramientasComponent } from './components/herramientas/herramientas.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -28,6 +29,7 @@ const routes: Routes = [
       { path: '', component: InicioComponent},
       { path: 'proveedores', component: ProveedoresComponent},
       { path: 'inventario/productos', component: ProductosComponent},
+      { path: 'inventario/herramientas', component: HerramientasComponent},
       { path: 'inventario/compras', component: ComprasComponent},
       { path: 'contratos', component: ContratosComponent},
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' } // Redirección por defecto

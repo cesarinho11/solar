@@ -59,6 +59,7 @@ export class SidenavComponent implements OnInit {
     {
       label: 'Inventario', icon: 'bi-clipboard2-check-fill', subItems: [
         { label: 'Productos', route: '/dashboard/inventario/productos', icon: 'bi-card-checklist', fn: '' },
+        { label: 'Herramientas', route: '/dashboard/inventario/herramientas', icon: 'bi-hammer', fn: '' },
         { label: 'Compras', route: '/dashboard/inventario/compras', icon: 'bi-bag-plus-fill' }
       ]
     },

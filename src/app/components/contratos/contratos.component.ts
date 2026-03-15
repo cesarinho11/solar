@@ -28,11 +28,11 @@ export class ContratosComponent implements OnInit {
   ];
 
   tableActions = [
-    { label: 'Editar', icon: 'bi-pencil-square', type: 'edit', class: 'btn btn-success' },
-    { label: 'Contratos', icon: 'bi-file-pdf', type: 'contrato', class: 'btn btn-primary' },
-    { label: 'Eliminar', icon: 'bi-trash', type: 'delete', class: 'btn btn-danger' }
+    { label: 'Editar', icon: 'bi-pencil-square', type: 'edit', class: 'btn btn-sm btn-success' },
+    { label: 'Contratos', icon: 'bi-file-pdf', type: 'contrato', class: 'btn btn-sm btn-primary' },
+    { label: 'Eliminar', icon: 'bi-trash', type: 'delete', class: 'btn btn-sm btn-danger' }
   ];
-  tableData: any
+tableData: any[] = [];
   currentPage = 1;
   lastPage = 1;
   search = '';
@@ -107,7 +107,7 @@ export class ContratosComponent implements OnInit {
     this.contratos.getContratos(page, this.search).subscribe({
       next: (data) => {
         console.log(data)
-        this.tableData = data.data;
+        this.tableData = data;
         this.currentPage = data.current_page;
         this.lastPage = data.last_page;
       },

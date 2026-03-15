@@ -26,12 +26,12 @@ export class VentasComponent implements OnInit {
 
   tableActions = [
 
-    { label: 'Ver', icon: 'bi-eye', type: 'ver', class: 'btn btn-primary' },
-    // { label: 'Confirmar', icon: 'bi-check-square', type: 'confirm', class: 'btn btn-success' },
-    { label: 'Cuenta', icon: 'bi-cash-coin', type: 'count', class: 'btn btn-info' },
-    { label: 'Regresar a cotizaciones', icon: 'bi-arrow-return-right', type: 'delete', class: 'btn btn-danger' }
+    { label: 'Ver', icon: 'bi-eye', type: 'ver', class: 'btn btn-sm btn-primary' },
+    // { label: 'Confirmar', icon: 'bi-check-square', type: 'confirm', class: 'btn btn-sm btn-success' },
+    { label: 'Cuenta', icon: 'bi-cash-coin', type: 'count', class: 'btn btn-sm btn-info' },
+    { label: 'Regresar a cotizaciones', icon: 'bi-arrow-return-right', type: 'delete', class: 'btn btn-sm btn-danger' }
   ];
-  tableData: any
+tableData: any[] = [];
   currentPage = 1;
   lastPage = 1;
   search = '';
@@ -46,7 +46,7 @@ export class VentasComponent implements OnInit {
     this.cotizacionService.getVentas(page, this.search, this.estatus).subscribe({
       next: (data) => {
         console.log(data)
-        this.tableData = data.data;
+        this.tableData = data;
         this.currentPage = data.current_page;
         this.lastPage = data.last_page;
       },

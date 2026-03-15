@@ -42,8 +42,8 @@ export class PdfReportesService {
       fontSize: 8
     },
     {
-      text: item.domicilio_instalacion ?? '',
-      alignment: 'center',
+      text: item.productos ?? '',
+      alignment: 'left',
       fontSize: 8
     },
     {
@@ -62,7 +62,14 @@ export class PdfReportesService {
       })}`,
       alignment: 'right',
       fontSize: 8
-    }
+    },
+    {
+  text: `$${Number((item.total_venta ?? 0) * 0.03).toLocaleString('es-MX', {
+    minimumFractionDigits: 2
+  })}`,
+  alignment: 'right',
+  fontSize: 8
+}
   ]));
 
   const documentDefinition: any = {
@@ -95,14 +102,14 @@ export class PdfReportesService {
       /* 🔹 Tabla */
       {
         table: {
-          widths: ['auto', 125, 125, '*',100, 70],
+          widths: ['auto', 125, 125, '*',70, 40, 70],
           body: [
 
             /* Fila amarilla */
             [
               {
                 text: 'VENTAS',
-                colSpan: 6,
+                colSpan: 7,
                 color: 'white',
                 fillColor: '#CA041A',
                 bold: true,
@@ -110,17 +117,18 @@ export class PdfReportesService {
                 margin: [5, 3],
                 border: [false, false, false, false]
               },
-              {}, {}, {}, {},{}
+              {}, {}, {}, {},{},{}
             ],
 
             /* Encabezados */
             [
               { text: 'ID', bold: true, color: '#B40000', alignment: 'center', fontSize: 8 },
               { text: 'CLIENTE', bold: true, color: '#B40000', alignment: 'center', fontSize: 8 },
-              { text: 'DOMICILIO', bold: true, color: '#B40000', alignment: 'center', fontSize: 8 },
+              { text: 'PRODUCTOS', bold: true, color: '#B40000', alignment: 'center', fontSize: 8 },
               { text: 'FECHA', bold: true, color: '#B40000', alignment: 'center', fontSize: 8 },
               { text: 'VENDEDOR', bold: true, color: '#B40000', alignment: 'center', fontSize: 8 },
-              { text: 'TOTAL', bold: true, color: '#B40000', alignment: 'right', fontSize: 8 }
+              { text: 'TOTAL', bold: true, color: '#B40000', alignment: 'right', fontSize: 8 },
+              { text: 'COMISION', bold: true, color: '#B40000', alignment: 'right', fontSize: 8 }
             ],
 
             /* 🔹 FILAS DINÁMICAS */
@@ -128,7 +136,7 @@ export class PdfReportesService {
 
             // TOTAL
               [
-                { text: 'TOTAL VENTAS', colSpan: 5, bold: true, alignment: 'right', border: [false, false, false, false] }, {},{}, {},{},
+                { text: 'TOTAL VENTAS', colSpan: 6, bold: true, alignment: 'right', border: [false, false, false, false] }, {},{}, {},{},{},
                 // { text: 'TOTAL VENTAS', bold: true, alignment: 'right', border: [false, false, false, false] },
                 {
                   text: `${this.formatCurrency(total )}`, bold: true, alignment: 'right', border: [false, false, false, false]

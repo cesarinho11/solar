@@ -16,8 +16,8 @@ export class ProductosService {
 
     constructor(private http: HttpClient) { }
   
-    getProductos(page: number, search: string): Observable<any> {
-      return this.http.get(`${this.API_URL}/getProductos?page=${page}&search=${search}`);
+    getProductos(page: number, search: string, per_page:number): Observable<any> {
+      return this.http.get(`${this.API_URL}/getProductos?page=${page}&search=${search}&per_page=${per_page}`);
     }
     getProductosList(search: string): Observable<any> {
       return this.http.get(`${this.API_URL}/getProductosList?search=${search}`);
@@ -48,4 +48,9 @@ export class ProductosService {
       this.productosFaltantesSubject.next(res.length);
     });
   }
+
+  //herramientas 
+      getHerramientas(page: number, search: string): Observable<any> {
+      return this.http.get(`${this.API_URL}/getHerramientas?page=${page}&search=${search}`);
+    }
 }

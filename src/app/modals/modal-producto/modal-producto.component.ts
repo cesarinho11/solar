@@ -24,7 +24,7 @@ export class ModalProductoComponent implements OnInit {
       nombre: new FormControl('', Validators.required),
       descripcion: new FormControl(''),
       categoria: new FormControl('', Validators.required),
-      categoria2: new FormControl('',  Validators.required),
+      categoria2: new FormControl(''),
       tipo: new FormControl(''),
       stock: new FormControl(''),
       stock_min: new FormControl(''),

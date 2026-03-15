@@ -23,13 +23,13 @@ export class ComprasComponent implements OnInit {
     ];
   
     tableActions = [
-      { label: 'Ver', icon: 'bi-eye', type: 'ver', class: 'btn btn-primary' },
-      { label: 'Editar', icon: 'bi-pencil-square', type: 'editar', class: 'btn btn-success' },
-       { label: 'Confirmar compra', icon: 'bi-bag-check', type: 'confirm', class: 'btn btn-info' },
-      // { label: 'Contratos', icon: 'bi-file-pdf', type: 'contrato', class: 'btn btn-primary' },
-      { label: 'Eliminar', icon: 'bi-trash', type: 'delete', class: 'btn btn-danger' }
+      { label: 'Ver', icon: 'bi-eye', type: 'ver', class: 'btn btn-sm btn-primary' },
+      { label: 'Editar', icon: 'bi-pencil-square', type: 'editar', class: 'btn btn-sm btn-success' },
+       { label: 'Confirmar compra', icon: 'bi-bag-check', type: 'confirm', class: 'btn btn-sm btn-info' },
+      // { label: 'Contratos', icon: 'bi-file-pdf', type: 'contrato', class: 'btn btn-sm btn-primary' },
+      { label: 'Eliminar', icon: 'bi-trash', type: 'delete', class: 'btn btn-sm btn-danger' }
     ];
-    tableData: any
+  tableData: any[] = [];
     currentPage = 1;
     lastPage = 1;
     search = '';
@@ -43,7 +43,7 @@ export class ComprasComponent implements OnInit {
       this.comprasService.getCompras(page, this.search).subscribe({
         next: (data) => {
           console.log(data)
-          this.tableData = data.data;
+          this.tableData = data;
           this.currentPage = data.current_page;
           this.lastPage = data.last_page;
         },
