@@ -17,4 +17,7 @@ export class ReportesService {
        reporteVentas(data:any): Observable<any> {
          return this.http.post(`${this.API_URL}/totalVentas`, data);
        }
+       totalVentasSinAgrupar(data:any): Observable<any> {
+         return this.http.post(`${this.API_URL}/totalVentasSinAgrupar`, data);
+       }
 }

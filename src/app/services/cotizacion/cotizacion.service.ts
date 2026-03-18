@@ -42,4 +42,9 @@ export class CotizacionService {
       return this.http.post(`${this.API_URL}/cancelarVenta`, data);
     }
 
+     agregarMaterialInstalacion(data: any): Observable<any> {
+      return this.http.post(`${this.API_URL}/agregarMaterialInstalacion`, data);
+    }
+
+
 }

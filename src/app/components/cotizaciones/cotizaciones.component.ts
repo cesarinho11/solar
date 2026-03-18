@@ -9,6 +9,7 @@ import pdfFonts from 'pdfmake/build/vfs_fonts';
 import { logo, img_encabezado, img_footer } from 'src/app/variables/imagenSolar';
 import { PdfCotizacionService } from 'src/app/services/pdfCotizacion/pdf-cotizacion.service';
 import { ProductosService } from 'src/app/services/productos/productos.service';
+import { ModalMaterialInstalacionComponent } from 'src/app/modals/modal-material-instalacion/modal-material-instalacion.component';
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
@@ -19,7 +20,7 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 })
 export class CotizacionesComponent implements OnInit {
 
-  constructor(private cotizacionService: CotizacionService, private dialog: MatDialog, private pdfCotizacion: PdfCotizacionService, private productosService:ProductosService) { }
+  constructor(private cotizacionService: CotizacionService, private dialog: MatDialog, private pdfCotizacion: PdfCotizacionService, private productosService: ProductosService) { }
 
   tableColumns = [
     { key: 'id_cotizacion', label: 'ID Cotizacion' },
@@ -37,7 +38,7 @@ export class CotizacionesComponent implements OnInit {
     { label: 'Editar', icon: 'bi-pencil-square', type: 'edit', class: 'btn btn-sm btn-success' },
     { label: 'Eliminar', icon: 'bi-trash', type: 'delete', class: 'btn btn-sm btn-danger' }
   ];
-tableData: any[] = [];
+  tableData: any[] = [];
   currentPage = 1;
   lastPage = 1;
   search = '';
@@ -87,7 +88,7 @@ tableData: any[] = [];
     } else if (event.action === 'confirm') {
       event.row.accion = event.action;
       console.log('Confirmar cotizacion →', event.row);
-      this.confirmarCotizacion(event.row.id_cotizacion);
+      this.confirmarCotizacion(event.row);
 
     }
     else if (event.action === 'delete') {
@@ -126,7 +127,70 @@ tableData: any[] = [];
   }
 
 
-  confirmarCotizacion(id_cotizacion: number) {
+  confirmarCotizacion(data: number) {
+    Swal.fire({
+      title: 'Agregue el material a utilizar',
+      text: "",
+      icon: 'info',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, confirmar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+
+      if (result.isConfirmed) {
+
+        this.modalMaterialInstacion(data)
+        // // 👉 AQUÍ LLAMAS TU SERVICIO SI CONFIRMA
+        // let data = { id: id_cotizacion }
+        // this.cotizacionService.confirmarCotizacion(data).subscribe({
+        //   next: (res: any) => {
+        //     Swal.fire('Verificar cotizacion', 'Agregue el material a utilizar', 'success');
+        //     console.log(res);
+        //     this.loadProductos();
+        //     this.productosService.verificarStock();
+        //   },
+        //   error: (err: any) => {
+        //     Swal.fire('Error', 'No se pudo eliminar', 'error');
+        //     console.log(err);
+        //   }
+        // });
+
+      }
+    });
+  }
+
+  modalMaterialInstacion(data:any){
+    console.log(data)
+     var dialogRef = this.dialog.open(ModalMaterialInstalacionComponent, {
+      width: '100%',
+      data,
+      disableClose: true
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+
+      if (result.event == 'Agregar') {
+          let data_materiales = { id: data.id_cotizacion }
+        this.cotizacionService.confirmarCotizacion(data_materiales).subscribe({
+          next: (res: any) => {
+            Swal.fire('Confirmado', 'La cotización fue confirmada correctamente', 'success');
+            console.log(res);
+            this.loadProductos();
+            this.productosService.verificarStock();
+          },
+          error: (err: any) => {
+            Swal.fire('Error', 'No se pudo eliminar', 'error');
+            console.log(err);
+          }
+        });
+      } else if (result.event == 'Cancel') {
+        this.loadProductos();
+      }
+
+    });
+  }
+
+  confirmarCotizacionParaVentas(id_cotizacion: number) {
     Swal.fire({
       title: '¿Estás seguro de confirmar la cotizacion?',
       text: "",
@@ -158,15 +222,15 @@ tableData: any[] = [];
   }
 
   formatCurrency(value: number | string) {
-  return new Intl.NumberFormat('es-MX', {
-    style: 'currency',
-    currency: 'MXN',
-    minimumFractionDigits: 2
-  }).format(Number(value || 0));
-}
+    return new Intl.NumberFormat('es-MX', {
+      style: 'currency',
+      currency: 'MXN',
+      minimumFractionDigits: 2
+    }).format(Number(value || 0));
+  }
 
   async generatePDF() {
-    console.log('dataaaaaaaaaaaaaaF',this.data_Cotizacion)
+    console.log('dataaaaaaaaaaaaaaF', this.data_Cotizacion)
 
     let imgLogo = logo.img;
     let headerImage = img_encabezado.img;
@@ -213,28 +277,28 @@ tableData: any[] = [];
         // },
         {
           table: {
-             widths: ['auto', '*', 'auto', '*','auto','auto'],
+            widths: ['auto', '*', 'auto', '*', 'auto', 'auto'],
             body: [
 
               // Fila amarilla
               [
                 { text: 'DATOS CLIENTE', colSpan: 2, fillColor: '#F3CA00', bold: true, fontSize: 8, color: 'black', alignment: 'center', margin: [5, 3], border: [false, false, false, false] },
                 {}, // ← celda vacía por colSpan 2
-                 { text: 'DATOS PROYECTO', colSpan:4, fillColor: '#F3CA00', bold: true, fontSize: 8, color: 'black', alignment: 'center', margin: [5, 3], border: [false, false, false, false] },
-                    {},
-                    {},
-                    {}
+                { text: 'DATOS PROYECTO', colSpan: 4, fillColor: '#F3CA00', bold: true, fontSize: 8, color: 'black', alignment: 'center', margin: [5, 3], border: [false, false, false, false] },
+                {},
+                {},
+                {}
               ],
 
               // Sub encabezado rojo
               [
 
-                { text: 'NOMBRE', bold: true, alignment: 'left', fontSize: 8 ,border: [true, true, true, true]},
-                { text: this.data_Cotizacion.nombre, bold: false, alignment: 'left', fontSize: 8,border: [true, true, true, true] },
-                { text: 'INT. ELECTRICA', bold: true, alignment: 'left', fontSize: 8 ,border: [true, true, true, true]},
-                { text: this.data_Cotizacion.inst_electrica, bold: false,  alignment: 'left', fontSize: 8, border: [true, true, true, true] },
-                { text: 'MAT. MONAJE ', bold: true, alignment: 'left', fontSize: 8 ,border: [true, true, true, true]},
-                { text: this.data_Cotizacion.mat_montaje, bold: false, alignment: 'left', fontSize: 8,border: [true, true, true, true] }
+                { text: 'NOMBRE', bold: true, alignment: 'left', fontSize: 8, border: [true, true, true, true] },
+                { text: this.data_Cotizacion.nombre, bold: false, alignment: 'left', fontSize: 8, border: [true, true, true, true] },
+                { text: 'INT. ELECTRICA', bold: true, alignment: 'left', fontSize: 8, border: [true, true, true, true] },
+                { text: this.data_Cotizacion.inst_electrica, bold: false, alignment: 'left', fontSize: 8, border: [true, true, true, true] },
+                { text: 'MAT. MONAJE ', bold: true, alignment: 'left', fontSize: 8, border: [true, true, true, true] },
+                { text: this.data_Cotizacion.mat_montaje, bold: false, alignment: 'left', fontSize: 8, border: [true, true, true, true] }
               ],
               [
 
@@ -248,35 +312,35 @@ tableData: any[] = [];
               [
 
                 { text: 'DOMICILIO', bold: true, alignment: 'left', fontSize: 8 },
-                { text: this.data_Cotizacion.domicilio, bold: false,  alignment: 'left', fontSize: 8 },
-                { text: 'TENSIÓN DESFASADA', bold: true,  alignment: 'left', fontSize: 8 },
+                { text: this.data_Cotizacion.domicilio, bold: false, alignment: 'left', fontSize: 8 },
+                { text: 'TENSIÓN DESFASADA', bold: true, alignment: 'left', fontSize: 8 },
                 { text: this.data_Cotizacion.tension, bold: false, alignment: 'left', fontSize: 8 },
                 { text: 'N. DE MOD', bold: true, alignment: 'left', fontSize: 8 },
-                { text: this.data_Cotizacion.n_mod, bold: false,  alignment: 'left', fontSize: 8 }
+                { text: this.data_Cotizacion.n_mod, bold: false, alignment: 'left', fontSize: 8 }
               ],
               [
 
-                { text: 'TEL /CEL', bold: true,  alignment: 'left', fontSize: 8 },
-                { text: this.data_Cotizacion.telefono, bold: false,  alignment: 'left', fontSize: 8 },
-                { text: 'SISTEMA FOTOVOLTAICO', bold: true,  alignment: 'left', fontSize: 8 },
+                { text: 'TEL /CEL', bold: true, alignment: 'left', fontSize: 8 },
+                { text: this.data_Cotizacion.telefono, bold: false, alignment: 'left', fontSize: 8 },
+                { text: 'SISTEMA FOTOVOLTAICO', bold: true, alignment: 'left', fontSize: 8 },
                 { text: this.data_Cotizacion.s_fotovoltaico, bold: false, alignment: 'left', fontSize: 8 },
-                { text: 'INVERSOR', bold: true,  alignment: 'left', fontSize: 8 },
-                { text: this.data_Cotizacion.inversor, bold: false,  alignment: 'left', fontSize: 8 }
+                { text: 'INVERSOR', bold: true, alignment: 'left', fontSize: 8 },
+                { text: this.data_Cotizacion.inversor, bold: false, alignment: 'left', fontSize: 8 }
               ],
 
             ]
           },
 
           layout: {
-   hLineWidth: function (i:any, node:any) {
-    if (i <= 1) return 0;
-    return 0.8;
-  },
+            hLineWidth: function (i: any, node: any) {
+              if (i <= 1) return 0;
+              return 0.8;
+            },
 
-  // <-- aquí devolvemos 0.8 también para i === 0
-  vLineWidth: function (i:any, node:any) {
-    return 0.8;
-  },
+            // <-- aquí devolvemos 0.8 también para i === 0
+            vLineWidth: function (i: any, node: any) {
+              return 0.8;
+            },
             paddingLeft: function () { return 4; },
             paddingRight: function () { return 4; },
             paddingTop: function () { return 3; },
@@ -341,13 +405,13 @@ tableData: any[] = [];
         },
         {
           table: {
-             widths: ['auto', 'auto', 315, '*','*'],
+            widths: ['auto', 'auto', 315, '*', '*'],
             body: [
 
               // Fila amarilla
               [
                 { text: '1. EQUIPO Y COMPONENTES', colSpan: 5, fillColor: '#F3CA00', bold: true, fontSize: 8, color: 'black', alignment: 'left', margin: [5, 3], border: [false, false, false, false] },
-                {}, {}, {},{}
+                {}, {}, {}, {}
               ],
 
               // Sub encabezado rojo
@@ -359,7 +423,7 @@ tableData: any[] = [];
                 { text: 'P. UNITARIO', bold: true, color: '#B40000', alignment: 'center', fontSize: 8 },
                 { text: 'SUBTOTAL', bold: true, color: '#B40000', alignment: 'center', fontSize: 8 }
               ],
-             
+
               // Filas de productos (expandido correctamente)
               ...this.productosArray.filter((p: any) => Number(p?.categoria) === 1).map((p: any) => ([
                 { text: p.codigo?.toString() ?? '', alignment: 'left', fontSize: 9 },
@@ -378,7 +442,7 @@ tableData: any[] = [];
 
               // TOTAL
               [
-                { text: '', colSpan: 2, border: [false, false, false, false] }, {},{}, 
+                { text: '', colSpan: 2, border: [false, false, false, false] }, {}, {},
                 { text: 'TOTAL', bold: true, alignment: 'right', border: [false, false, false, false] },
                 {
                   text: `${this.formatCurrency(this.productosArray
@@ -406,13 +470,13 @@ tableData: any[] = [];
         },
         {
           table: {
-            widths: ['auto', 'auto', 315, '*','*'],
+            widths: ['auto', 'auto', 315, '*', '*'],
             body: [
 
               // Fila amarilla
               [
                 { text: '2.INSTALACION', colSpan: 5, fillColor: '#F3CA00', bold: true, fontSize: 8, color: 'black', alignment: 'left', margin: [5, 3], border: [false, false, false, false] },
-                {}, {}, {},{}
+                {}, {}, {}, {}
               ],
 
               // Sub encabezado rojo
@@ -444,11 +508,13 @@ tableData: any[] = [];
 
               // TOTAL
               [
-                { text: '', colSpan: 3, border: [false, true, false, false] }, {}, {}, 
+                { text: '', colSpan: 3, border: [false, true, false, false] }, {}, {},
                 { text: 'TOTAL', bold: true, alignment: 'right', border: [false, true, false, false] },
-                { text: `${this.formatCurrency(this.productosArray
+                {
+                  text: `${this.formatCurrency(this.productosArray
                     .filter((p: any) => Number(p?.categoria) === 2)
-                    .reduce((acc: number, p: any) => acc + (p.cantidad * p.precio_venta), 0))}`, bold: true, alignment: 'right', border: [false, true, false, false] }
+                    .reduce((acc: number, p: any) => acc + (p.cantidad * p.precio_venta), 0))}`, bold: true, alignment: 'right', border: [false, true, false, false]
+                }
               ]
             ]
           },
@@ -470,13 +536,13 @@ tableData: any[] = [];
         },
         {
           table: {
-            widths: ['auto', 'auto', 315, '*','*'],
+            widths: ['auto', 'auto', 315, '*', '*'],
             body: [
 
               // Fila amarilla
               [
                 { text: '3.OTROS', colSpan: 5, fillColor: '#F3CA00', bold: true, fontSize: 8, color: 'black', alignment: 'left', margin: [5, 3], border: [false, false, false, false] },
-                {}, {}, {},{}
+                {}, {}, {}, {}
               ],
 
               // Sub encabezado rojo
@@ -488,7 +554,7 @@ tableData: any[] = [];
                 { text: 'P. UNITARIO', bold: true, color: '#B40000', alignment: 'center', fontSize: 8 },
                 { text: 'SUBTOTAL', bold: true, color: '#B40000', alignment: 'center', fontSize: 8 }
               ],
-             
+
               // Filas de productos (expandido correctamente)
               ...this.productosArray.filter((p: any) => Number(p?.categoria) === 3).map((p: any) => ([
                 { text: p.codigo?.toString() ?? '', alignment: 'center', fontSize: 9 },
@@ -508,11 +574,13 @@ tableData: any[] = [];
 
               // TOTAL
               [
-                { text: '', colSpan: 3, border: [false, true, false, false] }, {}, {}, 
+                { text: '', colSpan: 3, border: [false, true, false, false] }, {}, {},
                 { text: 'TOTAL', bold: true, alignment: 'right', border: [false, true, false, false] },
-                { text: `${this.formatCurrency(this.productosArray
+                {
+                  text: `${this.formatCurrency(this.productosArray
                     .filter((p: any) => Number(p?.categoria) === 2)
-                    .reduce((acc: number, p: any) => acc + (p.cantidad * p.precio_venta), 0))}`, bold: true, alignment: 'right', border: [false, true, false, false] }
+                    .reduce((acc: number, p: any) => acc + (p.cantidad * p.precio_venta), 0))}`, bold: true, alignment: 'right', border: [false, true, false, false]
+                }
               ]
             ]
           },
@@ -534,7 +602,7 @@ tableData: any[] = [];
         },
         {
           table: {
-            widths: [50,'auto', '*'],
+            widths: [50, 'auto', '*'],
             body: [
 
               // Fila amarilla
@@ -559,27 +627,33 @@ tableData: any[] = [];
                 {
                   text: `EQUIPOS Y COMPONENTES`, alignment: 'left', fontSize: 8
                 },
-                { text: `${this.formatCurrency(this.productosArray
+                {
+                  text: `${this.formatCurrency(this.productosArray
                     .filter((p: any) => Number(p?.categoria) === 1)
-                    .reduce((acc: number, p: any) => acc + (p.cantidad * p.precio_venta), 0))}`, alignment: 'right', fontSize: 8 }
+                    .reduce((acc: number, p: any) => acc + (p.cantidad * p.precio_venta), 0))}`, alignment: 'right', fontSize: 8
+                }
               ],
               [
-                 {},
+                {},
                 {
                   text: `INSTALACIÓN`, alignment: 'left', fontSize: 8
                 },
-                { text: `${this.formatCurrency(this.productosArray
+                {
+                  text: `${this.formatCurrency(this.productosArray
                     .filter((p: any) => Number(p?.categoria) === 2)
-                    .reduce((acc: number, p: any) => acc + (p.cantidad * p.precio_venta), 0))}`, alignment: 'right', fontSize: 8 }
+                    .reduce((acc: number, p: any) => acc + (p.cantidad * p.precio_venta), 0))}`, alignment: 'right', fontSize: 8
+                }
               ],
               [
-                 {},
+                {},
                 {
                   text: `OTROS`, alignment: 'left', fontSize: 8
                 },
-                { text: `${this.formatCurrency(this.productosArray
+                {
+                  text: `${this.formatCurrency(this.productosArray
                     .filter((p: any) => Number(p?.categoria) === 3)
-                    .reduce((acc: number, p: any) => acc + (p.cantidad * p.precio_venta), 0))}`, alignment: 'right', fontSize: 8 }
+                    .reduce((acc: number, p: any) => acc + (p.cantidad * p.precio_venta), 0))}`, alignment: 'right', fontSize: 8
+                }
               ]
 
 
@@ -589,10 +663,12 @@ tableData: any[] = [];
               [
 
                 { text: 'TOTAL', colSpan: 2, bold: true, alignment: 'right', border: [false, true, false, false] },
-                                {},
-                { text: `${this.formatCurrency(this.productosArray
+                {},
+                {
+                  text: `${this.formatCurrency(this.productosArray
                     .filter((p: any) => Number(p?.categoria))
-                    .reduce((acc: number, p: any) => acc + (p.cantidad * p.precio_venta), 0))}`, bold: true, alignment: 'right', border: [false, true, false, false] }
+                    .reduce((acc: number, p: any) => acc + (p.cantidad * p.precio_venta), 0))}`, bold: true, alignment: 'right', border: [false, true, false, false]
+                }
               ]
             ]
           },
@@ -615,43 +691,49 @@ tableData: any[] = [];
 
         {
           text: `\nNOTA `,
-bold: true ,color: '#B40000', alignment: 'center', fontSize: 8
-         
+          bold: true, color: '#B40000', alignment: 'center', fontSize: 8
+
         },
         {
-    text: `\n\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            *PRECIOS EN MONEDA NACIONAL
+          text: `\n\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            *PRECIOS EN MONEDA NACIONAL
 *COTIZACIÓN CON VIGENCIA DE 15 DÍAS A PARTIR DE SU EMISIÓN \n
 *PRECIO TOTAL NEGOCIABLE (APLICA SOLAMENTE EN COMPRA DE CONTADO)\n`,
-bold: true, fontSize: 8
+          bold: true, fontSize: 8
         },
         {
-    text: `\n\nEn seguida le explicaremos la modalidad de pago para su `, fontSize: 8
+          text: `\n\nEn seguida le explicaremos la modalidad de pago para su `, fontSize: 8
         },
         {
-    text: `PROYECTO \n`,
-bold: true, fontSize: 8
+          text: `PROYECTO \n`,
+          bold: true, fontSize: 8
         },
         {
 
         },
-         {text: [
-          {    text: `COMPRA DE CONTADO:\n`,bold: true, fontSize: 8},
-          {    text: `La compra de contado está dividida en tres pagos que se realizan al inicio, durante y finalizando la instalación poniendo en marcha	el inversor para que el sistema comience a trabajar.\n\n`,fontSize: 8},
-{    text: `Contrato:\n`,bold: true, fontSize: 8},
-{    text: `de por medio, este pago consta del 70% del precio total.\n \n`,fontSize: 8},
-{    text: `2do PAGO:`,bold: true, fontSize: 8},
-{    text: `Pago que se realiza en el transcurso de la instalación, poniendo en claro que a estas alturas usted ya debe de tener los								
-módulos e inversor en su establecimiento, este pago consta del 20% del precio total.			\n\n`, fontSize: 8},
-{    text: `3er PAGO:`,bold: true, fontSize: 8},
-{    text: `Pago que se realiza al finalizar el proyecto que consiste en el encendido de los inversores y una vez corroborando que el								
-sistema esté funcionando, este pago consta del 10% del precio total llegando al 100% y finiquitando su compra.		\n\n`, fontSize: 8},
-        ]},
+        {
+          text: [
+            { text: `COMPRA DE CONTADO:\n`, bold: true, fontSize: 8 },
+            { text: `La compra de contado está dividida en tres pagos que se realizan al inicio, durante y finalizando la instalación poniendo en marcha	el inversor para que el sistema comience a trabajar.\n\n`, fontSize: 8 },
+            { text: `Contrato:\n`, bold: true, fontSize: 8 },
+            { text: `de por medio, este pago consta del 70% del precio total.\n \n`, fontSize: 8 },
+            { text: `2do PAGO:`, bold: true, fontSize: 8 },
+            {
+              text: `Pago que se realiza en el transcurso de la instalación, poniendo en claro que a estas alturas usted ya debe de tener los								
+módulos e inversor en su establecimiento, este pago consta del 20% del precio total.			\n\n`, fontSize: 8
+            },
+            { text: `3er PAGO:`, bold: true, fontSize: 8 },
+            {
+              text: `Pago que se realiza al finalizar el proyecto que consiste en el encendido de los inversores y una vez corroborando que el								
+sistema esté funcionando, este pago consta del 10% del precio total llegando al 100% y finiquitando su compra.		\n\n`, fontSize: 8
+            },
+          ]
+        },
         {
           text: `				
 Sin más que decir quedamos a su total disposición para cualquier duda o aclaración, saludos nuevamente de \n VAZCO Solar “cuidemos nuestro medio ambiente y prosperemos juntos”.				
 `,
-bold: true,fontSize: 8, alignment: 'center'
-         
+          bold: true, fontSize: 8, alignment: 'center'
+
         },
         {
           text: `		\n\n		
@@ -661,8 +743,8 @@ GERENTE DE VAZCO SOLAR \n
 312 256 0275
 .				
 `,
-bold: true,fontSize: 8, alignment: 'center'
-         
+          bold: true, fontSize: 8, alignment: 'center'
+
         }
       ],
 
@@ -680,7 +762,7 @@ bold: true,fontSize: 8, alignment: 'center'
   totalGeneral: any;
   productosArray: any
   cliente: any;
-  data_Cotizacion:any;
+  data_Cotizacion: any;
 
   productosCotizacion(datos: any) {
     let data = {

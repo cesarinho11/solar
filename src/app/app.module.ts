@@ -40,6 +40,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { ModalMaterialInstalacionComponent } from './modals/modal-material-instalacion/modal-material-instalacion.component';
 
 @NgModule({
   declarations: [
@@ -69,7 +70,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     ModalAddPagoComponent,
     ModalUsuarioComponent,
     ModalReportesComponent,
-    HerramientasComponent
+    HerramientasComponent,
+    ModalMaterialInstalacionComponent
   ],
   imports: [
     BrowserModule,

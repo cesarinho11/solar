@@ -1,0 +1,95 @@
+<h1 mat-dialog-title style="border-bottom: 2px solid #eee;" class="dialog-title">Material instalacion <span
+    class="close-btn " mat-dialog-close><img width="30px" src="../../../assets/x.png" alt=""></span> </h1>
+<div mat-dialog-content>
+  <form action="" [formGroup]="cotizacionesForm">
+
+    <div class="row">
+
+
+
+      <div class="col-md-2 inputForm">
+        <label for="domicilio">Cotizacion</label>
+        <input type="text" class="form-control" id="id_cotizacion" formControlName="id_cotizacion">
+      </div>
+      <div class="col-md-4 inputForm">
+        <label for="fecha">Cliente</label>
+        <input type="text" class="form-control" formControlName="nombre" placeholder="Nombre" />
+      </div>
+
+
+    </div>
+
+
+
+    <div class="row">
+      <div class="col-md-6">
+
+        <div class="mt-5">
+          <span style="color: red; font-size: 12px;">Teclear el nombre del producto</span>
+          <input *ngIf="data.accion!='ver'" class="form-control" type="text" placeholder="Producto"
+            [(ngModel)]="nombre_producto_search" formControlName="busqueda" (ngModelChange)="verificarTexto()">
+          <!-- Botón cerrar -->
+
+          <!-- Lista filtrada -->
+          <ul class="list-group position-absolute w-50" *ngIf="productosItems.length > 0  && mostrarLista">
+            <li class="list-group-item list-group-item-action listProds " style="background: #eee;width: 35%;">Lista de
+              productos <button *ngIf="mostrarLista" style="width: 24px;
+    height: 20px;
+    font-size: 9px;" type="button" class="btn btn-sm btn-danger position-absolute" (click)="cerrarLista()">
+                X
+              </button> </li>
+            <li class="list-group-item list-group-item-action listProds" style="width: 35%; cursor: pointer;"
+              *ngFor="let p of productosItems" [class.active]="estaSeleccionado(p)"
+              (click)="agregarProducto(p);  $event.stopPropagation()">
+              {{ p.nombre }}
+            </li>
+          </ul>
+
+        </div>
+
+
+      </div>
+      <div class="col-md-6">
+
+        <div class="table-responsive  table-scroll mt-3 ">
+          <!-- TABLA DE PRODUCTOS -->
+          <table class="table table-bordered mt-3" formArrayName="productos_cotizacion"
+            *ngIf="productosArray.controls.length > 0">
+            <thead class="table-dark">
+              <tr>
+                <th>Producto</th>
+                <th width="50">Cantidad</th>
+                <th width="60">X</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of productosArray.controls; let i = index" style="vertical-align: middle;"
+                [formGroupName]="i">
+
+                <td>{{ item.get('nombre')?.value }}</td>
+
+                <td>
+                  <input type="number" class="form-control" formControlName="cantidad" (input)="calcularTotal(i)">
+                </td>
+
+
+                <td><button class="btn btn-sm btn-danger" (click)="eliminarProducto(i)">X</button></td>
+
+              </tr>
+
+            </tbody>
+
+          </table>
+
+
+        </div>
+      </div>
+    </div>
+
+
+  </form>
+</div>
+<div mat-dialog-actions align="end" style="margin-top: 10px;">
+  <!-- <button mat-button mat-dialog-close class="btn btnCancel ">Close</button> -->
+  <button class="btn btnPrimary ml-5" type="button" (click)="onSubmit()">Guardar materiales</button>
+</div>
