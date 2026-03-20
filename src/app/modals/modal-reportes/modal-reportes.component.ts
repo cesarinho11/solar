@@ -21,7 +21,7 @@ export class ModalReportesComponent implements OnInit {
     fecha_fin: new FormControl(''),
     formato: new FormControl('pdf') // valor por defecto
   });
-
+formato='';
 
   ngOnInit(): void {
   }
@@ -34,7 +34,7 @@ export class ModalReportesComponent implements OnInit {
 
       // this.dialogRef.close({ event: 'Agregar' });
       console.log(this.reporteForm.value.formato)
-      if (this.reporteForm.value.formato == 'pdf') {
+      if (this.formato == 'pdf') {
 
         this.reportService.reporteVentas(this.reporteForm.value).subscribe({
           next: (res: any) => {
@@ -83,10 +83,31 @@ export class ModalReportesComponent implements OnInit {
         next: (res: any) => {
           console.log(res);
           //this.dialogRef.close({ event: 'Agregar' });
-          if (this.reporteForm.value.formato == 'pdf') {
+          if (this.formato == 'pdf') {
             this.pdfReporte.reportPDFProductos(this.data.title, res, this.reporteForm.value.fecha_inicio, this.reporteForm.value.fecha_fin);
           } else {
             this.exportarExcel(this.data.title, res, this.reporteForm.value.fecha_inicio, this.reporteForm.value.fecha_fin)
+          }
+
+          this.alert.success('El reporte fue guardado correctamente');
+        },
+        error: (err: any) => {
+          console.log('error', err);
+        }
+      });
+
+
+    }else if(this.data.tipo == 3){
+console.log('entro', this.reporteForm.value);
+     
+      this.reportService.getInventario().subscribe({
+        next: (res: any) => {
+          console.log(res);
+          //this.dialogRef.close({ event: 'Agregar' });
+          if (this.formato == 'pdf') {
+            this.pdfReporte.reportPDFInventario(this.data.title, res);
+          } else {
+            this.exportarExcelInventario(this.data.title, res)
           }
 
           this.alert.success('El reporte fue guardado correctamente');
@@ -222,6 +243,63 @@ export class ModalReportesComponent implements OnInit {
     };
 
     const excelBuffer = XLSX.write(workbook, {
+      bookType: 'xlsx',
+      type: 'array'
+    });
+
+    this.guardarExcel(excelBuffer, 'reporte_productos_vendidos');
+  }
+
+    //REPORTE DE INVENTARIO
+  exportarExcelInventario(nameReport: string, data: any[]) {
+    console.log('entro')
+    // 🔹 Filas iniciales (titulo + fechas)
+    const encabezado = [
+      [`${nameReport}`],
+      [``],
+      [''], // fila en blanco
+      [''], // fila en blanco
+    ];
+
+    // 🔹 Data del reporte
+    const body = data.map(item => ({
+      ID: item.id_producto,
+      Producto: item.nombre,
+      Stock: item.stock,
+      Costo: item.costo,
+      'Ultima compra': item.ultima_compra
+    }));
+
+    // 🔹 Crear hoja desde encabezado
+    const worksheet: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(encabezado);
+
+    // 🔹 Insertar data a partir de la fila 4
+    XLSX.utils.sheet_add_json(worksheet, body, {
+      origin: 'A4',
+      skipHeader: false
+    });
+
+    // 🔹 Ancho de columnas
+    worksheet['!cols'] = [
+      { wch: 8 },
+      { wch: 35 },
+      { wch: 18 }
+    ];
+
+    // 🔹 Combinar celdas del título
+    worksheet['!merges'] = [
+      { s: { r: 0, c: 0 }, e: { r: 0, c: 2 } }, // título
+      { s: { r: 1, c: 0 }, e: { r: 1, c: 2 } }  // fechas
+    ];
+
+    // 🔹 Crear libro
+    const workbook: XLSX.WorkBook = {
+      Sheets: { 'Reporte': worksheet },
+      SheetNames: ['Reporte']
+    };
+
+    // 🔹 Exportar
+    const excelBuffer: any = XLSX.write(workbook, {
       bookType: 'xlsx',
       type: 'array'
     });

@@ -1,9 +1,35 @@
 <h1 mat-dialog-title style="border-bottom: 2px solid #eee;"  class="dialog-title">Imprimir Contrato <span class="close-btn " mat-dialog-close><img width="30px" src="../../../assets/x.png" alt=""></span> </h1>
 <div mat-dialog-content>
     <div class="row">
-        <div class="col md-4  btn btn-outline-primary m-2" (click)="contratoInterconexion()"><i class="bi-file-pdf-fill"></i>Contrato Interconexion</div>
+        <!-- <div class="col md-4  btn btn-outline-primary m-2" (click)="contratoInterconexion()"><i class="bi-file-pdf-fill"></i>Contrato Interconexion</div>
         <div class="col md-4  btn btn-outline-primary m-2" (click)="contratoContraprestacion()"><i class="bi-file-pdf-fill"></i>Contrato Contraprestacion</div>
-        <div class="col md-4 btn btn-outline-primary m-2" (click)="anexo()"><i class="bi-file-pdf-fill"></i>Anexo</div>
+        <div class="col md-4 btn btn-outline-primary m-2" (click)="anexo()"><i class="bi-file-pdf-fill"></i>Anexo</div> -->
+      <!-- <h2 class="modal-title">Exportar contrato</h2> -->
+<p class="modal-subtitle">Selecciona el contrato que deseas descargar</p>
+        <div 
+    class="format-card m-2" 
+    [class.selected]="contrato === 'Interconexion'" 
+    (click)="contratoInterconexion(); contrato = 'Interconexion'">
+    <i class="fa fa-file-pdf"></i>
+    <span>Interconexión</span>
+  </div>
+
+  <div 
+    class="format-card m-2" 
+    [class.selected]="contrato === 'Contraprestacion'" 
+    (click)="contratoContraprestacion(); contrato = 'Contraprestacion'">
+    <i class="fa fa-file-excel"></i>
+    <span>Contraprestación</span>
+  </div>
+
+  <div 
+    class="format-card m-2" 
+    [class.selected]="contrato === 'Anexo'" 
+    (click)="anexo(); contrato = 'Anexo'">
+    <i class="fa fa-file-excel"></i>
+    <span>Anexo</span>
+  </div>
+
     </div>
 </div>
 <div mat-dialog-actions align="end" style="margin-top: 10px;">

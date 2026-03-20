@@ -279,4 +279,127 @@ export class PdfReportesService {
 
   pdfMake.createPdf(documentDefinition).open();
     }
+      async reportPDFInventario(nameReport: string, data: any[]) {
+  
+        const headerImage = img_encabezado.img;
+  const footerImage = img_footer.img;
+
+  /* 🔹 Convertir data a filas pdfMake */
+  const bodyData = data.map((item, index) => ([
+    {
+      text: item.id_producto ?? '',
+      alignment: 'center',
+      fontSize: 8
+    },
+    {
+      text: item.nombre ?? '',
+      alignment: 'left',
+      fontSize: 8
+    },
+    {
+      text: item.stock ?? '',
+      alignment: 'center',
+      fontSize: 8
+    },
+    {
+      text: `$${Number(item.costo?? 0).toLocaleString('es-MX', {
+        minimumFractionDigits: 2
+      })}`,
+      alignment: 'right',
+      fontSize: 8
+    },
+    {
+      text: item.ultima_compra ?? '',
+      alignment: 'center',
+      fontSize: 8
+    },
+  ]));
+
+  const documentDefinition: any = {
+    pageMargins: [40, 120, 40, 120],
+
+    header: {
+      image: headerImage,
+      width: 570,
+      margin: [0, 5]
+    },
+
+    footer: {
+      image: footerImage,
+      width: 550,
+      margin: [25, 0]
+    },
+
+    content: [
+
+      /* 🔹 Título */
+      {
+        text: [
+          { text: `REPORTE DE ${nameReport.toUpperCase()}\n`, bold: true },
+          // { text: `Periodo del ${fechaInicio} al ${fechaFin}` }
+        ],
+        margin: [0, 20],
+        fontSize: 12
+      },
+
+      /* 🔹 Tabla */
+      {
+        table: {
+          widths: ['auto', '*', 70, 70,70],
+          body: [
+
+            /* Fila amarilla */
+            [
+              {
+                text: 'VENTAS',
+                colSpan: 5,
+                color: 'white',
+                fillColor: '#CA041A',
+                bold: true,
+                fontSize: 8,
+                margin: [5, 3],
+                border: [false, false, false, false]
+              },
+              {}, {}, {},{}
+            ],
+
+            /* Encabezados */
+            [
+              { text: 'ID', bold: true, color: '#B40000', alignment: 'center', fontSize: 8 },
+              { text: 'PRODUCTO', bold: true, color: '#B40000', alignment: 'center', fontSize: 8 },
+              { text: 'STOCK ACTUAL', bold: true, color: '#B40000', alignment: 'center', fontSize: 8 },
+             
+              { text: 'COSTO', bold: true, color: '#B40000', alignment: 'right', fontSize: 8 },
+              { text: 'ULTIMA COMPRA', bold: true, color: '#B40000', alignment: 'right', fontSize: 8 }
+            ],
+
+            /* 🔹 FILAS DINÁMICAS */
+            ...bodyData,
+
+            // TOTAL
+              // [
+              //   { text: 'TOTAL VENTAS', colSpan: 4, bold: true, alignment: 'right', border: [false, false, false, false] }, {},{}, {},
+              //   // { text: 'TOTAL VENTAS', bold: true, alignment: 'right', border: [false, false, false, false] },
+              //   {
+              //     text: `${this.formatCurrency(total )}`, bold: true, alignment: 'right', border: [false, false, false, false]
+              //   }
+              // ]
+
+          ]
+        },
+
+        layout: {
+          hLineWidth: (i: number) => i === 1 || i === 2 ? 1.2 : 0.4,
+          vLineWidth: () => 0,
+          paddingLeft: () => 4,
+          paddingRight: () => 4,
+          paddingTop: () => 3,
+          paddingBottom: () => 3
+        }
+      }
+    ]
+  };
+
+  pdfMake.createPdf(documentDefinition).open();
+    }
 }

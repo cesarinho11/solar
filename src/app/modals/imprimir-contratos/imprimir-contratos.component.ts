@@ -11,6 +11,7 @@ export class ImprimirContratosComponent implements OnInit {
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any, private pdfservice:PdfService) { }
 
+  contrato='';
   ngOnInit(): void {
     this.pdfservice.listFields()
     this.replaceNullsWithEmpty();

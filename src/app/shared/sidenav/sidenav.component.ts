@@ -68,7 +68,8 @@ export class SidenavComponent implements OnInit {
       icon: 'bi-bar-chart',
       subItems: [
         { label: 'Ventas', icon: 'bi-cash-stack', tipo: 1 },
-        { label: 'Productos Vendidos', icon: 'bi-box-seam', tipo: 2 }
+        { label: 'Productos Vendidos', icon: 'bi-box-seam', tipo: 2 },
+        { label: 'Inventario', icon: 'bi-clipboard2-data', tipo: 3 }
       ]
     }
   ];

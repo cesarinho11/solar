@@ -1,0 +1,25 @@
+.format-options {
+  display: flex;
+  gap: 15px;
+  margin-top: 15px;
+}
+
+.format-card {
+  flex: 1;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.format-card:hover {
+  border-color: #ff6b6b;
+  transform: translateY(-2px);
+}
+
+.format-card.selected {
+  border: 2px solid #ff6b6b;
+  background-color: #fff5f5;
+}
