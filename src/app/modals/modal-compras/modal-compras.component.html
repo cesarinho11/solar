@@ -53,7 +53,7 @@
 
       <div class="col-md-4 inputForm">
         <label for="stock">total_compra</label>
-        <input type="total_compra" class="form-control" id="total_compra" formControlName="total_compra">
+        <input type="total_compra" step="0.01" class="form-control" id="total_compra" formControlName="total_compra">
       </div>
 
 
@@ -105,7 +105,7 @@
             </td>
             <!-- <td>{{ item.get('costo')?.value }}</td> -->
             <td>
-              <input type="number" class="form-control" formControlName="costo_compra" (input)="calcularTotal(i)">
+              <input type="number" step="0.01" class="form-control" formControlName="costo_compra" (input)="calcularTotal(i)">
             </td>
 
             <td>{{ item.get('total_compra')?.value |currency}}</td>

@@ -287,7 +287,7 @@ export class PdfService {
     form.getTextField('Texto28').setText(fechaFormateadaOperacion);
     form.getTextField('Texto29').setText(userData.capacidad);
     form.getTextField('Texto30').setText(userData.capacidad_incrementar_opcional);
-    form.getTextField('Texto31').setText(promedio_mensual.toString());
+    form.getTextField('Texto31').setText(promedio_mensual.toFixed(2));
 
 
     if (userData.solar) form.getCheckBox('Casilla de verificación6').check();
@@ -328,6 +328,132 @@ export class PdfService {
     window.open(url);
   }
 
+   async llenarContraprestacion_moral(userData: any) {
+    // 1. Cargar PDF desde assets
+    //const existingPdfBytes = await fetch('/assets/documentos/ContratoDeContraprestacion.pdf').then(res => res.arrayBuffer());
+    const existingPdfBytes = await fetch('/assets/documentos/contraprestacion_moral.pdf').then(res => res.arrayBuffer());
+
+    // 2. Cargar documento
+    const pdfDoc = await PDFDocument.load(existingPdfBytes);
+
+    // 3. Obtener formulario
+    const form = pdfDoc.getForm();
+
+    // 4. Centrar todos los campos del PDF (justificación)
+    const fields = form.getFields();
+    fields.forEach(field => {
+      try {
+        const acroField: any = (field as any).acroField;
+        if (acroField && acroField.dict) {
+          // 0 = izquierda, 1 = centrado, 2 = derecha
+          acroField.dict.set(PDFName.of('Q'), pdfDoc.context.obj(1));
+        }
+      } catch (err) {
+        console.warn('⚠️ No se pudo centrar el campo:', field.getName());
+      }
+    });
+
+    //form.getTextField('undefined_18').setText('PRUEBA 18'); //bajo el numero 
+    // form.getTextField('nvnvbnb').setText('PRUEBAAAAAAAAAA ');
+   
+
+    //form.getTextField('undefined_7').setText('PRUEBAAAAAAAAA'); //Tiene celebrado con un Contrato de Interconexión con Comisión Federal de Electricidad,bajo el número 
+
+    // 4. Llenar campos (los nombres deben coincidir con los del PDF)
+    form.getTextField('undefined').setText(userData.nombre);
+     form.getTextField('undefined_2').setText('REPRESENTADO POR');
+     form.getTextField('Y A QUIENES EN LO SUCESIVO Y DE MANERA').setText('SU CARÁCTER DE ');
+
+     form.getTextField('de').setText('escritura publica n°');
+     form.getTextField('de_2').setText(userData.dias_contra);
+     form.getTextField('de_3').setText(userData.mes_contra);
+     form.getTextField('otorgada ante la fe del').setText(userData.year_contra);
+
+     form.getTextField('undefined_3').setText('NOMBRE NOTARIO');
+     form.getTextField('de_4').setText('NUMERO NOTARIO');
+     form.getTextField('y manifiesta que no existe dolo mala fe ni vicio en su voluntad para').setText('LUGAR NOTARIO');
+
+     form.getTextField('undefined_4').setText(userData.rpu);
+     form.getTextField('undefined_5').setText(userData.rmu);
+     form.getTextField('undefined_6').setText(userData.n_cuenta);
+    form.getTextField('undefined_7').setText(userData.domicilio);
+    form.getTextField('undefined_8').setText(userData.capacidad);
+    form.getTextField('undefined_9').setText('por definir');
+    form.getTextField('en su carácter de Representante').setText(userData.nombre);
+    form.getTextField('cuenta con las').setText(userData.tipo_doc + ' ' + userData.ine);
+    form.getTextField('Contraprestación lo que acredita con la Escritura Pública No').setText(userData.mes_contra);
+
+    form.getTextField('de_5').setText('NUMERO escritura');
+    form.getTextField('de_6').setText(userData.dias_contra);
+    form.getTextField('undefined_10').setText(userData.year_contra);
+    form.getTextField('undefined_11').setText('NOMBRE NOTARIO');
+    form.getTextField('de_7').setText('NUMERO NOTARIO');
+    form.getTextField('las cuales a la fecha de firma del presente no le han sido').setText('lugar NOTARIO');
+
+    // form.getTextField('undefined').setText(userData.tipo_doc + ' ' + userData.ine);
+    form.getTextField('Tensión celebrado con Comisión Federal de').setText(userData.tension);
+    // form.getTextField('undefined_2').setText(userData.rpu);
+    form.getTextField('undefined_3').setText(userData.rmu);
+    // form.getTextField('undefined_4').setText(userData.n_cuenta);
+    // form.getTextField('undefined_5').setText(userData.domicilio);
+    // form.getTextField('undefined_6').setText(userData.capacidad);
+    form.getTextField('con una tecnología de generación Fotovoltaica').setText(userData.tension_interconexion);
+    // form.getTextField('undefined_10').setText(userData.tecnologia); // va bien 
+    //form.getTextField('undefined_8').setText(userData.domicilio);
+    // form.getTextField('undefined_9').setText(userData.telefono);
+    //form.getTextField('undefined_10').setText(userData.correo);
+    form.getTextField('undefined_11').setText(userData.tipo_doc + ' ' + userData.ine); // se identifica con 
+    form.getTextField('mismo').setText(userData.nombre);
+    form.getTextField('Tensión celebrado con Comisión Federal de Electricidad con RPU número').setText(userData.tension);
+    form.getTextField('RMU número').setText(userData.rpu); //rpu
+    form.getTextField('con número').setText(userData.rmu); //rmu
+    form.getTextField('que se presta en el domicilio ubicado en').setText(userData.n_cuenta);
+    form.getTextField('undefined_12').setText(userData.domicilio); //domicilio
+    form.getTextField('undefined_13').setText(userData.capacidad); //domicilio
+     form.getTextField('con una tecnología de generación Fotovoltaica_2').setText(userData.tension_interconexion);
+    // form.getTextField('undefined_18').setText(userData.tension_interconexion);
+    // form.getTextField('undefined_19').setText(userData.tecnologia);
+    form.getTextField('undefined_15').setText(userData.domicilio);
+    form.getTextField('y correo electrónico').setText(userData.telefono);
+    // form.getTextField('telelel').setText(userData.telefono);
+    form.getTextField('undefined_16').setText(userData.correo);
+    form.getTextField('undefined_17').setText(userData.tipo_doc + ' ' + userData.ine); //se identifica con
+    form.getTextField('una tensión voltaje de').setText(userData.capacidad);
+    form.getTextField('con una tecnología de generación Fotovoltaica_3').setText(userData.tension_interconexion);
+    // form.getTextField('undefined_25').setText(userData.tecnologia);
+    form.getTextField('undefined_19').setText(userData.domicilio);
+    form.getTextField('y correo electrónico_2').setText(userData.telefono);
+    form.getTextField('undefined_20').setText(userData.correo);
+    // form.getTextField('en').setText(userData.regimen_contraprestacion);
+    form.getTextField('a los').setText(userData.ciudad);
+    form.getTextField('assasa').setText(userData.dias_contra);
+    form.getTextField('del año').setText(userData.mes_contra);
+    form.getTextField('Nomdosss').setText(userData.year_contra);
+    form.getTextField('Nomtresss').setText(userData.nombre);
+    form.getTextField('undefined_23').setText(userData.nombre);
+    // form.getTextField('de').setText(userData.dias_contra);
+    form.getTextField('Nomtresss').setText(userData.mes_contra);
+    form.getTextField('undefined_21').setText(userData.year_contra);
+
+    // 5. Guardar PDF generado
+    const pdfBytes = await pdfDoc.save();
+
+    // 6. Crear blob para abrir/descargar
+    const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+    const url = URL.createObjectURL(blob);
+
+    // Descargar
+    const a = document.createElement('a');
+    a.href = url;
+
+    //descargar
+    // a.download = 'contrato-llenado.pdf';
+    // a.click();
+
+    // O mostrar en el navegador
+    window.open(url);
+  }
+
 
   async listFields() {
     //const existingPdfBytes = await fetch('/assets/documentos/ContratoDeInterconexion.pdf').then(res => res.arrayBuffer());
@@ -335,8 +461,10 @@ export class PdfService {
     //const existingPdfBytes = await fetch('/assets/documentos/ContratoDeContraprestacion.pdf').then(res => res.arrayBuffer());
 
     //const existingPdfBytes = await fetch('/assets/documentos/Interconexion2.pdf').then(res => res.arrayBuffer());
-    const existingPdfBytes = await fetch('/assets/documentos/Contraprestacion2.pdf').then(res => res.arrayBuffer());
+    // const existingPdfBytes = await fetch('/assets/documentos/Contraprestacion2.pdf').then(res => res.arrayBuffer());
     //const existingPdfBytes = await fetch('/assets/documentos/Anexo2.pdf').then(res => res.arrayBuffer());
+
+     const existingPdfBytes = await fetch('/assets/documentos/contraprestacion_moral.pdf').then(res => res.arrayBuffer());
 
     const pdfDoc = await PDFDocument.load(existingPdfBytes);
     const form = pdfDoc.getForm();

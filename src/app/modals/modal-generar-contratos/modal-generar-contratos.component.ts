@@ -200,8 +200,8 @@ export class ModalGenerarContratosComponent implements OnInit {
 
     this.contratoForm.get('capacidad')?.valueChanges.subscribe(cap => {
       if (cap) {
-        const resultado = Number(cap) * 5 * 30.4;
-        this.contratoForm.get('capacidad_incrementar')?.setValue(resultado, { emitEvent: false });
+        const resultado = Number(cap) * 5 * 30.4;  
+        this.contratoForm.get('capacidad_incrementar')?.setValue(resultado.toFixed(2), { emitEvent: false });
       } else {
         this.contratoForm.get('capacidad_incrementar')?.setValue('', { emitEvent: false });
       }

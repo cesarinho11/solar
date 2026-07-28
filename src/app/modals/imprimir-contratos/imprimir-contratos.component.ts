@@ -25,6 +25,7 @@ export class ImprimirContratosComponent implements OnInit {
 
   contratoContraprestacion(){
     this.pdfservice.llenarContraprestacion(this.data);
+    // this.pdfservice.llenarContraprestacion_moral(this.data);
   }
 
   anexo(){
